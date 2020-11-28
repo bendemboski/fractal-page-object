@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noEmitOnError": false,
+    "noEmit": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "ES6",
+      "DOM"
+    ],
+    "target": "es5"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
