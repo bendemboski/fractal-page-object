@@ -1,0 +1,5 @@
+toc:
+  - PageObject
+  - selector
+  - globalSelector
+  - setRoot

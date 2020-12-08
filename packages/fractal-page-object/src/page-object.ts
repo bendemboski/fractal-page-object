@@ -6,29 +6,35 @@ import { DOM_QUERY, CLONE_WITH_INDEX } from './-private/types';
 import type { PageObjectClass } from './-private/types';
 
 /**
- * A page object, representing a DOM query that resolves to 0 or more
- * {@link Element}s.
+ * This class implements all the basic page object functionality, and all page
+ * objects must inherit from it. It can host {@link selector} and
+ * {@link globalSelector} fields, and will properly instantiate them as nested
+ * {@link PageObject}s when accessed. Each page object represents a DOM query
+ * that matches zero or more {@link Element}s.
  *
  * {@link PageObject}s exist in a tree where each {@link PageObject}'s elements
- * are descendants of its parent's elements. There is a root {@link PageObject}
- * whose query is relative to the single global root element (@see
- * {@link setRoot}) and then each non-root {@link PageObject} has a selector
- * and optional index (making them "indexed page objects") that define its
- * elements relative to its parent's elements.
+ * are descendants of its parent's elements. The root of the tree is a top-level
+ * {@link PageObject} created using `new PageObject()`, that by default will
+ * match the root element (the body element or whatever was set as the root
+ * using {@link setRoot}). It can also be constructed with a selector argument,
+ * `new PageObject(selector)`, in which case its query will be a selector query
+ * starting from the root element. Then each non-root {@link PageObject} has a
+ * selector and optional index that define its elements relative to its parent's
+ * elements.
  *
- * As long as no page objects are indexed, each {@link PageObject} conceptually
- * appends its selector to its parent's selector, in effect making its matching
- * elements
+ * As long as no page objects have an index, each {@link PageObject}
+ * conceptually appends its selector to its parent's selector, in effect making
+ * its matching elements
  *
  * ```javascript
  * rootElement.querySelectorAll(`${this.parent.selector} ${this.selector}`);
  * ```
  *
- * Indexed page objects restrict their matching elements to only the one
- * element at their index within their full query results (or no elements if
- * there is no element at that index). That in effect "resets" the root element
- * for its descendants, so its children execute queries relative to its
- * matching element (if it has one) and so on.
+ * Page objects that do have an index ("indexed page objects") restrict their
+ * matching elements to only the one element at their index within their full
+ * query results (or no elements if there is no element at that index). That in
+ * effect "resets" the root element for its descendants, so its children execute
+ * queries relative to its matching element (if it has one) and so on.
  *
  * {@link PageObject}s are lazy, meaning that their query is not evaluated when
  * they are constructed, but is evaluated and re-evaluated each time a property
@@ -47,23 +53,39 @@ import type { PageObjectClass } from './-private/types';
  * Descendant {@link PageObject}s are defined by subclassing {@link PageObject}
  * and using the {@link selector} factory function to initialize class fields.
  *
+ * When creating a top-level {@link PageObject} directly using `new`, its query
+ * will match the root element (the body element or whatever was )
+ *
+ * @param {string} [selector] the selector to use for this page object's query
+ * @param parent (for internal use only)
+ * @param index (for internal use only)
+ * @param rootElement (for internal use only)
+ *
  * @example
  *
- * import { PageObject, selector } from 'fractal-page-object';
+ * import { PageObject, selector, setRoot } from 'fractal-page-object';
  *
- * document.body.innerHTML = '<div id="div1"></div><div id="div2"></div>'
  * class Page extends PageObject {
- *   divs = selector('div')
+ *   list = selector('.list');
  * }
- * let page = new Page();
  *
- * page.divs.elements; // === Array.from(document.querySelectorAll('div'))
- * page.divs.length; // === 2
- * page.divs[0]; // PageObject wrapping first div
- * page.divs.slice(0, 2); // Array of two PageObjects wrapping both divs
- * page.divs.map(d => d.element.id) // ['div1', 'div2']
- * page.divs[1].element.id; // 'div2'
- * page.divs[2].element // null
+ * setRoot(rootElement);
+ *
+ * let page = new Page();
+ * page.list.elements; // rootElement.querySelectorAll('.list')
+ *
+ * @example
+ *
+ * import { PageObject, selector, setRoot } from 'fractal-page-object';
+ *
+ * class Page extends PageObject {
+ *   list = selector('.list');
+ * }
+ *
+ * setRoot(rootElement);
+ *
+ * let page = new Page('.container');
+ * page.list.elements; // rootElement.querySelectorAll('.container .list')
  */
 export default class PageObject extends ArrayStub {
   /**
@@ -71,6 +93,8 @@ export default class PageObject extends ArrayStub {
    * matching this page object's query if this page object does not have an
    * index, or the `index`th matching DOM element if it does have an index
    * specified.
+   *
+   * @type {Element | null}
    */
   get element(): Element | null {
     return this[DOM_QUERY].query();
@@ -79,6 +103,8 @@ export default class PageObject extends ArrayStub {
   /**
    * This page object's list of matching DOM elements. If this page object has
    * an index, this property will always have a length of 0 or 1.
+   *
+   * @type {Element[]}
    */
   get elements() {
     return this[DOM_QUERY].queryAll();
@@ -158,13 +184,9 @@ export default class PageObject extends ArrayStub {
 
   /**
    * Create a root page object whose query is generated by using a selector to match
-   * all elements that are descendants of the single global root element, i.e.
+   * all elements that are descendants of the global root element, i.e.
    *
-   * ```javascript
-   * rootElement.querySelectorAll(selector)
-   * ```
-   *
-   * @param selector the selector to use for this page object's query
+   * @param {string} selector the selector to use for this page object's query
    *
    * @see {@link setRoot}
    */

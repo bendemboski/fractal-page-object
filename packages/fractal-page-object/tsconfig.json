@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "target": "es2017",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "allowJs": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
@@ -10,16 +14,14 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noEmitOnError": false,
-    "noEmit": true,
     "declaration": true,
     "experimentalDecorators": true,
     "lib": [
-      "ES6",
+      "ES2017",
       "DOM"
     ],
-    "target": "es5"
   },
   "include": [
     "src/**/*"
-  ]
+  ],
 }

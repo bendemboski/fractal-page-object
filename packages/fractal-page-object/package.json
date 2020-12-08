@@ -15,7 +15,11 @@
   "scripts": {
     "lint": "eslint .",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "docs:build": "tsc --noEmit false --rootDir src/ --outDir doc-build/",
+    "docs:clean": "rm -rf src/*.js src/**/*.js doc-build",
+    "docs": "yarn docs:build && yarn documentation build doc-build/index.js --document-exported --config documentation.yml -f md -o API.md && yarn docs:clean"
+
   },
   "jest": {
     "preset": "ts-jest",
@@ -28,6 +32,7 @@
     "@types/jest": "^26.0.15",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
+    "documentation": "^13.1.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^7.0.0",
     "eslint-plugin-node": "^11.1.0",
