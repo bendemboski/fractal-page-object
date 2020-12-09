@@ -1,0 +1,6 @@
+**/__tests__/
+.*
+coverage/
+documentation.yml
+rollup.config.js
+tsconfig.json
