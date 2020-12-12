@@ -1,6 +1,6 @@
 {
   "name": "fractal-page-object",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A lightweight page object implementation with a focus on simplicity and extensibility",
   "keywords": [
     "browser",
