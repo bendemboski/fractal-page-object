@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'v*'
+  pull_request: {}
+  schedule:
+    - cron: '0 3 * * *' # daily, at 3am
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        node: ['10', '12']
+
+    name: Tests (Node.js v${{ matrix.node }})
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn build
+        working-directory: packages/fractal-page-object
+      - run: yarn test:coverage
+        working-directory: packages/fractal-page-object
+      - name: Test Ember app
+        run: yarn test:ember
+        working-directory: packages/ember-app
+      - name: Test script tag app
+        run: yarn test
+        working-directory: packages/script-tag-app
+
