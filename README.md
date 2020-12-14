@@ -14,13 +14,6 @@ A lightweight page object implementation with a focus on simplicity and extensib
   - [Extending](#extending)
   - [Re-use](#re-use)
   - [API](#api)
-    - [setRoot](#setroot)
-    - [PageObject](#pageobject)
-      - [element](#element)
-      - [elements](#elements)
-      - [Array API](#array-api)
-    - [selector()](#selector)
-    - [globalSelector()](#globalselector)
   - [Prettier considerations](#prettier-considerations)
 - [In Ember](#in-ember)
   - [Integrating with `qunit-dom` and `@ember/test-helpers`](#integrating-with-qunit-dom-and-embertest-helpers)
@@ -65,10 +58,10 @@ module('album list page', function() {
       'Everything You Know is Wrong',
       'Cavity Search'
     ]);
-    assert.notOk(badHairDay.play.classList.contains('playing'));
+    assert.notOk(badHairDay.play.element.classList.contains('playing'));
 
     badHairDay.play.element.click();
-    badHairDay.play.assert.hasClass('playing');
+    assert.ok(badHairDay.play.element.classList.contains('playing'));
   });
 });
 ```
@@ -87,8 +80,8 @@ module('album list page', function() {
     assert.equal(page.albums.length, 2);
 
     assert.dom(page.albums[0].title.element).hasText('Even Worse');
-    assert.equal(page.albums[1].title.element).hasText('Bad Hair Day');
-    assert.equal(page.albums[2].title.element).hasText('Mandatory Fun');
+    assert.dom(page.albums[1].title.element).hasText('Bad Hair Day');
+    assert.dom(page.albums[2].title.element).hasText('Mandatory Fun');
 
     let badHairDay = page.albums[1];
 
@@ -97,7 +90,7 @@ module('album list page', function() {
       'Everything You Know is Wrong',
       'Cavity Search'
     ].forEach((title, i) => assert.dom(badHairDay.tracks[i].element).hasText(title));
-    assert.dom(badHairDay.play).doesNotHaveClass('playing');
+    assert.dom(badHairDay.play.element).doesNotHaveClass('playing');
 
     await click(badHairDay.play.element);
     assert.dom(badHairDay.play.element).hasClass('playing');
