@@ -98,26 +98,6 @@ module('album list page', function() {
 });
 ```
 
-<!-- omit in toc -->
-## Table of Contents
-
-- [Why page objects?](#why-page-objects)
-- [Usage](#usage)
-  - [Mental Model](#mental-model)
-    - [Page objects as lists](#page-objects-as-lists)
-  - [Lazy evaluation](#lazy-evaluation)
-  - [Extending](#extending)
-  - [Re-use](#re-use)
-  - [API](#api)
-  - [Prettier considerations](#prettier-considerations)
-- [In Ember](#in-ember)
-  - [Integrating with `qunit-dom` and `@ember/test-helpers`](#integrating-with-qunit-dom-and-embertest-helpers)
-  - [`fractal-page-object` vs. `ember-cli-page-object`](#fractal-page-object-vs-ember-cli-page-object)
-    - [Query-only](#query-only)
-    - [Native syntax](#native-syntax)
-    - [Lightweight (no jQuery)](#lightweight-no-jquery)
-- [Why `fractal`?](#why-fractal)
-
 ## Why page objects?
 
 As you can see from the above example, they allow you to centralize your tests' knowledge of how your pages are laid out. This provides a number of benefits:
