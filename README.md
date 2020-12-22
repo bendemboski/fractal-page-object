@@ -6,6 +6,7 @@ A lightweight page object implementation with a focus on simplicity and extensib
 <!-- omit in toc -->
 ## Table of Contents
 
+- [Examples](#examples)
 - [Why page objects?](#why-page-objects)
 - [Usage](#usage)
   - [Mental Model](#mental-model)
@@ -22,6 +23,10 @@ A lightweight page object implementation with a focus on simplicity and extensib
     - [Native syntax](#native-syntax)
     - [Lightweight (no jQuery)](#lightweight-no-jquery)
 - [Why `fractal`?](#why-fractal)
+
+## Examples
+
+Using [qunit](https://qunitjs.com/):
 
 ```javascript
 import { module, test } from 'qunit';
@@ -66,7 +71,7 @@ module('album list page', function() {
 });
 ```
 
-or in Ember:
+Or using [@ember/test-helpers](https://github.com/emberjs/ember-test-helpers) and [qunit-dom](https://github.com/simplabs/qunit-dom):
 
 ```javascript
 import { module, test } from 'qunit';
@@ -101,6 +106,7 @@ module('album list page', function() {
 <!-- omit in toc -->
 ## Table of Contents
 
+- [Examples](#examples)
 - [Why page objects?](#why-page-objects)
 - [Usage](#usage)
   - [Mental Model](#mental-model)
