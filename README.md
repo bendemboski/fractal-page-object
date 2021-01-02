@@ -366,7 +366,7 @@ page.listItems[0].title;
 page.listItems.objectAt(0).title;
 ```
 
-and uses ES6 classes as the basis of its declarative API, which enables modern features like gettes, decorators, field initializers, etc.
+and uses ES6 classes as the basis of its declarative API, which enables modern features like getters, decorators, field initializers, etc.
 
 #### Lightweight (no jQuery)
 
