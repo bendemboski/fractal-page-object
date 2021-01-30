@@ -1,227 +1,389 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, beforeEach, test, expect } from '@jest/globals';
 import DOMQuery from '../-private/dom-query';
 
 describe('DOMQuery', () => {
-  describe('query() and queryAll()', () => {
-    test('no root and no selector', () => {
-      let query = new DOMQuery(null, '');
-      expect(query.query()).toEqual(null);
-      expect(query.queryAll()).toEqual([]);
-    });
+  let root = document.querySelector('div');
+  let span1: Element;
+  let span2: Element;
+  let strong1: Element;
+  let strong2: Element;
+  let strong3: Element;
+  let strong4: Element;
+  let rootQuery: DOMQuery;
 
-    test('no root and selector', () => {
-      document.body.innerHTML = '<div></div>';
+  beforeEach(() => {
+    document.body.innerHTML = `
+      <div>
+        <span>
+          <strong></strong>
+          <strong></strong>
+        </span>
+        <span>
+          <strong></strong>
+        </span>
+        <strong></strong>
+      </div>
+      <span>
+        <strong></strong>
+      </span>
+      <span>
+        <strong></strong>
+      </span>
+      <strong></strong>
+    `;
 
-      let query = new DOMQuery(null, 'div');
-      expect(query.query()).toEqual(null);
-      expect(query.queryAll()).toEqual([]);
-    });
+    root = document.querySelector('div');
+    [span1, span2, strong4] = Array.from(root!.children);
+    [strong1, strong2] = Array.from(span1!.children);
+    [strong3] = Array.from(span2!.children);
 
-    test('root and no selector', () => {
-      document.body.innerHTML = `
-        <div>
-          <span></span>
-        </div>
-      `;
-      let div = document.body.children[0];
-
-      let query = new DOMQuery(div, '');
-      expect(query.query()).toEqual(div);
-      expect(query.queryAll()).toEqual([div]);
-    });
-
-    test('root and selector', () => {
-      document.body.innerHTML = `
-        <div>
-          <span></span>
-          <span></span>
-        </div>
-      `;
-      let div = document.body.children[0];
-      let [span1, span2] = Array.from(div!.children);
-
-      let query = new DOMQuery(div, 'span');
-      expect(query.query()).toEqual(span1);
-      expect(query.queryAll()).toEqual([span1, span2]);
-    });
-
-    test('do not match outside the root', () => {
-      document.body.innerHTML = `
-        <span></span>
-        <div>
-          <span></span>
-          <span></span>
-        </div>
-        <span></span>
-      `;
-      let div = document.body.children[1];
-      let [span1, span2] = Array.from(div!.children);
-
-      let query = new DOMQuery(div, 'span');
-      expect(query.query()).toEqual(span1);
-      expect(query.queryAll()).toEqual([span1, span2]);
-    });
+    rootQuery = new DOMQuery(root);
   });
 
-  describe('createChild()', () => {
-    describe('without index', () => {
-      test('no root and no selector', () => {
-        document.body.innerHTML = '<div></div>';
+  test('never matches with a null root', () => {
+    let query = new DOMQuery(null);
+    expect(query.query()).toEqual(null);
+    expect(query.queryAll()).toEqual([]);
 
-        let query = new DOMQuery(null, '').createChild('div', null);
-        expect(query.root).toEqual(null);
-        expect(query.selector).toEqual('div');
-        expect(query.query()).toEqual(null);
-        expect(query.queryAll()).toEqual([]);
-      });
+    let child = query.createChild('div', null);
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
 
-      test('no root and selector', () => {
-        document.body.innerHTML = `
-          <div>
-            <span></span>
-          </div>
-        `;
+    child = query.createChild('span', null);
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
 
-        let query = new DOMQuery(null, 'div').createChild('span', null);
-        expect(query.root).toEqual(null);
-        expect(query.selector).toEqual('div span');
-        expect(query.query()).toEqual(null);
-        expect(query.queryAll()).toEqual([]);
-      });
+    child = query.createChild('span', 0);
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
 
-      test('root and no selector', () => {
-        document.body.innerHTML = `
-          <div>
-            <span></span>
-            <span></span>
-          </div>
-        `;
-        let div = document.body.children[0];
-        let [span1, span2] = Array.from(div.children);
+  test('it only matches in the root', () => {
+    expect(rootQuery.createChild('span', null).queryAll()).toEqual([
+      span1,
+      span2,
+    ]);
+    expect(rootQuery.createChild('span', 0).queryAll()).toEqual([span1]);
+    expect(rootQuery.createChild('span', 1).queryAll()).toEqual([span2]);
+    expect(rootQuery.createChild('span', 2).queryAll()).toEqual([]);
 
-        let query = new DOMQuery(div, '').createChild('span', null);
-        expect(query.root).toEqual(div);
-        expect(query.selector).toEqual('span');
-        expect(query.query()).toEqual(span1);
-        expect(query.queryAll()).toEqual([span1, span2]);
-      });
+    expect(rootQuery.createChild('strong', null).queryAll()).toEqual([
+      strong1,
+      strong2,
+      strong3,
+      strong4,
+    ]);
+    expect(rootQuery.createChild('strong', 0).queryAll()).toEqual([strong1]);
+    expect(rootQuery.createChild('strong', 1).queryAll()).toEqual([strong2]);
+    expect(rootQuery.createChild('strong', 2).queryAll()).toEqual([strong3]);
+    expect(rootQuery.createChild('strong', 3).queryAll()).toEqual([strong4]);
+    expect(rootQuery.createChild('strong', 4).queryAll()).toEqual([]);
 
-      test('root and selector', () => {
-        document.body.innerHTML = `
-          <div>
-            <span>
-              <p></p>
-            </span>
-            <span>
-              <p></p>
-            </span>
-          </div>
-        `;
-        let div = document.body.children[0];
-        let [span1, span2] = Array.from(div.children);
-        let p1 = span1.children[0];
-        let p2 = span2.children[0];
+    expect(
+      rootQuery.createChild('span', null).createChild('strong', null).queryAll()
+    ).toEqual([strong1, strong2, strong3]);
+    expect(
+      rootQuery.createChild('span', null).createChild('strong', 0).queryAll()
+    ).toEqual([strong1]);
+    expect(
+      rootQuery.createChild('span', null).createChild('strong', 1).queryAll()
+    ).toEqual([strong2]);
+    expect(
+      rootQuery.createChild('span', null).createChild('strong', 2).queryAll()
+    ).toEqual([strong3]);
+    expect(
+      rootQuery.createChild('span', null).createChild('strong', 3).queryAll()
+    ).toEqual([]);
 
-        let query = new DOMQuery(div, 'span').createChild('p', null);
-        expect(query.root).toEqual(div);
-        expect(query.selector).toEqual('span p');
-        expect(query.query()).toEqual(p1);
-        expect(query.queryAll()).toEqual([p1, p2]);
-      });
-    });
+    expect(
+      rootQuery.createChild('span', 0).createChild('strong', null).queryAll()
+    ).toEqual([strong1, strong2]);
+    expect(
+      rootQuery.createChild('span', 1).createChild('strong', null).queryAll()
+    ).toEqual([strong3]);
+    expect(
+      rootQuery.createChild('span', 2).createChild('strong', null).queryAll()
+    ).toEqual([]);
+  });
 
-    describe('with index', () => {
-      test('no root and no selector', () => {
-        document.body.innerHTML = '<div></div>';
+  test('root', () => {
+    expect(rootQuery.selectorArray.toString()).toEqual('');
+    expect(rootQuery.query()).toEqual(root);
+    expect(rootQuery.queryAll()).toEqual([root]);
+  });
 
-        let query = new DOMQuery(null, '').createChild('div', 0);
-        expect(query.root).toEqual(null);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(null);
-        expect(query.queryAll()).toEqual([]);
-      });
+  test('root + index', () => {
+    // 0 matches root
+    let child = rootQuery.createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('[0]');
+    expect(child.query()).toEqual(root);
+    expect(child.queryAll()).toEqual([root]);
 
-      test('no root and selector', () => {
-        document.body.innerHTML = `
-          <div>
-            <span></span>
-          </div>
-        `;
+    // non-0 doesn't match
+    child = rootQuery.createChild('', 1);
+    expect(child.selectorArray.toString()).toEqual('[1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
 
-        let query = new DOMQuery(null, 'div').createChild('span', 0);
-        expect(query.root).toEqual(null);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(null);
-        expect(query.queryAll()).toEqual([]);
-      });
+    child = rootQuery.createChild('', 2);
+    expect(child.selectorArray.toString()).toEqual('[2]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
 
-      test('root and no selector', () => {
-        document.body.innerHTML = `
-          <div>
-            <span></span>
-            <span></span>
-          </div>
-        `;
-        let div = document.body.children[0];
-        let [span1, span2] = Array.from(div.children);
+  test('root + selector', () => {
+    // selector matches
+    let child = rootQuery.createChild('span', null);
+    expect(child.selectorArray.toString()).toEqual('span');
+    expect(child.query()).toEqual(span1);
+    expect(child.queryAll()).toEqual([span1, span2]);
 
-        let parent = new DOMQuery(div, '');
+    // selector doesn't match
+    child = rootQuery.createChild('section', null);
+    expect(child.selectorArray.toString()).toEqual('section');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
 
-        let query = parent.createChild('span', 0);
-        expect(query.root).toEqual(span1);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(span1);
-        expect(query.queryAll()).toEqual([span1]);
+  test('root + selector + index', () => {
+    // selector & index match
+    let child = rootQuery.createChild('span', 0);
+    expect(child.selectorArray.toString()).toEqual('span[0]');
+    expect(child.query()).toEqual(span1);
+    expect(child.queryAll()).toEqual([span1]);
 
-        query = parent.createChild('span', 1);
-        expect(query.root).toEqual(span2);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(span2);
-        expect(query.queryAll()).toEqual([span2]);
+    child = rootQuery.createChild('span', 1);
+    expect(child.selectorArray.toString()).toEqual('span[1]');
+    expect(child.query()).toEqual(span2);
+    expect(child.queryAll()).toEqual([span2]);
 
-        query = parent.createChild('span', 2);
-        expect(query.root).toEqual(null);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(null);
-        expect(query.queryAll()).toEqual([]);
-      });
+    // index does not match
+    child = rootQuery.createChild('span', 2);
+    expect(child.selectorArray.toString()).toEqual('span[2]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
 
-      test('root and selector', () => {
-        document.body.innerHTML = `
-          <div>
-            <span>
-              <p></p>
-            </span>
-            <span>
-              <p></p>
-            </span>
-          </div>
-        `;
-        let div = document.body.children[0];
-        let [span1, span2] = Array.from(div.children);
-        let p1 = span1.children[0];
-        let p2 = span2.children[0];
+    // selector does not match
+    child = rootQuery.createChild('section', 0);
+    expect(child.selectorArray.toString()).toEqual('section[0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
 
-        let parent = new DOMQuery(div, 'span');
+  test('root + selector + selector', () => {
+    // both selectors match
+    let child = rootQuery.createChild('span', null).createChild('strong', null);
+    expect(child.selectorArray.toString()).toEqual('span strong');
+    expect(child.query()).toEqual(strong1);
+    expect(child.queryAll()).toEqual([strong1, strong2, strong3]);
 
-        let query = parent.createChild('p', 0);
-        expect(query.root).toEqual(p1);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(p1);
-        expect(query.queryAll()).toEqual([p1]);
+    // child selector doesn't match
+    child = rootQuery.createChild('span', null).createChild('section', null);
+    expect(child.selectorArray.toString()).toEqual('span section');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
 
-        query = parent.createChild('p', 1);
-        expect(query.root).toEqual(p2);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(p2);
-        expect(query.queryAll()).toEqual([p2]);
+    // parent selector doesn't match
+    child = rootQuery.createChild('section', null).createChild('strong', null);
+    expect(child.selectorArray.toString()).toEqual('section strong');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
 
-        query = parent.createChild('p', 2);
-        expect(query.root).toEqual(null);
-        expect(query.selector).toEqual('');
-        expect(query.query()).toEqual(null);
-        expect(query.queryAll()).toEqual([]);
-      });
-    });
+  test('root + selector + index + selector', () => {
+    // matches
+    let child = rootQuery.createChild('span', 0).createChild('strong', null);
+    expect(child.selectorArray.toString()).toEqual('span[0] strong');
+    expect(child.query()).toEqual(strong1);
+    expect(child.queryAll()).toEqual([strong1, strong2]);
+
+    child = rootQuery.createChild('span', 1).createChild('strong', null);
+    expect(child.selectorArray.toString()).toEqual('span[1] strong');
+    expect(child.query()).toEqual(strong3);
+    expect(child.queryAll()).toEqual([strong3]);
+
+    child = rootQuery.createChild('span', 2).createChild('strong', null);
+    expect(child.selectorArray.toString()).toEqual('span[2] strong');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // child selector doesn't match
+    child = rootQuery.createChild('span', 0).createChild('section', null);
+    expect(child.selectorArray.toString()).toEqual('span[0] section');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent index doesn't match
+    child = rootQuery.createChild('span', 2).createChild('section', null);
+    expect(child.selectorArray.toString()).toEqual('span[2] section');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent selector doesn't match
+    child = rootQuery.createChild('section', 0).createChild('strong', null);
+    expect(child.selectorArray.toString()).toEqual('section[0] strong');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
+
+  test('root + selector + selector + index', () => {
+    // matches
+    let child = rootQuery.createChild('span', null).createChild('strong', 0);
+    expect(child.selectorArray.toString()).toEqual('span strong[0]');
+    expect(child.query()).toEqual(strong1);
+    expect(child.queryAll()).toEqual([strong1]);
+
+    child = rootQuery.createChild('span', null).createChild('strong', 1);
+    expect(child.selectorArray.toString()).toEqual('span strong[1]');
+    expect(child.query()).toEqual(strong2);
+    expect(child.queryAll()).toEqual([strong2]);
+
+    child = rootQuery.createChild('span', null).createChild('strong', 2);
+    expect(child.selectorArray.toString()).toEqual('span strong[2]');
+    expect(child.query()).toEqual(strong3);
+    expect(child.queryAll()).toEqual([strong3]);
+
+    // child index doesn't match
+    child = rootQuery.createChild('span', null).createChild('strong', 3);
+    expect(child.selectorArray.toString()).toEqual('span strong[3]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // child selector doesn't match
+    child = rootQuery.createChild('span', null).createChild('section', 0);
+    expect(child.selectorArray.toString()).toEqual('span section[0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent selector doesn't match
+    child = rootQuery.createChild('section', null).createChild('strong', 0);
+    expect(child.selectorArray.toString()).toEqual('section strong[0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
+
+  test('root + selector + index + selector + index', () => {
+    // matches
+    let child = rootQuery.createChild('span', 0).createChild('strong', 0);
+    expect(child.selectorArray.toString()).toEqual('span[0] strong[0]');
+    expect(child.query()).toEqual(strong1);
+    expect(child.queryAll()).toEqual([strong1]);
+
+    child = rootQuery.createChild('span', 0).createChild('strong', 1);
+    expect(child.selectorArray.toString()).toEqual('span[0] strong[1]');
+    expect(child.query()).toEqual(strong2);
+    expect(child.queryAll()).toEqual([strong2]);
+
+    child = rootQuery.createChild('span', 1).createChild('strong', 0);
+    expect(child.selectorArray.toString()).toEqual('span[1] strong[0]');
+    expect(child.query()).toEqual(strong3);
+    expect(child.queryAll()).toEqual([strong3]);
+
+    // child index doesn't match
+    child = rootQuery.createChild('span', 0).createChild('strong', 2);
+    expect(child.selectorArray.toString()).toEqual('span[0] strong[2]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    child = rootQuery.createChild('span', 1).createChild('strong', 1);
+    expect(child.selectorArray.toString()).toEqual('span[1] strong[1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // child selector doesn't match
+    child = rootQuery.createChild('span', 0).createChild('section', 0);
+    expect(child.selectorArray.toString()).toEqual('span[0] section[0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent index doesn't match
+    child = rootQuery.createChild('span', 2).createChild('strong', 0);
+    expect(child.selectorArray.toString()).toEqual('span[2] strong[0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent selector doesn't match
+    child = rootQuery.createChild('section', 0).createChild('strong', 0);
+    expect(child.selectorArray.toString()).toEqual('section[0] strong[0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
+
+  test('root + index + index', () => {
+    // matches
+    let child = rootQuery.createChild('', 0).createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('[0][0]');
+    expect(child.query()).toEqual(root);
+    expect(child.queryAll()).toEqual([root]);
+
+    // child index is non-zero
+    child = rootQuery.createChild('', 0).createChild('', 1);
+    expect(child.selectorArray.toString()).toEqual('[0][1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent index is non-zero
+    child = rootQuery.createChild('', 1).createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('[1][0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // both are non-zero
+    child = rootQuery.createChild('', 1).createChild('', 1);
+    expect(child.selectorArray.toString()).toEqual('[1][1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+  });
+
+  test('root + selector + index + index', () => {
+    // matches
+    let child = rootQuery.createChild('span', 0).createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('span[0][0]');
+    expect(child.query()).toEqual(span1);
+    expect(child.queryAll()).toEqual([span1]);
+
+    child = rootQuery.createChild('span', 1).createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('span[1][0]');
+    expect(child.query()).toEqual(span2);
+    expect(child.queryAll()).toEqual([span2]);
+
+    // child index is non-zero
+    child = rootQuery.createChild('span', 0).createChild('', 1);
+    expect(child.selectorArray.toString()).toEqual('span[0][1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent index doesn't match
+    child = rootQuery.createChild('span', 2).createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('span[2][0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // parent index doesn't match and child index is non-zero
+    child = rootQuery.createChild('span', 2).createChild('', 1);
+    expect(child.selectorArray.toString()).toEqual('span[2][1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    // selector doesn't match
+    child = rootQuery.createChild('section', 0).createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('section[0][0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    child = rootQuery.createChild('section', 0).createChild('', 1);
+    expect(child.selectorArray.toString()).toEqual('section[0][1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    child = rootQuery.createChild('section', 1).createChild('', 0);
+    expect(child.selectorArray.toString()).toEqual('section[1][0]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
+
+    child = rootQuery.createChild('section', 1).createChild('', 1);
+    expect(child.selectorArray.toString()).toEqual('section[1][1]');
+    expect(child.query()).toEqual(null);
+    expect(child.queryAll()).toEqual([]);
   });
 });

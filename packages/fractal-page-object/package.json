@@ -25,7 +25,8 @@
     "prepublish": "yarn build",
     "release": "dotenv release-it",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand"
   },
   "jest": {
     "preset": "ts-jest",
