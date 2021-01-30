@@ -25,13 +25,6 @@ module.exports = {
         'no-unused-vars': 'off',
       },
     },
-    // tests
-    {
-      files: ['**/__tests__/**/*./ts'],
-      env: {
-        jest: true,
-      },
-    },
     // node files
     {
       files: ['.eslintrc.js'],
