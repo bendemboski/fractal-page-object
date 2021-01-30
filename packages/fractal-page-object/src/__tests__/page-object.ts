@@ -1,4 +1,4 @@
-import { describe, afterEach, test } from '@jest/globals';
+import { describe, afterEach, test, expect } from '@jest/globals';
 import { PageObject, setRoot } from '..';
 import { resetRoot } from '../-private/root';
 import { DOM_QUERY, CLONE_WITH_INDEX } from '../-private/types';
