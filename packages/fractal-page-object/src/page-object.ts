@@ -121,9 +121,9 @@ export default class PageObject extends ArrayStub {
     if (this.parent instanceof PageObject) {
       parentQuery = this.parent[DOM_QUERY];
     } else if (this.parent instanceof Element) {
-      parentQuery = new DOMQuery(this.parent, '');
+      parentQuery = new DOMQuery(this.parent);
     } else {
-      parentQuery = new DOMQuery(getRoot(), '');
+      parentQuery = new DOMQuery(getRoot());
     }
     return parentQuery.createChild(this.selector, this.index);
   }
@@ -141,37 +141,8 @@ export default class PageObject extends ArrayStub {
    * @private
    */
   [CLONE_WITH_INDEX](index: number): PageObject {
-    // We have to be careful about how we treat the index. If this page object
-    // already has an index, then it only matches 0 elements or 1 element, so
-    // cloning it with a new index can only possibly match an element if that
-    // new index is 0. For example, suppose `pageObject` matched two DOM
-    // elements. Then `pageObject[0]` would match only the first DOM element,
-    // and `pageObject[0][0]` would match that same DOM element, while
-    // `pageObject[0][1]` wouldn't match any DOM element. So we need to factor
-    // in this page object's index when determining what index in the full query
-    // result set the passed-in index is actually referring to.
-    let resolvedIndex;
-    if (this.index === null) {
-      // No index, so the index stays as provided
-      resolvedIndex = index;
-    } else {
-      // We have an index. So if the provided index is 0, the clone should match
-      // the same element as this page object, and should get the same index. If
-      // the provided index is anything else, it can never match any DOM elements,
-      // so we'll give the clone an index of -1 so it never matches.
-      if (index === 0) {
-        resolvedIndex = this.index;
-      } else {
-        resolvedIndex = -1;
-      }
-    }
     let Class = this.constructor as PageObjectClass<PageObject>;
-    return new Class(
-      this.selector,
-      this.parent,
-      resolvedIndex,
-      this.rootElement
-    );
+    return new Class('', this, index, this.rootElement);
   }
 
   /**

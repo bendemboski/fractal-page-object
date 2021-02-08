@@ -129,7 +129,8 @@ export default function globalSelector<T extends PageObject>(
  * page.listItems[0]; // testContainer.querySelectorAll('.listItems')[0]
  * page.listItems[0].popover; // document.body.querySelectorAll('.popover')
  * page.listItems[0].popover.icon; // document.body.querySelectorAll('.popover .icon')
- */ export default function globalSelector<T extends PageObject>(
+ */
+export default function globalSelector<T extends PageObject>(
   ...args: Arguments<T> | ArgumentsWithRoot<T>
 ): T {
   let selector = args[0];
