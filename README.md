@@ -26,10 +26,9 @@ A lightweight page object implementation with a focus on simplicity and extensib
 
 ## Examples
 
-Using [qunit](https://qunitjs.com/):
+Define page object:
 
 ```javascript
-import { module, test } from 'qunit';
 import { PageObject, selector } from 'fractal-page-object';
 
 class AlbumListPage extends PageObject {
@@ -44,6 +43,14 @@ class AlbumListPage extends PageObject {
   });
 }
 let page = new AlbumListPage();
+```
+
+Using [qunit](https://qunitjs.com/):
+
+```javascript
+import { module, test } from 'qunit';
+
+// Put your page object here
 
 module('album list page', function() {
   test('it renders albums and tracks', function(assert) {
@@ -76,6 +83,8 @@ Or using [@ember/test-helpers](https://github.com/emberjs/ember-test-helpers) an
 ```javascript
 import { module, test } from 'qunit';
 import { visit, click } from '@ember/test-helpers';
+
+// Put your page object here
 
 module('album list page', function() {
   test('it renders albums and tracks (using Ember & qunit-dom)', function(assert) {
