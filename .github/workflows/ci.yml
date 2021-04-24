@@ -36,4 +36,20 @@ jobs:
       - name: Test script tag app
         run: yarn test
         working-directory: packages/script-tag-app
+  embroider:
+    strategy:
+      matrix:
+        scenario: ['safe', 'optimized']
 
+    name: Embroider ${{ matrix.scenario }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+        working-directory: packages/fractal-page-object
+      - run: yarn ember try:one embroider-${{ matrix.scenario }} --skip-cleanup
+        working-directory: packages/ember-app
