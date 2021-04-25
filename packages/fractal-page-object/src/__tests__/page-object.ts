@@ -381,6 +381,10 @@ describe('PageObject', () => {
       );
       expect(empty.find((o) => o.element.id === 'span2')).toEqual(undefined);
       expect(
+        page.filter((o) => o.element.id === 'span2').map((o) => o.element)
+      ).toEqual([span2]);
+      expect(empty.filter((o) => o.element.id === 'span2')).toEqual([]);
+      expect(
         page
           .sort(
             (a, b) =>
@@ -599,6 +603,17 @@ describe('PageObject', () => {
       expect(page[3].customProp).toEqual('val');
       expect(page.map((o) => o.constructor)).toEqual([Page, Page]);
       expect(page.map((o) => o.customProp)).toEqual(['val', 'val']);
+    });
+
+    test('overriding members of the array API works', () => {
+      class Page extends PageObject {
+        // @ts-expect-error
+        filter() {
+          return 'byName';
+        }
+      }
+      let page = new Page('div');
+      expect(page.filter()).toEqual('byName');
     });
   });
 
