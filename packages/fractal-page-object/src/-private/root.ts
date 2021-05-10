@@ -1,11 +1,16 @@
 let root: Element | undefined;
 
 function getEmberTestRoot() {
-  try {
-    return window.require('@ember/test-helpers').getRootElement();
-  } catch (e) {
-    return null;
-  }
+  // Ideally we would detect if we are running in Ember and if so use
+  // `@ember/test-helpers` to get the test root. But there's no straightforward
+  // way to do that when building a static package under embroider. Perhaps we
+  // could make this library also an Ember addon, and then play some build-time
+  // tricks to get us the information we need here, but for now the testing root
+  // is always `#ember-testing` unless the user is doing something pretty funky,
+  // and if they are, they can always use `setRoot()` to explicitly configure
+  // their testing root. So let's do the embroider-friendly, zero-config, easy
+  // thing, and just look for an `#ember-testing` element.
+  return document.querySelector('#ember-testing');
 }
 
 /**
