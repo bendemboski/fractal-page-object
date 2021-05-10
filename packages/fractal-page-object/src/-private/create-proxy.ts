@@ -13,6 +13,13 @@ import { CLONE_WITH_INDEX } from './types';
 export default function createProxy(pageObject: PageObject) {
   return new Proxy(pageObject, {
     get(pageObject, prop: string, receiver) {
+      if (Reflect.has(pageObject, prop)) {
+        // The PageObject (or subclass) implements this property, e.g. `element`
+        // or `elements` or a property/method on whatever subclass of PageObject
+        // `pageObject` is. So, get the value with factory support.
+        return getWithFactorySupport(pageObject, prop, receiver);
+      }
+
       let index = convertToInt(prop);
       if (index !== null) {
         // `page.foo[1]` -- clone the page object with an index. We special case
@@ -21,7 +28,9 @@ export default function createProxy(pageObject: PageObject) {
         // matching element in the DOM and still get a valid page object (just
         // without an element), e.g. `assert.notOk(page.foo[3].element)`
         return pageObject[CLONE_WITH_INDEX](index);
-      } else if (Reflect.has([], prop) && prop !== 'constructor') {
+      }
+
+      if (Reflect.has([], prop)) {
         // Array API method/property, so create an array with page objects with
         // indices wrapping all of our matching elements and apply the
         // method/property to it. It should be possible to populate PageObject
@@ -39,12 +48,6 @@ export default function createProxy(pageObject: PageObject) {
         } else {
           return value;
         }
-      } else {
-        // Not the Array API, so either something in our base PageObject
-        // implementation, e.g. `element` or `elements`, or a property/method on
-        // whatever subclass of PageObject `pageObject` is. So, get the value
-        // with factory support
-        return getWithFactorySupport(pageObject, prop, receiver);
       }
     },
   });

@@ -36,191 +36,111 @@ export default class ArrayStub {
   /**
    * @private
    */
-  readonly length: number = 0;
+  declare readonly length: number;
   /**
    * @private
    */
-  pop(): WithElement<this> | undefined {
-    return undefined;
-  }
+  declare pop: () => WithElement<this> | undefined;
   /**
    * @private
    */
-  concat(...items: ConcatArray<WithElement<this>>[]): WithElement<this>[];
+  declare concat: (
+    ...items:
+      | ConcatArray<WithElement<this>>[]
+      | (WithElement<this> | ConcatArray<WithElement<this>>)[]
+      | (WithElement<this> | ConcatArray<WithElement<this>>)[]
+  ) => WithElement<this>[];
   /**
    * @private
    */
-  concat(
-    ...items: (WithElement<this> | ConcatArray<WithElement<this>>)[]
-  ): WithElement<this>[];
+  declare reverse: () => WithElement<this>[];
   /**
    * @private
    */
-  concat(
-    ..._items: (WithElement<this> | ConcatArray<WithElement<this>>)[]
-  ): WithElement<this>[] {
-    return [];
-  }
+  declare shift: () => WithElement<this> | undefined;
   /**
    * @private
    */
-  reverse(): WithElement<this>[] {
-    return [];
-  }
+  declare slice: (_start?: number, _end?: number) => WithElement<this>[];
   /**
    * @private
    */
-  shift(): WithElement<this> | undefined {
-    return undefined;
-  }
-  /**
-   * @private
-   */
-  slice(_start?: number, _end?: number): WithElement<this>[] {
-    return [];
-  }
-  /**
-   * @private
-   */
-  sort(
+  declare sort: (
     _compareFn?: (a: WithElement<this>, b: WithElement<this>) => number
-  ): this[] {
-    return [];
-  }
+  ) => this[];
   /**
    * @private
    */
-  indexOf(_searchElement: WithElement<this>, _fromIndex?: number): number {
-    return -1;
-  }
+  declare indexOf: (
+    _searchElement: WithElement<this>,
+    _fromIndex?: number
+  ) => number;
   /**
    * @private
    */
-  lastIndexOf(_searchElement: WithElement<this>, _fromIndex?: number): number {
-    return -1;
-  }
+  declare lastIndexOf: (
+    _searchElement: WithElement<this>,
+    _fromIndex?: number
+  ) => number;
   /**
    * @private
    */
-  every<S extends WithElement<this>>(
-    predicate: (
-      value: WithElement<this>,
-      index: number,
-      array: WithElement<this>[]
-    ) => value is S,
-    thisArg?: any
-  ): this is S[];
-  /**
-   * @private
-   */
-  every(
+  declare every: (
     predicate: (
       value: WithElement<this>,
       index: number,
       array: WithElement<this>[]
     ) => unknown,
     _thisArg?: any
-  ): boolean;
+  ) => boolean;
   /**
    * @private
    */
-  every(
-    predicate: (
-      value: WithElement<this>,
-      index: number,
-      array: WithElement<this>[]
-    ) => unknown,
-    _thisArg?: any
-  ): boolean;
-  /**
-   * @private
-   */
-  every(
+  declare some: (
     _predicate: (
       value: WithElement<this>,
       index: number,
       array: WithElement<this>[]
     ) => unknown,
     _thisArg?: any
-  ): boolean {
-    return false;
-  }
+  ) => boolean;
   /**
    * @private
    */
-  some(
-    _predicate: (
-      value: WithElement<this>,
-      index: number,
-      array: WithElement<this>[]
-    ) => unknown,
-    _thisArg?: any
-  ): boolean {
-    return false;
-  }
-  /**
-   * @private
-   */
-  forEach(
+  declare forEach: (
     _callbackfn: (
       value: WithElement<this>,
       index: number,
       array: WithElement<this>[]
     ) => void,
     _thisArg?: any
-  ): void {}
+  ) => void;
   /**
    * @private
    */
-  map<U>(
+  declare map: <U>(
     _callbackfn: (
       value: WithElement<this>,
       index: number,
       array: WithElement<this>[]
     ) => U,
     _thisArg?: any
-  ): U[] {
-    return [];
-  }
+  ) => U[];
   /**
    * @private
    */
-  filter<S extends WithElement<this>>(
-    predicate: (
-      value: WithElement<this>,
-      index: number,
-      array: WithElement<this>[]
-    ) => value is S,
-    thisArg?: any
-  ): S[];
-  /**
-   * @private
-   */
-  filter(
+  declare filter: (
     predicate: (
       value: WithElement<this>,
       index: number,
       array: WithElement<this>[]
     ) => unknown,
     thisArg?: any
-  ): WithElement<this>[];
+  ) => WithElement<this>[];
   /**
    * @private
    */
-  filter(
-    _predicate: (
-      value: WithElement<this>,
-      index: number,
-      array: WithElement<this>[]
-    ) => unknown,
-    _thisArg?: any
-  ): WithElement<this>[] {
-    return [];
-  }
-  /**
-   * @private
-   */
-  reduce<U>(
+  declare reduce: <U>(
     _callbackfn: (
       previousValue: U,
       currentValue: WithElement<this>,
@@ -228,13 +148,11 @@ export default class ArrayStub {
       array: WithElement<this>[]
     ) => U,
     initialValue: U
-  ): U {
-    return initialValue;
-  }
+  ) => U;
   /**
    * @private
    */
-  reduceRight<U>(
+  declare reduceRight: <U>(
     _callbackfn: (
       previousValue: U,
       currentValue: WithElement<this>,
@@ -242,88 +160,52 @@ export default class ArrayStub {
       array: WithElement<this>[]
     ) => U,
     initialValue: U
-  ): U {
-    return initialValue;
-  }
+  ) => U;
   /**
    * @private
    */
-  find<S extends WithElement<this>>(
-    predicate: (
-      this: void,
-      value: WithElement<this>,
-      index: number,
-      obj: WithElement<this>[]
-    ) => value is S,
-    thisArg?: any
-  ): S | undefined;
-  /**
-   * @private
-   */
-  find(
+  declare find: (
     predicate: (
       value: WithElement<this>,
       index: number,
       obj: WithElement<this>[]
     ) => unknown,
     thisArg?: any
-  ): WithElement<this> | undefined;
+  ) => WithElement<this> | undefined;
   /**
    * @private
    */
-  find(
+  declare findIndex: (
     _predicate: (
       value: WithElement<this>,
       index: number,
       obj: WithElement<this>[]
     ) => unknown,
     _thisArg?: any
-  ): WithElement<this> | undefined {
-    return undefined;
-  }
+  ) => number;
   /**
    * @private
    */
-  findIndex(
-    _predicate: (
-      value: WithElement<this>,
-      index: number,
-      obj: WithElement<this>[]
-    ) => unknown,
-    _thisArg?: any
-  ): number {
-    return -1;
-  }
+  declare includes: (
+    _searchElement: WithElement<this>,
+    _fromIndex?: number
+  ) => boolean;
   /**
    * @private
    */
-  includes(_searchElement: WithElement<this>, _fromIndex?: number): boolean {
-    return false;
-  }
+  declare [Symbol.iterator]: () => IterableIterator<WithElement<this>>;
   /**
    * @private
    */
-  [Symbol.iterator](): IterableIterator<WithElement<this>> {
-    return {} as IterableIterator<WithElement<this>>;
-  }
+  declare entries: () => IterableIterator<[number, WithElement<this>]>;
   /**
    * @private
    */
-  entries(): IterableIterator<[number, WithElement<this>]> {
-    return {} as IterableIterator<[number, WithElement<this>]>;
-  }
+  declare keys: () => IterableIterator<number>;
   /**
    * @private
    */
-  keys(): IterableIterator<number> {
-    return {} as IterableIterator<number>;
-  }
-  /**
-   * @private
-   */
-  values(): IterableIterator<WithElement<this>> {
-    return {} as IterableIterator<WithElement<this>>;
-  }
+  declare values: () => IterableIterator<WithElement<this>>;
 
   /**
    * @private
