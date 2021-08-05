@@ -15,7 +15,6 @@ A lightweight page object implementation with a focus on simplicity and extensib
   - [Extending](#extending)
   - [Re-use](#re-use)
   - [API](#api)
-  - [Prettier considerations](#prettier-considerations)
 - [In Ember](#in-ember)
   - [Integrating with `qunit-dom` and `@ember/test-helpers`](#integrating-with-qunit-dom-and-embertest-helpers)
   - [`fractal-page-object` vs. `ember-cli-page-object`](#fractal-page-object-vs-ember-cli-page-object)
@@ -300,44 +299,6 @@ class CompletePurchasePage extends PageObject {
 ### API
 
 See [API.md](packages/fractal-page-object/API.md)
-
-### Prettier considerations
-
-When defining inline page object classes, such as this:
-
-```javascript
-class Page extends PageObject {
-  list = selector('ul', class extends PageObject {
-    items = selector('li');
-  });
-}
-```
-
-prettier will format it like this:
-
-```javascript
-class Page extends PageObject {
-  list = selector(
-    'ul',
-    class extends PageObject {
-      items = selector('li');
-    }
-  );
-}
-```
-
-I think this format, while perhaps prettier in general, is not as nice for cleanly expressing the nested DOM structure of page objects, so I typically:
-
-```javascript
-// prettier-ignore
-class Page extends PageObject {
-  list = selector('ul', class extends PageObject {
-    items = selector('li');
-  });
-}
-```
-
-If possible, I'd love to write a prettier plugin that disables putting classes on their own lines inside page object selectors, so if anyone reading this has experience with `prettier` plugins, and can tell me if this is feasible/point the way/actually build it I'd love to hear from you!
 
 ## In Ember
 
