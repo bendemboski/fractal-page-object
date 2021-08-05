@@ -1,3 +1,25 @@
+## v0.2.1 (2021-08-05)
+
+#### :rocket: Enhancement
+* `ember-app`, `fractal-page-object`
+  * [#18](https://github.com/bendemboski/fractal-page-object/pull/18) Export PageObjectConstructor type ([@bendemboski](https://github.com/bendemboski))
+
+#### :bug: Bug Fix
+* `fractal-page-object`
+  * [#19](https://github.com/bendemboski/fractal-page-object/pull/19) Improve selector()/globalSelector() error checking ([@bendemboski](https://github.com/bendemboski))
+
+#### :memo: Documentation
+* `fractal-page-object`
+  * [#21](https://github.com/bendemboski/fractal-page-object/pull/21) Misc. documentation updates ([@bendemboski](https://github.com/bendemboski))
+  * [#20](https://github.com/bendemboski/fractal-page-object/pull/20) Stop fighting prettier ([@bendemboski](https://github.com/bendemboski))
+
+#### :house: Internal
+* `ember-app`, `fractal-page-object`, `script-tag-app`
+  * [#17](https://github.com/bendemboski/fractal-page-object/pull/17) Update linting & typings ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+
 ## v0.2.0 (2021-05-11)
 
 #### :rocket: Enhancement
