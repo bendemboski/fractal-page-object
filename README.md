@@ -294,7 +294,17 @@ class CompletePurchasePage extends PageObject {
 }
 ```
 
-`LoginForm` could be used to test the login form in isolation (e.g. in an Ember rendering test), and `LoginPage` and `CompletePurchasePage` could be used to test it along with the rest of the contents of the respective pages (e.g. in an Ember acceptance test).
+`LoginForm` could be used to test the login form in isolation (e.g. in an Ember rendering test), and `LoginPage` and `CompletePurchasePage` could be used to test it along with the rest of the contents of the respective pages (e.g. in an Ember acceptance test). If the `LoginForm` is a component that always renders itself with the `login-form` class on its root element, then you might DRY up that class with a static property:
+
+```javascript
+class LoginForm extends PageObject {
+  static selector = selector('.login-form', LoginForm);
+}
+
+class LoginPage extends PageObject {
+  loginForm = LoginForm.selector;
+}
+```
 
 ### API
 
@@ -315,7 +325,7 @@ assert.dom(page.listItems[1].title).hasClass('selected');
 await click(page.loadMoreButton);
 ```
 
-and allow better debug/error messages. See [this pull request](https://github.com/simplabs/qunit-dom/pull/905) for a first stab at it to get the conversation going.
+and allow better debug/error messages. See [this RFC](https://github.com/bendemboski/rfcs/blob/dom-query-interface/text/0726-dom-element-descriptor-interface.md) for a proposal for how this might work.
 
 ### `fractal-page-object` vs. `ember-cli-page-object`
 
