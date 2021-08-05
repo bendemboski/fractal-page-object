@@ -1,4 +1,4 @@
-import type { PageObjectClass } from './types';
+import type { PageObjectConstructor } from './types';
 import PageObject from '../page-object';
 
 /**
@@ -14,7 +14,10 @@ export default class PageObjectFactory<T extends PageObject> {
    * subclass of {@link PageObject}. If not supplied, {@link PageObject} will be
    * used.
    */
-  constructor(private selector: string, private Class?: PageObjectClass<T>) {}
+  constructor(
+    private selector: string,
+    private Class?: PageObjectConstructor<T>
+  ) {}
 
   /**
    * Create a {@link PageObject}
@@ -23,7 +26,7 @@ export default class PageObjectFactory<T extends PageObject> {
    * @returns the new page object
    */
   create(parent?: PageObject | Element): PageObject {
-    let Class = this.Class || (PageObject as PageObjectClass<PageObject>);
+    let Class = this.Class || (PageObject as PageObjectConstructor<PageObject>);
     return new Class(this.selector, parent);
   }
 }

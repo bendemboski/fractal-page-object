@@ -1,4 +1,5 @@
 export { setRoot } from './-private/root';
+export type { PageObjectConstructor } from './-private/types';
 
 export { default as PageObject } from './page-object';
 

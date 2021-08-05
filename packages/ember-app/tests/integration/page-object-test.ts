@@ -3,6 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { click, render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { PageObject, selector } from 'fractal-page-object';
+import type { PageObjectConstructor } from 'fractal-page-object';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
@@ -50,6 +51,35 @@ module('Integration | page object', function (hooks) {
 
     assert.equal(page2.element?.id, 'div1');
     assert.equal(page2[0].element?.id, 'div1');
+  });
+
+  test('can wrap selector()', async function (assert) {
+    const s = <T extends PageObject>(
+      name: string,
+      Cls?: PageObjectConstructor<T>
+    ): T => selector(`[data-name="${name}"]`, Cls);
+
+    await render(hbs`
+      <div data-name="one" class="div-one"/>
+      <div data-name="two" class="div-two">
+        <div data-name="three" class="div-three"/>
+      </div>
+    `);
+
+    const Page = class extends PageObject {
+      one = s('one');
+      two = s(
+        'two',
+        class extends PageObject {
+          three = s('three');
+        }
+      );
+    };
+    let page = new Page();
+
+    assert.dom(page.one.element).hasClass('div-one');
+    assert.dom(page.two.element).hasClass('div-two');
+    assert.dom(page.two.three.element).hasClass('div-three');
   });
 
   test('smoke test', async function (assert) {
