@@ -5,8 +5,9 @@ import { resetRoot } from '../-private/root';
 describe('globalSelector()', () => {
   afterEach(() => resetRoot());
 
-  test('it requires a selector and the class must be a PageObject subclass', () => {
+  test('it requires a valid selector and the class must be a PageObject subclass', () => {
     expect(() => globalSelector('')).toThrow();
+    expect(() => globalSelector('  ')).toThrow();
     // @ts-expect-error violate types to make sure validation throws
     expect(() => globalSelector('', class {})).toThrow();
   });

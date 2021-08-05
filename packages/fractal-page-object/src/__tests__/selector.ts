@@ -2,8 +2,9 @@ import { describe, test, expect } from '@jest/globals';
 import { selector, PageObject } from '..';
 
 describe('selector()', () => {
-  test('it requires a selector and the class must be a PageObject subclass', () => {
+  test('it requires a valid selector and the class must be a PageObject subclass', () => {
     expect(() => selector('')).toThrow();
+    expect(() => selector('  ')).toThrow();
     // @ts-expect-error violate types to make sure validation throws
     expect(() => selector('div', class {})).toThrow();
   });
