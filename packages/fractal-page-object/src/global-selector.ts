@@ -149,9 +149,9 @@ export default function globalSelector<T extends PageObject>(
   // Return a factory, but typed as the class it will instantiate since the
   // proxy will do the intantiation anytime a property containing a factory is
   // accessed
-  return (new GlobalPageObjectFactory(
+  return new GlobalPageObjectFactory(
     selector,
     rootElement,
     Class
-  ) as unknown) as T;
+  ) as unknown as T;
 }

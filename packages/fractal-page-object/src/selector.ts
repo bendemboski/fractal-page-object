@@ -38,5 +38,5 @@ export default function selector<T extends PageObject>(
   // Return a factory, but typed as the class it will instantiate since the
   // proxy will do the intantiation anytime a property containing a factory is
   // accessed
-  return (new PageObjectFactory(selector, Class) as unknown) as T;
+  return new PageObjectFactory(selector, Class) as unknown as T;
 }

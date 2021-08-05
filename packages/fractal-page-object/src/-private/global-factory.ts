@@ -33,7 +33,7 @@ export default class GlobalPageObjectFactory<
    * @param parent the {@link PageObject} to set as the new page object's parent
    * @returns the new page object
    */
-  create() {
+  create(): PageObject {
     return super.create(this.rootElement);
   }
 }

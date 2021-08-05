@@ -118,7 +118,7 @@ export default class DOMQuery {
         break;
       }
 
-      if (index !== undefined) {
+      if (index !== undefined && index !== null) {
         let el;
         if (selector) {
           // Selector and index, so query all and index into the result set
@@ -126,7 +126,7 @@ export default class DOMQuery {
         } else {
           // Only index, so index into the result set, which is just the current
           // element
-          el = matches[index!];
+          el = matches[index];
         }
         // Convert to singleton array
         matches = el ? [el] : [];
@@ -145,7 +145,7 @@ export default class DOMQuery {
    * @param index target index of the {@link Element} in the query results, or
    * null if this isn't an index query
    */
-  createChild(selector: string, index: number | null) {
+  createChild(selector: string, index: number | null): DOMQuery {
     let child = this.selectorArray;
     if (selector) {
       child = child.extend(selector);

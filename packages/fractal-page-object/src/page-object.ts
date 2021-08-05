@@ -106,7 +106,7 @@ export default class PageObject extends ArrayStub {
    *
    * @type {Element[]}
    */
-  get elements() {
+  get elements(): Element[] {
     return this[DOM_QUERY].queryAll();
   }
 

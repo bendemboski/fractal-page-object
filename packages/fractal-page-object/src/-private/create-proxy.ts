@@ -10,7 +10,7 @@ import { CLONE_WITH_INDEX } from './types';
  *
  * @returns the proxy implementing the page object & array functionality
  */
-export default function createProxy(pageObject: PageObject) {
+export default function createProxy(pageObject: PageObject): PageObject {
   return new Proxy(pageObject, {
     get(pageObject, prop: string, receiver) {
       if (Reflect.has(pageObject, prop)) {
@@ -40,11 +40,14 @@ export default function createProxy(pageObject: PageObject) {
         // transpiled, causes `pageObject.map(...)` to construct and return a
         // PageObject with its parent set to an integer (instead of a page
         // object parent).
+        let arrayProp = prop as keyof Array<unknown>;
         let elements = pageObject.elements;
         let children = elements.map((_e, i) => pageObject[CLONE_WITH_INDEX](i));
-        let value = (children as any)[prop];
+        let value = children[arrayProp];
         if (typeof value === 'function') {
-          return (...args: any[]) => value.call(children, ...args);
+          return value.bind(children);
+          // return (...args: unknown[]) =>
+          //   (value as (...args: unknown[]) => unknown).call(children, ...args);
         } else {
           return value;
         }
@@ -69,7 +72,7 @@ export default function createProxy(pageObject: PageObject) {
 function getWithFactorySupport(
   pageObject: PageObject,
   prop: string,
-  receiver: object
+  receiver: unknown
 ) {
   let value = Reflect.get(pageObject, prop, receiver);
   if (value instanceof PageObjectFactory) {
