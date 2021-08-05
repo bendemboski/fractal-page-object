@@ -27,12 +27,14 @@ describe('selector()', () => {
     let div = document.body.children[0];
 
     class Page extends PageObject {
-      // prettier-ignore
-      div = selector('div', class extends PageObject {
-        get elementId() {
-          return this.element?.id;
+      div = selector(
+        'div',
+        class extends PageObject {
+          get elementId() {
+            return this.element?.id;
+          }
         }
-      });
+      );
     }
     let page = new Page();
 

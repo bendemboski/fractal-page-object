@@ -68,13 +68,15 @@ describe('globalSelector()', () => {
     `;
     let p = document.body.children[1];
 
-    // prettier-ignore
     class Page extends PageObject {
-      p = globalSelector('p', class extends PageObject {
-        get elementId() {
-          return this.element?.id;
+      p = globalSelector(
+        'p',
+        class extends PageObject {
+          get elementId() {
+            return this.element?.id;
+          }
         }
-      });
+      );
     }
     let page = new Page('span');
 
@@ -98,14 +100,17 @@ describe('globalSelector()', () => {
 
     setRoot(div);
 
-    // prettier-ignore
     class Page extends PageObject {
       p = selector('p');
-      globalP = globalSelector('p', section, class extends PageObject {
-        get elementId() {
-          return this.element?.id;
+      globalP = globalSelector(
+        'p',
+        section,
+        class extends PageObject {
+          get elementId() {
+            return this.element?.id;
+          }
         }
-      });
+      );
     }
     let page = new Page('span');
 
