@@ -14,9 +14,16 @@ export function validateSelectorArguments<T extends PageObject>(
   if (!selector) {
     throw new Error('Cannot specify an empty selector');
   }
+
+  try {
+    document.querySelector(selector);
+  } catch (e) {
+    throw new Error(`Selector is invalid: ${selector}`);
+  }
+
   if (Class && !isPageObjectSubclass(Class)) {
     throw new Error(
-      'Custom globalSelector() class must be PageObject or PageObject subclass'
+      'Custom selector()/globalSelector() class must be PageObject or PageObject subclass'
     );
   }
 }
