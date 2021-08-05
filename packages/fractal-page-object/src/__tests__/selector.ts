@@ -4,7 +4,7 @@ import { selector, PageObject } from '..';
 describe('selector()', () => {
   test('it requires a selector and the class must be a PageObject subclass', () => {
     expect(() => selector('')).toThrow();
-    // @ts-expect-error
+    // @ts-expect-error violate types to make sure validation throws
     expect(() => selector('div', class {})).toThrow();
   });
 

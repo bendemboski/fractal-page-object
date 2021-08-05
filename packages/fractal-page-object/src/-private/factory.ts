@@ -22,7 +22,7 @@ export default class PageObjectFactory<T extends PageObject> {
    * @param parent the {@link PageObject} to set as the new page object's parent
    * @returns the new page object
    */
-  create(parent?: PageObject | Element) {
+  create(parent?: PageObject | Element): PageObject {
     let Class = this.Class || (PageObject as PageObjectClass<PageObject>);
     return new Class(this.selector, parent);
   }

@@ -21,7 +21,7 @@ function getEmberTestRoot() {
  * @param {Element|Function} element the root element or a function that will
  * return it
  */
-export function setRoot(element: Element) {
+export function setRoot(element: Element): void {
   root = element;
 }
 
@@ -32,7 +32,7 @@ export function setRoot(element: Element) {
  *
  * @private
  */
-export function getRoot() {
+export function getRoot(): Element {
   if (root instanceof Element) {
     return root;
   } else {
@@ -45,6 +45,6 @@ export function getRoot() {
  *
  * @private
  */
-export function resetRoot() {
+export function resetRoot(): void {
   root = undefined;
 }

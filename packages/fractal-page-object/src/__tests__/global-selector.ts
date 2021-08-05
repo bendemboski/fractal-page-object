@@ -7,7 +7,7 @@ describe('globalSelector()', () => {
 
   test('it requires a selector and the class must be a PageObject subclass', () => {
     expect(() => globalSelector('')).toThrow();
-    // @ts-expect-error
+    // @ts-expect-error violate types to make sure validation throws
     expect(() => globalSelector('', class {})).toThrow();
   });
 

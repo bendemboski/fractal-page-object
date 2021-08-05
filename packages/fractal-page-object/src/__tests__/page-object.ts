@@ -392,10 +392,11 @@ describe('PageObject', () => {
           )
           .map((o) => o.element)
       ).toEqual([span2, span1]);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       expect(empty.sort((_a, _b) => -1)).toEqual([]);
-      expect(
-        Array.from(page[Symbol.iterator]()).map((o) => o.element)
-      ).toEqual([span1, span2]);
+      expect(Array.from(page[Symbol.iterator]()).map((o) => o.element)).toEqual(
+        [span1, span2]
+      );
       expect(
         Array.from(empty[Symbol.iterator]()).map((o) => o.element)
       ).toEqual([]);
@@ -558,7 +559,7 @@ describe('PageObject', () => {
         return function () {
           return {
             get() {
-              return (this as any)[prop];
+              return (this as Record<string, unknown>)[prop];
             },
           } as PropertyDescriptor;
         };
@@ -607,7 +608,7 @@ describe('PageObject', () => {
 
     test('overriding members of the array API works', () => {
       class Page extends PageObject {
-        // @ts-expect-error
+        // @ts-expect-error this violates typescript, but users might want to anyway
         filter() {
           return 'byName';
         }
@@ -625,27 +626,27 @@ describe('PageObject', () => {
     test('is nullable when accessing directly, via this, or via indexing', () => {
       let page = new PageObject('div');
 
-      // @ts-expect-error
+      // @ts-expect-error verifying null-ability
       expect(page.element.id).toEqual('div1');
-      // @ts-expect-error
+      // @ts-expect-error verifying null-ability
       expect(page[0].element.id).toEqual('div1');
 
       class Page extends PageObject {
         get prop() {
-          // @ts-expect-error
+          // @ts-expect-error verifying null-ability
           return this.element.id;
         }
 
         get prop2() {
-          // @ts-expect-error
+          // @ts-expect-error verifying null-ability
           return this[0].element.id;
         }
       }
       let page2 = new Page('div');
 
-      // @ts-expect-error
+      // @ts-expect-error verifying null-ability
       expect(page2.element.id).toEqual('div1');
-      // @ts-expect-error
+      // @ts-expect-error verifying null-ability
       expect(page2[0].element.id).toEqual('div1');
     });
 
