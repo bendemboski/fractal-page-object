@@ -1,6 +1,6 @@
 import PageObjectFactory from './-private/factory';
 import PageObject from './page-object';
-import type { PageObjectClass } from './-private/types';
+import type { PageObjectConstructor } from './-private/types';
 import { validateSelectorArguments } from './-private/helpers';
 
 /**
@@ -31,7 +31,7 @@ import { validateSelectorArguments } from './-private/helpers';
  */
 export default function selector<T extends PageObject>(
   selector: string,
-  Class?: PageObjectClass<T>
+  Class?: PageObjectConstructor<T>
 ): T {
   validateSelectorArguments(selector, Class);
 

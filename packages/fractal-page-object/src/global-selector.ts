@@ -1,13 +1,13 @@
 import GlobalPageObjectFactory from './-private/global-factory';
 import PageObject from './page-object';
-import type { PageObjectClass } from './-private/types';
+import type { PageObjectConstructor } from './-private/types';
 import { validateSelectorArguments } from './-private/helpers';
 
-type Arguments<T extends PageObject> = [string, PageObjectClass<T>?];
+type Arguments<T extends PageObject> = [string, PageObjectConstructor<T>?];
 type ArgumentsWithRoot<T extends PageObject> = [
   string,
   Element,
-  PageObjectClass<T>?
+  PageObjectConstructor<T>?
 ];
 
 /**
@@ -35,7 +35,7 @@ type ArgumentsWithRoot<T extends PageObject> = [
  */
 export default function globalSelector<T extends PageObject>(
   selector: string,
-  Class?: PageObjectClass<T>
+  Class?: PageObjectConstructor<T>
 ): T;
 
 /**
@@ -66,7 +66,7 @@ export default function globalSelector<T extends PageObject>(
 export default function globalSelector<T extends PageObject>(
   selector: string,
   rootElement: Element,
-  Class?: PageObjectClass<T>
+  Class?: PageObjectConstructor<T>
 ): T;
 
 /**

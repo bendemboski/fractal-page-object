@@ -1,4 +1,4 @@
-import type { PageObjectClass } from './types';
+import type { PageObjectConstructor } from './types';
 import PageObject from '../page-object';
 import Factory from './factory';
 
@@ -22,7 +22,7 @@ export default class GlobalPageObjectFactory<
   constructor(
     selector: string,
     private rootElement?: Element,
-    Class?: PageObjectClass<T>
+    Class?: PageObjectConstructor<T>
   ) {
     super(selector, Class);
   }

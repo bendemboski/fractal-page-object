@@ -3,7 +3,7 @@ import { getRoot } from './-private/root';
 import DOMQuery from './-private/dom-query';
 import createProxy from './-private/create-proxy';
 import { DOM_QUERY, CLONE_WITH_INDEX } from './-private/types';
-import type { PageObjectClass } from './-private/types';
+import type { PageObjectConstructor } from './-private/types';
 
 /**
  * This class implements all the basic page object functionality, and all page
@@ -141,7 +141,7 @@ export default class PageObject extends ArrayStub {
    * @private
    */
   [CLONE_WITH_INDEX](index: number): PageObject {
-    let Class = this.constructor as PageObjectClass<PageObject>;
+    let Class = this.constructor as PageObjectConstructor<PageObject>;
     return new Class('', this, index, this.rootElement);
   }
 
