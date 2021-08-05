@@ -43,4 +43,41 @@ describe('selector()', () => {
     expect(page.div[0].element).toEqual(div);
     expect(page.div[0].elementId).toEqual('div1');
   });
+
+  test('it can be defined as a reusable static property', () => {
+    document.body.innerHTML = [
+      '<div id="pane1">',
+      '  <form>',
+      '    <input id="input1"/>',
+      '  </form>',
+      '</div>',
+      '<div id="pane2">',
+      '  <form>',
+      '    <input id="input2"/>',
+      '  </form>',
+      '</div>',
+    ].join('');
+
+    class Form extends PageObject {
+      input = selector('input');
+      static selector = selector('form', Form);
+    }
+
+    class Pane1 extends PageObject {
+      form = Form.selector;
+    }
+
+    class Pane2 extends PageObject {
+      form = Form.selector;
+    }
+
+    class Page extends PageObject {
+      pane1 = selector('#pane1', Pane1);
+      pane2 = selector('#pane2', Pane2);
+    }
+    let page = new Page();
+
+    expect(page.pane1.form.input.element?.id).toEqual('input1');
+    expect(page.pane2.form.input.element?.id).toEqual('input2');
+  });
 });
