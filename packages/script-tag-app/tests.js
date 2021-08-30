@@ -23,8 +23,8 @@ module('page object', function(hooks) {
     document.body.append(div);
     try {
       testContainer.innerHTML = '<div data-target>Hello world</div>';
-      assert.dom(page.target.element).exists({ count: 1});
-      assert.dom(page.target.element).hasText('Hello world');
+      assert.dom(page.target).exists({ count: 1});
+      assert.dom(page.target).hasText('Hello world');
     } finally {
       div.remove();
     }
@@ -86,32 +86,32 @@ module('page object', function(hooks) {
     let button = testContainer.querySelector('[data-button]');
     button.addEventListener('click', loadMore);
 
-    assert.dom(page.header.title.element).hasText('List of stuff');
-    assert.dom(page.list.element).doesNotExist();
+    assert.dom(page.header.title).hasText('List of stuff');
+    assert.dom(page.list).doesNotExist();
     assert.equal(page.list.listItems.length, 0);
-    assert.dom(page.list.listItems[0].element).doesNotExist();
-    assert.dom(page.list.loadMore.element).doesNotExist();
+    assert.dom(page.list.listItems[0]).doesNotExist();
+    assert.dom(page.list.loadMore).doesNotExist();
 
     page.header.showList.element.click();
-    assert.dom(page.list.element).exists();
+    assert.dom(page.list).exists();
     assert.equal(page.list.listItems.length, 6);
-    assert.dom(page.list.listItems[0].element).exists();
-    assert.dom(page.list.listItems[1].element).exists();
-    assert.dom(page.list.listItems[6].element).doesNotExist();
+    assert.dom(page.list.listItems[0]).exists();
+    assert.dom(page.list.listItems[1]).exists();
+    assert.dom(page.list.listItems[6]).doesNotExist();
     assert.deepEqual(
       page.list.listItems.map(item => item.text),
       ['item0', 'item1', 'item2', 'item3', 'item4', 'load more']
     );
-    assert.dom(page.list.loadMore.element).exists();
+    assert.dom(page.list.loadMore).exists();
 
     page.list.loadMore.element.click();
-    assert.dom(page.list.element).exists();
+    assert.dom(page.list).exists();
     assert.equal(page.list.listItems.length, 11);
-    assert.dom(page.list.listItems[0].element).exists();
-    assert.dom(page.list.listItems[1].element).exists();
-    assert.dom(page.list.listItems[6].element).exists();
-    assert.dom(page.list.listItems[7].element).exists();
-    assert.dom(page.list.listItems[11].element).doesNotExist();
+    assert.dom(page.list.listItems[0]).exists();
+    assert.dom(page.list.listItems[1]).exists();
+    assert.dom(page.list.listItems[6]).exists();
+    assert.dom(page.list.listItems[7]).exists();
+    assert.dom(page.list.listItems[11]).doesNotExist();
     assert.deepEqual(
       page.list.listItems.map(item => item.text),
       [
@@ -128,6 +128,6 @@ module('page object', function(hooks) {
         'load more'
       ]
     );
-    assert.dom(page.list.loadMore.element).exists();
+    assert.dom(page.list.loadMore).exists();
   });
 });

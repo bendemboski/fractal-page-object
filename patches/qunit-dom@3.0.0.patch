@@ -1,0 +1,696 @@
+diff --git a/dist/es/assertions.d.ts b/dist/es/assertions.d.ts
+index de166d5029c99cdead7abc399dc7a136b48f719a..55a27253cf22145ed5ab20e1da7f789dba63c5c0 100644
+--- a/dist/es/assertions.d.ts
++++ b/dist/es/assertions.d.ts
+@@ -1,3 +1,4 @@
++import { type IDOMElementDescriptor } from 'dom-element-descriptors';
+ export interface AssertionResult {
+     result: boolean;
+     actual: any;
+@@ -8,10 +9,17 @@ export interface ExistsOptions {
+     count: number;
+ }
+ export default class DOMAssertions {
+-    private target;
+-    private rootElement;
+     private testContext;
+-    constructor(target: string | Element | null, rootElement: Element | Document, testContext: Assert);
++    /**
++     * The target of our assertions
++     */
++    private descriptor;
++    /**
++     * Whether we were constructed with an element, rather than a selector or
++     * descriptor. Used to make error messages more helpful.
++     */
++    private wasPassedElement;
++    constructor(target: string | Element | null | IDOMElementDescriptor, rootElement: Element | Document, testContext: Assert);
+     /**
+      * Assert an {@link HTMLElement} (or multiple) matching the `selector` exists.
+      *
+@@ -622,13 +630,6 @@ export default class DOMAssertions {
+      * @returns (HTMLElement|null) a valid HTMLElement, or null
+      */
+     private findTargetElement;
+-    /**
+-     * Finds a valid HTMLElement from target
+-     * @private
+-     * @returns (HTMLElement|null) a valid HTMLElement, or null
+-     * @throws TypeError will be thrown if target is an unrecognized type
+-     */
+-    private findElement;
+     /**
+      * Finds a collection of Element instances from target using querySelectorAll
+      * @private
+@@ -640,4 +641,8 @@ export default class DOMAssertions {
+      * @private
+      */
+     private get targetDescription();
++    /**
++     * @private
++     */
++    private get selectedBy();
+ }
+diff --git a/dist/es/descriptor.d.ts b/dist/es/descriptor.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..0d0a45177c8b5243e5c6248ca3b8445471c71a7d
+--- /dev/null
++++ b/dist/es/descriptor.d.ts
+@@ -0,0 +1,5 @@
++import { type IDOMElementDescriptor } from 'dom-element-descriptors';
++/**
++ * Create an {@link IDOMElementDescriptor} from a target and a root element
++ */
++export default function createDescriptor(target: string | Element | null | IDOMElementDescriptor, rootElement: Element | Document): IDOMElementDescriptor;
+diff --git a/dist/es/index.js b/dist/es/index.js
+index 7eb517d23ad170a8c00fe3932e85b85304129733..cd8bff43c6ef0c33d0852b650ad8e0f08f54dbeb 100644
+--- a/dist/es/index.js
++++ b/dist/es/index.js
+@@ -1,3 +1,5 @@
++import { createDescriptor as createDescriptor$1, isDescriptor, resolveDOMElement, resolveDOMElements, resolveDescription } from 'dom-element-descriptors';
++
+ function exists(options, message) {
+     var expectedCount = null;
+     if (typeof options === 'string') {
+@@ -83,7 +85,7 @@ function focused(message) {
+         return;
+     var result = document.activeElement === element;
+     var actual = elementToString(document.activeElement);
+-    var expected = elementToString(this.target);
++    var expected = this.targetDescription;
+     if (!message) {
+         message = "Element ".concat(expected, " is focused");
+     }
+@@ -120,7 +122,7 @@ function checked(message) {
+     var actual = result ? 'checked' : 'not checked';
+     var expected = 'checked';
+     if (!message) {
+-        message = "Element ".concat(elementToString(this.target), " is checked");
++        message = "Element ".concat(this.targetDescription, " is checked");
+     }
+     this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+ }
+@@ -142,7 +144,7 @@ function notChecked(message) {
+     var actual = result ? 'not checked' : 'checked';
+     var expected = 'not checked';
+     if (!message) {
+-        message = "Element ".concat(elementToString(this.target), " is not checked");
++        message = "Element ".concat(this.targetDescription, " is not checked");
+     }
+     this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+ }
+@@ -160,7 +162,7 @@ function required(message) {
+     var actual = result ? 'required' : 'not required';
+     var expected = 'required';
+     if (!message) {
+-        message = "Element ".concat(elementToString(this.target), " is required");
++        message = "Element ".concat(this.targetDescription, " is required");
+     }
+     this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+ }
+@@ -178,7 +180,7 @@ function notRequired(message) {
+     var actual = !result ? 'required' : 'not required';
+     var expected = 'not required';
+     if (!message) {
+-        message = "Element ".concat(elementToString(this.target), " is not required");
++        message = "Element ".concat(this.targetDescription, " is not required");
+     }
+     this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+ }
+@@ -201,7 +203,7 @@ function isValid(message, options) {
+     var actual = validity ? 'valid' : 'not valid';
+     var expected = options.inverted ? 'not valid' : 'valid';
+     if (!message) {
+-        message = "Element ".concat(elementToString(this.target), " is ").concat(actual);
++        message = "Element ".concat(this.targetDescription, " is ").concat(actual);
+     }
+     this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+ }
+@@ -315,20 +317,85 @@ function collapseWhitespace(string) {
+ }
+ 
+ /**
+- * This function can be used to convert a NodeList to a regular array.
+- * We should be using `Array.from()` for this, but IE11 doesn't support that :(
+- *
+- * @private
++ * Descriptor data for creating an {@link IDOMElementDescriptor} from a CSS
++ * selector
+  */
+-function toArray(list) {
+-    return Array.prototype.slice.call(list);
++var SelectorData = /** @class */ (function () {
++    function SelectorData(selector, rootElement) {
++        this.selector = selector;
++        this.rootElement = rootElement;
++    }
++    Object.defineProperty(SelectorData.prototype, "element", {
++        get: function () {
++            return this.rootElement.querySelector(this.selector);
++        },
++        enumerable: false,
++        configurable: true
++    });
++    Object.defineProperty(SelectorData.prototype, "elements", {
++        get: function () {
++            return Array.from(this.rootElement.querySelectorAll(this.selector));
++        },
++        enumerable: false,
++        configurable: true
++    });
++    Object.defineProperty(SelectorData.prototype, "description", {
++        get: function () {
++            return this.selector;
++        },
++        enumerable: false,
++        configurable: true
++    });
++    return SelectorData;
++}());
++/**
++ * Descriptor data for creating an {@link IDOMElementDescriptor} from an
++ * {@link Element}
++ */
++var ElementData = /** @class */ (function () {
++    function ElementData(element) {
++        this.element = element;
++    }
++    Object.defineProperty(ElementData.prototype, "description", {
++        get: function () {
++            return elementToString(this.element);
++        },
++        enumerable: false,
++        configurable: true
++    });
++    return ElementData;
++}());
++/**
++ * Create an {@link IDOMElementDescriptor} from a target and a root element
++ */
++function createDescriptor(target, rootElement) {
++    if (typeof target === 'string') {
++        // selector
++        return createDescriptor$1(new SelectorData(target, rootElement));
++    }
++    else if (target instanceof Element) {
++        // element
++        return createDescriptor$1(new ElementData(target));
++    }
++    else if (target === null) {
++        // null, which we treat as an unmatched element, e.g.
++        // `createDescriptor(document.querySelector('.does-not-exist'))`
++        return createDescriptor$1({ element: null, description: '<not found>' });
++    }
++    else if (isDescriptor(target)) {
++        // already a descriptor
++        return target;
++    }
++    else {
++        throw new TypeError("Unexpected Parameter: ".concat(target));
++    }
+ }
+ 
+ var DOMAssertions = /** @class */ (function () {
+     function DOMAssertions(target, rootElement, testContext) {
+-        this.target = target;
+-        this.rootElement = rootElement;
+         this.testContext = testContext;
++        this.descriptor = createDescriptor(target, rootElement);
++        this.wasPassedElement = target === null || target instanceof Element;
+     }
+     /**
+      * Assert an {@link HTMLElement} (or multiple) matching the `selector` exists.
+@@ -1214,11 +1281,11 @@ var DOMAssertions = /** @class */ (function () {
+      * assert.dom('p.red').matchesSelector('div.wrapper p:last-child')
+      */
+     DOMAssertions.prototype.matchesSelector = function (compareSelector, message) {
+-        var targetElements = this.target instanceof Element ? [this.target] : this.findElements();
++        var targetElements = this.findElements();
+         var targets = targetElements.length;
+         var matchFailures = matchesSelector(targetElements, compareSelector);
+         var singleElement = targets === 1;
+-        var selectedByPart = this.target instanceof Element ? 'passed' : "selected by ".concat(this.target);
++        var selectedByPart = this.selectedBy;
+         var actual;
+         var expected;
+         if (matchFailures === 0) {
+@@ -1226,7 +1293,7 @@ var DOMAssertions = /** @class */ (function () {
+             if (!message) {
+                 message = singleElement
+                     ? "The element ".concat(selectedByPart, " also matches the selector ").concat(compareSelector, ".")
+-                    : "".concat(targets, " elements, selected by ").concat(this.target, ", also match the selector ").concat(compareSelector, ".");
++                    : "".concat(targets, " elements, ").concat(selectedByPart, ", also match the selector ").concat(compareSelector, ".");
+             }
+             actual = expected = message;
+             this.pushResult({ result: true, actual: actual, expected: expected, message: message });
+@@ -1237,7 +1304,7 @@ var DOMAssertions = /** @class */ (function () {
+             if (!message) {
+                 message = singleElement
+                     ? "The element ".concat(selectedByPart, " did not also match the selector ").concat(compareSelector, ".")
+-                    : "".concat(matchFailures, " out of ").concat(targets, " elements selected by ").concat(this.target, " did not also match the selector ").concat(compareSelector, ".");
++                    : "".concat(matchFailures, " out of ").concat(targets, " elements ").concat(selectedByPart, " did not also match the selector ").concat(compareSelector, ".");
+             }
+             actual = singleElement ? message : "".concat(difference, " elements matched ").concat(compareSelector, ".");
+             expected = singleElement
+@@ -1258,11 +1325,11 @@ var DOMAssertions = /** @class */ (function () {
+      * assert.dom('input').doesNotMatchSelector('input[disabled]')
+      */
+     DOMAssertions.prototype.doesNotMatchSelector = function (compareSelector, message) {
+-        var targetElements = this.target instanceof Element ? [this.target] : this.findElements();
++        var targetElements = this.findElements();
+         var targets = targetElements.length;
+         var matchFailures = matchesSelector(targetElements, compareSelector);
+         var singleElement = targets === 1;
+-        var selectedByPart = this.target instanceof Element ? 'passed' : "selected by ".concat(this.target);
++        var selectedByPart = this.selectedBy;
+         var actual;
+         var expected;
+         if (matchFailures === targets) {
+@@ -1270,7 +1337,7 @@ var DOMAssertions = /** @class */ (function () {
+             if (!message) {
+                 message = singleElement
+                     ? "The element ".concat(selectedByPart, " did not also match the selector ").concat(compareSelector, ".")
+-                    : "".concat(targets, " elements, selected by ").concat(this.target, ", did not also match the selector ").concat(compareSelector, ".");
++                    : "".concat(targets, " elements, ").concat(selectedByPart, ", did not also match the selector ").concat(compareSelector, ".");
+             }
+             actual = expected = message;
+             this.pushResult({ result: true, actual: actual, expected: expected, message: message });
+@@ -1281,7 +1348,7 @@ var DOMAssertions = /** @class */ (function () {
+             if (!message) {
+                 message = singleElement
+                     ? "The element ".concat(selectedByPart, " must not also match the selector ").concat(compareSelector, ".")
+-                    : "".concat(difference, " elements out of ").concat(targets, ", selected by ").concat(this.target, ", must not also match the selector ").concat(compareSelector, ".");
++                    : "".concat(difference, " elements out of ").concat(targets, ", ").concat(selectedByPart, ", must not also match the selector ").concat(compareSelector, ".");
+             }
+             actual = singleElement
+                 ? "The element ".concat(selectedByPart, " matched ").concat(compareSelector, ".")
+@@ -1388,34 +1455,14 @@ var DOMAssertions = /** @class */ (function () {
+      * @returns (HTMLElement|null) a valid HTMLElement, or null
+      */
+     DOMAssertions.prototype.findTargetElement = function () {
+-        var el = this.findElement();
++        var el = resolveDOMElement(this.descriptor);
+         if (el === null) {
+-            var message = "Element ".concat(this.target || '<unknown>', " should exist");
++            var message = "Element ".concat(this.targetDescription, " should exist");
+             this.pushResult({ message: message, result: false, actual: undefined, expected: undefined });
+             return null;
+         }
+         return el;
+     };
+-    /**
+-     * Finds a valid HTMLElement from target
+-     * @private
+-     * @returns (HTMLElement|null) a valid HTMLElement, or null
+-     * @throws TypeError will be thrown if target is an unrecognized type
+-     */
+-    DOMAssertions.prototype.findElement = function () {
+-        if (this.target === null) {
+-            return null;
+-        }
+-        else if (typeof this.target === 'string') {
+-            return this.rootElement.querySelector(this.target);
+-        }
+-        else if (this.target instanceof Element) {
+-            return this.target;
+-        }
+-        else {
+-            throw new TypeError("Unexpected Parameter: ".concat(this.target));
+-        }
+-    };
+     /**
+      * Finds a collection of Element instances from target using querySelectorAll
+      * @private
+@@ -1423,25 +1470,24 @@ var DOMAssertions = /** @class */ (function () {
+      * @throws TypeError will be thrown if target is an unrecognized type
+      */
+     DOMAssertions.prototype.findElements = function () {
+-        if (this.target === null) {
+-            return [];
+-        }
+-        else if (typeof this.target === 'string') {
+-            return toArray(this.rootElement.querySelectorAll(this.target));
+-        }
+-        else if (this.target instanceof Element) {
+-            return [this.target];
+-        }
+-        else {
+-            throw new TypeError("Unexpected Parameter: ".concat(this.target));
+-        }
++        return Array.from(resolveDOMElements(this.descriptor));
+     };
+     Object.defineProperty(DOMAssertions.prototype, "targetDescription", {
+         /**
+          * @private
+          */
+         get: function () {
+-            return elementToString(this.target);
++            return resolveDescription(this.descriptor);
++        },
++        enumerable: false,
++        configurable: true
++    });
++    Object.defineProperty(DOMAssertions.prototype, "selectedBy", {
++        /**
++         * @private
++         */
++        get: function () {
++            return this.wasPassedElement ? 'passed' : "selected by ".concat(this.targetDescription);
+         },
+         enumerable: false,
+         configurable: true
+diff --git a/dist/es/index.js.map b/dist/es/index.js.map
+index e97d90e2fada0a047c3814a08189fcefabd764a8..beeaf17bde45a42711d761fdfec8b5814c1b68d6 100644
+--- a/dist/es/index.js.map
++++ b/dist/es/index.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"index.js","sources":[],"sourcesContent":[],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"}
+\ No newline at end of file
++{"version":3,"file":"index.js","sources":[],"sourcesContent":[],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"}
+\ No newline at end of file
+diff --git a/dist/es/install.d.ts b/dist/es/install.d.ts
+index 2fb174516d3e8eb3ef632d3d62807146f5a24f76..d1719feaa48180da598ebf8a2a79059e478e87bf 100644
+--- a/dist/es/install.d.ts
++++ b/dist/es/install.d.ts
+@@ -1,7 +1,8 @@
+ import DOMAssertions from './assertions.js';
++import type { IDOMElementDescriptor } from 'dom-element-descriptors';
+ declare global {
+     interface Assert {
+-        dom(target?: string | Element | null, rootElement?: Element): DOMAssertions;
++        dom(target?: string | Element | IDOMElementDescriptor | null, rootElement?: Element): DOMAssertions;
+     }
+ }
+ export default function (assert: Assert): void;
+diff --git a/dist/qunit-dom.js b/dist/qunit-dom.js
+index 24f9a73af6650d9d642d1697337f6f6ab3d64150..c725ded4f60eb44ea1e952317dcaf389c8a00022 100644
+--- a/dist/qunit-dom.js
++++ b/dist/qunit-dom.js
+@@ -1,4 +1,4 @@
+-var QUnitDOM = (function (exports) {
++var QUnitDOM = (function (exports, domElementDescriptors) {
+   'use strict';
+ 
+   function exists(options, message) {
+@@ -86,7 +86,7 @@ var QUnitDOM = (function (exports) {
+           return;
+       var result = document.activeElement === element;
+       var actual = elementToString(document.activeElement);
+-      var expected = elementToString(this.target);
++      var expected = this.targetDescription;
+       if (!message) {
+           message = "Element ".concat(expected, " is focused");
+       }
+@@ -123,7 +123,7 @@ var QUnitDOM = (function (exports) {
+       var actual = result ? 'checked' : 'not checked';
+       var expected = 'checked';
+       if (!message) {
+-          message = "Element ".concat(elementToString(this.target), " is checked");
++          message = "Element ".concat(this.targetDescription, " is checked");
+       }
+       this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+   }
+@@ -145,7 +145,7 @@ var QUnitDOM = (function (exports) {
+       var actual = result ? 'not checked' : 'checked';
+       var expected = 'not checked';
+       if (!message) {
+-          message = "Element ".concat(elementToString(this.target), " is not checked");
++          message = "Element ".concat(this.targetDescription, " is not checked");
+       }
+       this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+   }
+@@ -163,7 +163,7 @@ var QUnitDOM = (function (exports) {
+       var actual = result ? 'required' : 'not required';
+       var expected = 'required';
+       if (!message) {
+-          message = "Element ".concat(elementToString(this.target), " is required");
++          message = "Element ".concat(this.targetDescription, " is required");
+       }
+       this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+   }
+@@ -181,7 +181,7 @@ var QUnitDOM = (function (exports) {
+       var actual = !result ? 'required' : 'not required';
+       var expected = 'not required';
+       if (!message) {
+-          message = "Element ".concat(elementToString(this.target), " is not required");
++          message = "Element ".concat(this.targetDescription, " is not required");
+       }
+       this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+   }
+@@ -204,7 +204,7 @@ var QUnitDOM = (function (exports) {
+       var actual = validity ? 'valid' : 'not valid';
+       var expected = options.inverted ? 'not valid' : 'valid';
+       if (!message) {
+-          message = "Element ".concat(elementToString(this.target), " is ").concat(actual);
++          message = "Element ".concat(this.targetDescription, " is ").concat(actual);
+       }
+       this.pushResult({ result: result, actual: actual, expected: expected, message: message });
+   }
+@@ -318,20 +318,85 @@ var QUnitDOM = (function (exports) {
+   }
+ 
+   /**
+-   * This function can be used to convert a NodeList to a regular array.
+-   * We should be using `Array.from()` for this, but IE11 doesn't support that :(
+-   *
+-   * @private
++   * Descriptor data for creating an {@link IDOMElementDescriptor} from a CSS
++   * selector
+    */
+-  function toArray(list) {
+-      return Array.prototype.slice.call(list);
++  var SelectorData = /** @class */ (function () {
++      function SelectorData(selector, rootElement) {
++          this.selector = selector;
++          this.rootElement = rootElement;
++      }
++      Object.defineProperty(SelectorData.prototype, "element", {
++          get: function () {
++              return this.rootElement.querySelector(this.selector);
++          },
++          enumerable: false,
++          configurable: true
++      });
++      Object.defineProperty(SelectorData.prototype, "elements", {
++          get: function () {
++              return Array.from(this.rootElement.querySelectorAll(this.selector));
++          },
++          enumerable: false,
++          configurable: true
++      });
++      Object.defineProperty(SelectorData.prototype, "description", {
++          get: function () {
++              return this.selector;
++          },
++          enumerable: false,
++          configurable: true
++      });
++      return SelectorData;
++  }());
++  /**
++   * Descriptor data for creating an {@link IDOMElementDescriptor} from an
++   * {@link Element}
++   */
++  var ElementData = /** @class */ (function () {
++      function ElementData(element) {
++          this.element = element;
++      }
++      Object.defineProperty(ElementData.prototype, "description", {
++          get: function () {
++              return elementToString(this.element);
++          },
++          enumerable: false,
++          configurable: true
++      });
++      return ElementData;
++  }());
++  /**
++   * Create an {@link IDOMElementDescriptor} from a target and a root element
++   */
++  function createDescriptor(target, rootElement) {
++      if (typeof target === 'string') {
++          // selector
++          return domElementDescriptors.createDescriptor(new SelectorData(target, rootElement));
++      }
++      else if (target instanceof Element) {
++          // element
++          return domElementDescriptors.createDescriptor(new ElementData(target));
++      }
++      else if (target === null) {
++          // null, which we treat as an unmatched element, e.g.
++          // `createDescriptor(document.querySelector('.does-not-exist'))`
++          return domElementDescriptors.createDescriptor({ element: null, description: '<not found>' });
++      }
++      else if (domElementDescriptors.isDescriptor(target)) {
++          // already a descriptor
++          return target;
++      }
++      else {
++          throw new TypeError("Unexpected Parameter: ".concat(target));
++      }
+   }
+ 
+   var DOMAssertions = /** @class */ (function () {
+       function DOMAssertions(target, rootElement, testContext) {
+-          this.target = target;
+-          this.rootElement = rootElement;
+           this.testContext = testContext;
++          this.descriptor = createDescriptor(target, rootElement);
++          this.wasPassedElement = target === null || target instanceof Element;
+       }
+       /**
+        * Assert an {@link HTMLElement} (or multiple) matching the `selector` exists.
+@@ -1217,11 +1282,11 @@ var QUnitDOM = (function (exports) {
+        * assert.dom('p.red').matchesSelector('div.wrapper p:last-child')
+        */
+       DOMAssertions.prototype.matchesSelector = function (compareSelector, message) {
+-          var targetElements = this.target instanceof Element ? [this.target] : this.findElements();
++          var targetElements = this.findElements();
+           var targets = targetElements.length;
+           var matchFailures = matchesSelector(targetElements, compareSelector);
+           var singleElement = targets === 1;
+-          var selectedByPart = this.target instanceof Element ? 'passed' : "selected by ".concat(this.target);
++          var selectedByPart = this.selectedBy;
+           var actual;
+           var expected;
+           if (matchFailures === 0) {
+@@ -1229,7 +1294,7 @@ var QUnitDOM = (function (exports) {
+               if (!message) {
+                   message = singleElement
+                       ? "The element ".concat(selectedByPart, " also matches the selector ").concat(compareSelector, ".")
+-                      : "".concat(targets, " elements, selected by ").concat(this.target, ", also match the selector ").concat(compareSelector, ".");
++                      : "".concat(targets, " elements, ").concat(selectedByPart, ", also match the selector ").concat(compareSelector, ".");
+               }
+               actual = expected = message;
+               this.pushResult({ result: true, actual: actual, expected: expected, message: message });
+@@ -1240,7 +1305,7 @@ var QUnitDOM = (function (exports) {
+               if (!message) {
+                   message = singleElement
+                       ? "The element ".concat(selectedByPart, " did not also match the selector ").concat(compareSelector, ".")
+-                      : "".concat(matchFailures, " out of ").concat(targets, " elements selected by ").concat(this.target, " did not also match the selector ").concat(compareSelector, ".");
++                      : "".concat(matchFailures, " out of ").concat(targets, " elements ").concat(selectedByPart, " did not also match the selector ").concat(compareSelector, ".");
+               }
+               actual = singleElement ? message : "".concat(difference, " elements matched ").concat(compareSelector, ".");
+               expected = singleElement
+@@ -1261,11 +1326,11 @@ var QUnitDOM = (function (exports) {
+        * assert.dom('input').doesNotMatchSelector('input[disabled]')
+        */
+       DOMAssertions.prototype.doesNotMatchSelector = function (compareSelector, message) {
+-          var targetElements = this.target instanceof Element ? [this.target] : this.findElements();
++          var targetElements = this.findElements();
+           var targets = targetElements.length;
+           var matchFailures = matchesSelector(targetElements, compareSelector);
+           var singleElement = targets === 1;
+-          var selectedByPart = this.target instanceof Element ? 'passed' : "selected by ".concat(this.target);
++          var selectedByPart = this.selectedBy;
+           var actual;
+           var expected;
+           if (matchFailures === targets) {
+@@ -1273,7 +1338,7 @@ var QUnitDOM = (function (exports) {
+               if (!message) {
+                   message = singleElement
+                       ? "The element ".concat(selectedByPart, " did not also match the selector ").concat(compareSelector, ".")
+-                      : "".concat(targets, " elements, selected by ").concat(this.target, ", did not also match the selector ").concat(compareSelector, ".");
++                      : "".concat(targets, " elements, ").concat(selectedByPart, ", did not also match the selector ").concat(compareSelector, ".");
+               }
+               actual = expected = message;
+               this.pushResult({ result: true, actual: actual, expected: expected, message: message });
+@@ -1284,7 +1349,7 @@ var QUnitDOM = (function (exports) {
+               if (!message) {
+                   message = singleElement
+                       ? "The element ".concat(selectedByPart, " must not also match the selector ").concat(compareSelector, ".")
+-                      : "".concat(difference, " elements out of ").concat(targets, ", selected by ").concat(this.target, ", must not also match the selector ").concat(compareSelector, ".");
++                      : "".concat(difference, " elements out of ").concat(targets, ", ").concat(selectedByPart, ", must not also match the selector ").concat(compareSelector, ".");
+               }
+               actual = singleElement
+                   ? "The element ".concat(selectedByPart, " matched ").concat(compareSelector, ".")
+@@ -1391,34 +1456,14 @@ var QUnitDOM = (function (exports) {
+        * @returns (HTMLElement|null) a valid HTMLElement, or null
+        */
+       DOMAssertions.prototype.findTargetElement = function () {
+-          var el = this.findElement();
++          var el = domElementDescriptors.resolveDOMElement(this.descriptor);
+           if (el === null) {
+-              var message = "Element ".concat(this.target || '<unknown>', " should exist");
++              var message = "Element ".concat(this.targetDescription, " should exist");
+               this.pushResult({ message: message, result: false, actual: undefined, expected: undefined });
+               return null;
+           }
+           return el;
+       };
+-      /**
+-       * Finds a valid HTMLElement from target
+-       * @private
+-       * @returns (HTMLElement|null) a valid HTMLElement, or null
+-       * @throws TypeError will be thrown if target is an unrecognized type
+-       */
+-      DOMAssertions.prototype.findElement = function () {
+-          if (this.target === null) {
+-              return null;
+-          }
+-          else if (typeof this.target === 'string') {
+-              return this.rootElement.querySelector(this.target);
+-          }
+-          else if (this.target instanceof Element) {
+-              return this.target;
+-          }
+-          else {
+-              throw new TypeError("Unexpected Parameter: ".concat(this.target));
+-          }
+-      };
+       /**
+        * Finds a collection of Element instances from target using querySelectorAll
+        * @private
+@@ -1426,25 +1471,24 @@ var QUnitDOM = (function (exports) {
+        * @throws TypeError will be thrown if target is an unrecognized type
+        */
+       DOMAssertions.prototype.findElements = function () {
+-          if (this.target === null) {
+-              return [];
+-          }
+-          else if (typeof this.target === 'string') {
+-              return toArray(this.rootElement.querySelectorAll(this.target));
+-          }
+-          else if (this.target instanceof Element) {
+-              return [this.target];
+-          }
+-          else {
+-              throw new TypeError("Unexpected Parameter: ".concat(this.target));
+-          }
++          return Array.from(domElementDescriptors.resolveDOMElements(this.descriptor));
+       };
+       Object.defineProperty(DOMAssertions.prototype, "targetDescription", {
+           /**
+            * @private
+            */
+           get: function () {
+-              return elementToString(this.target);
++              return domElementDescriptors.resolveDescription(this.descriptor);
++          },
++          enumerable: false,
++          configurable: true
++      });
++      Object.defineProperty(DOMAssertions.prototype, "selectedBy", {
++          /**
++           * @private
++           */
++          get: function () {
++              return this.wasPassedElement ? 'passed' : "selected by ".concat(this.targetDescription);
+           },
+           enumerable: false,
+           configurable: true
+@@ -1497,5 +1541,5 @@ var QUnitDOM = (function (exports) {
+ 
+   return exports;
+ 
+-})({});
++})({}, DOMElementDescriptors);
+ //# sourceMappingURL=qunit-dom.js.map
+diff --git a/dist/qunit-dom.js.map b/dist/qunit-dom.js.map
+index 61e21f69300bb9748928fb0d6d2d9aea93ce981f..5cdb71c2a1898e84be6ab53fc676c3f19eace16e 100644
+--- a/dist/qunit-dom.js.map
++++ b/dist/qunit-dom.js.map
+@@ -1 +1 @@
+-{"version":3,"file":"qunit-dom.js","sources":[],"sourcesContent":[],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"}
+\ No newline at end of file
++{"version":3,"file":"qunit-dom.js","sources":[],"sourcesContent":[],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;"}
