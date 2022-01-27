@@ -1,17 +1,6 @@
-import { DOM_QUERY } from './-private/types';
+import { DOM_QUERY, WithElement } from './-private/types';
 
 import type { default as PageObject } from './page-object';
-
-/**
- * Safely returns the text of the element of the page object
- */
-export function text(pageObject: PageObject) {
-  return pageObject.element?.textContent?.trim();
-}
-
-interface WithElement {
-  element: Element;
-}
 
 /**
  * Useful for providing clarity to consumers of page-objects
@@ -37,9 +26,16 @@ export function assertExists(
   msg: string,
   pageObject: PageObject
 ): asserts pageObject is PageObject & WithElement {
-  let selector = pageObject[DOM_QUERY].selectorArray.toString();
-
   if (!pageObject.element) {
-    throw new Error(`${msg} >> Tried selector \`${selector}\``);
+    throw new Error(
+      `${msg} >> Tried selector \`${getDescription(pageObject)}\``
+    );
   }
+}
+
+/**
+ * Utility to get the fully resolved selector path of a {@link PageObject}
+ */
+export function getDescription(pageObject: PageObject): string {
+  return pageObject[DOM_QUERY].selectorArray.toString();
 }

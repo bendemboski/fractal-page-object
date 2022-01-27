@@ -1,29 +1,9 @@
 import { describe, afterEach, test, expect } from '@jest/globals';
-import { PageObject, selector, text, assertExists } from '../index';
+import { PageObject, selector, assertExists } from '../index';
 import { resetRoot } from '../-private/root';
 
-describe('PageObject utils', () => {
+describe('utils', () => {
   afterEach(() => resetRoot());
-
-  describe('text', () => {
-    test('element exists', () => {
-      document.body.innerHTML = '<div>boop</div>';
-
-      class Page extends PageObject {}
-      let page = new Page('div');
-
-      expect(text(page)).toEqual('boop');
-    });
-
-    test('element missing', () => {
-      document.body.innerHTML = '<div>boop</div>';
-
-      class Page extends PageObject {}
-      let page = new Page('button');
-
-      expect(text(page)).toEqual(undefined);
-    });
-  });
 
   describe('assertExists', () => {
     test('element exists', () => {
