@@ -1,5 +1,5 @@
 import { describe, afterEach, test, expect } from '@jest/globals';
-import { PageObject, selector, assertExists } from '../index';
+import { PageObject, selector, assertExists, getDescription } from '../index';
 import { resetRoot } from '../-private/root';
 
 describe('utils', () => {
@@ -43,6 +43,26 @@ describe('utils', () => {
       expect(() => {
         assertExists('test', page.nested);
       }).toThrow(/Tried selector `div button`/);
+    });
+  });
+
+  describe('getDescription', () => {
+    test('it works', () => {
+      class Page extends PageObject {
+        thing = selector(
+          '.thing',
+          class extends PageObject {
+            subthing = selector('.subthing');
+          }
+        );
+      }
+      let page = new Page();
+
+      expect(getDescription(page.thing)).toEqual('.thing');
+      expect(getDescription(page.thing.subthing)).toEqual('.thing .subthing');
+      expect(getDescription(page.thing[1].subthing[0])).toEqual(
+        '.thing[1] .subthing[0]'
+      );
     });
   });
 });
