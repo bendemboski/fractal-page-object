@@ -47,7 +47,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
+    "@typescript-eslint/parser": "^4.33.0",
     "documentation": "^13.2.5",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.32.0",
