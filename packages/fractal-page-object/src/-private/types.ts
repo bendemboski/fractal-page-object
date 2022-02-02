@@ -11,7 +11,7 @@ export type PageObjectConstructor<T extends PageObject> = new (
 ) => T | PageObject;
 
 /**
- * Helper type for array prototype stubbing
+ * Helper type for a {@link PageObject}s and subclasses that are known to match an element
  *
  * @see {@link ArrayStub#map} etc.
  */
