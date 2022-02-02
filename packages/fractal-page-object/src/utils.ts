@@ -11,13 +11,12 @@ import type { default as PageObject } from './page-object';
  * you can pass on the element to other utilities.
  *
  * @example
- * ```ts
+ *
  * let page = new Page();
  *
  * assertExists('is the element on the page?', page);
  *
  * await click(page.element);
- * ```
  *
  * @param {string} msg a descriptor for what it could mean when the element doesn't exist
  * @param {PageObject} pageObject the page object
