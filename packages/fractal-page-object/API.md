@@ -2,27 +2,34 @@
 
 ### Table of Contents
 
--   [PageObject][1]
-    -   [Parameters][2]
-    -   [Examples][3]
-    -   [element][4]
-    -   [elements][5]
--   [selector][6]
-    -   [Parameters][7]
-    -   [Examples][8]
--   [globalSelector][9]
-    -   [Parameters][10]
-    -   [Examples][11]
--   [setRoot][12]
-    -   [Parameters][13]
+*   [PageObject][1]
+    *   [Parameters][2]
+    *   [Examples][3]
+    *   [element][4]
+    *   [elements][5]
+*   [selector][6]
+    *   [Parameters][7]
+    *   [Examples][8]
+*   [globalSelector][9]
+    *   [Parameters][10]
+    *   [Examples][11]
+*   [setRoot][12]
+    *   [Parameters][13]
+*   [assertExists][14]
+    *   [Parameters][15]
+    *   [Examples][16]
+*   [getDescription][17]
+    *   [Parameters][18]
 
 ## PageObject
+
+**Extends ArrayStub**
 
 This class implements all the basic page object functionality, and all page
 objects must inherit from it. It can host [selector][6] and
 [globalSelector][9] fields, and will properly instantiate them as nested
 [PageObject][1]s when accessed. Each page object represents a DOM query
-that matches zero or more [Element][14]s.
+that matches zero or more [Element][19]s.
 
 [PageObject][1]s exist in a tree where each [PageObject][1]'s elements
 are descendants of its parent's elements. The root of the tree is a top-level
@@ -53,13 +60,13 @@ they are constructed, but is evaluated and re-evaluated each time a property
 that depends on it is accessed.
 
 [PageObject][1]s expose an API for interacting with their matching
-elements that comprises [PageObject#element][15],
-[PageObject#elements][16], and an [Array][17] API that exposes the page
-object's matching [Element][14]s wrapped in indexed [PageObject][1]s.
+elements that comprises [PageObject#element][20],
+[PageObject#elements][21], and an [Array][22] API that exposes the page
+object's matching [Element][19]s wrapped in indexed [PageObject][1]s.
 The index operator will return an indexed [PageObject][1] that may or may
 not match an element (similar to how you can index off the end of a native
 array and get `undefined`), while various array iteration methods like
-[PageObject#map][18] generate a range of [PageObject][1]s that reflect
+[PageObject#map][23] generate a range of [PageObject][1]s that reflect
 only the indices that actually match an element.
 
 Descendant [PageObject][1]s are defined by subclassing [PageObject][1]
@@ -70,10 +77,10 @@ will match the root element (the body element or whatever was )
 
 ### Parameters
 
--   `selector` **[string][19]?** the selector to use for this page object's query (optional, default `''`)
--   `parent`  (for internal use only) (optional, default `null`)
--   `index`  (for internal use only) (optional, default `null`)
--   `rootElement`  (for internal use only) (optional, default `null`)
+*   `selector` **[string][24]?** the selector to use for this page object's query (optional, default `''`)
+*   `parent`  (for internal use only) (optional, default `null`)
+*   `index`  (for internal use only) (optional, default `null`)
+*   `rootElement`  (for internal use only) (optional, default `null`)
 
 ### Examples
 
@@ -110,14 +117,14 @@ matching this page object's query if this page object does not have an
 index, or the `index`th matching DOM element if it does have an index
 specified.
 
-Type: ([Element][20] | null)
+Type: ([Element][25] | null)
 
 ### elements
 
 This page object's list of matching DOM elements. If this page object has
 an index, this property will always have a length of 0 or 1.
 
-Type: [Array][21]&lt;[Element][20]>
+Type: [Array][26]<[Element][25]>
 
 ## selector
 
@@ -128,8 +135,8 @@ properties and functions.
 
 ### Parameters
 
--   `selector` **[string][19]** the selector relative to the parent node
--   `Class` **[Function][22]&lt;[PageObject][23]>?** optional [PageObject][1] subclass that
+*   `selector` **[string][24]** the selector relative to the parent node
+*   `Class` **[Function][27]<[PageObject][28]>?** optional [PageObject][1] subclass that
     can be used to extend the functionality of this page object
 
 ### Examples
@@ -147,7 +154,7 @@ page.list.elements; // document.body.querySelectorAll('.list')
 page.list.items.elements; // document.body.querySelectorAll('.list li')
 ```
 
-Returns **[PageObject][23]** a [PageObject][1] or [PageObject][1] subclass
+Returns **[PageObject][28]** a [PageObject][1] or [PageObject][1] subclass
 instance
 
 ## globalSelector
@@ -157,7 +164,7 @@ parent page object. Useful for cases like popovers and dropdowns, where the
 UI control is logically inside a given component, but all or part of it
 renders elsewhere in the DOM, such as directly under the body.
 [globalSelector][9] accepts a selector and optional custom class like
-[selector()][24], but the queries of the page objects it generates will be
+[selector()][29], but the queries of the page objects it generates will be
 executed from the root (`document.body` or whatever was passed to
 [setRoot][12]) rather than the parent page object's elements.
 
@@ -169,9 +176,9 @@ generates.
 
 ### Parameters
 
--   `args` **...any** 
--   `selector` **[string][19]** the selector
--   `Class` **[Function][22]&lt;[PageObject][23]>** optional [PageObject][1] subclass that
+*   `args` **...any** 
+*   `selector` **[string][24]** the selector
+*   `Class` **[Function][27]<[PageObject][28]>** optional [PageObject][1] subclass that
     can be used to extend the functionality of this page object
 
 ### Examples
@@ -214,7 +221,7 @@ page.listItems[0].popover; // document.body.querySelectorAll('.popover')
 page.listItems[0].popover.icon; // document.body.querySelectorAll('.popover .icon')
 ```
 
-Returns **[PageObject][23]** a [PageObject][1] or [PageObject][1] subclass
+Returns **[PageObject][28]** a [PageObject][1] or [PageObject][1] subclass
 instance
 
 ## setRoot
@@ -225,8 +232,40 @@ element is `document.body`.
 
 ### Parameters
 
--   `element` **([Element][20] \| [Function][22])** the root element or a function that will
+*   `element` **([Element][25] | [Function][27])** the root element or a function that will
     return it
+
+## assertExists
+
+Useful for providing clarity to consumers of page-objects
+to provide additional context so "can't access property on undefined"
+errors do not public up to the consumer.
+
+In typescript, this is also useful for type-narrowing so that
+you can pass on the element to other utilities.
+
+### Parameters
+
+*   `msg` **[string][24]** a descriptor for what it could mean when the element doesn't exist
+*   `pageObject` **[PageObject][28]** the page object
+
+### Examples
+
+```javascript
+let page = new Page();
+
+assertExists('is the element on the page?', page);
+
+await click(page.element);
+```
+
+## getDescription
+
+Utility to get the fully resolved selector path of a [PageObject][1]
+
+### Parameters
+
+*   `pageObject`  
 
 [1]: #pageobject
 
@@ -254,24 +293,34 @@ element is `document.body`.
 
 [13]: #parameters-3
 
-[14]: https://developer.mozilla.org/docs/Web/API/Element
+[14]: #assertexists
 
-[15]: #pageobjectelement
+[15]: #parameters-4
 
-[16]: #pageobjectelements
+[16]: #examples-3
 
-[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[17]: #getdescription
 
-[18]: PageObject#map
+[18]: #parameters-5
 
-[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[19]: https://developer.mozilla.org/docs/Web/API/Element
 
-[20]: https://developer.mozilla.org/docs/Web/API/Element
+[20]: #pageobjectelement
 
-[21]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[21]: #pageobjectelements
 
-[22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[23]: #pageobject
+[23]: PageObject#map
 
-[24]: selector()
+[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[25]: https://developer.mozilla.org/docs/Web/API/Element
+
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[28]: #pageobject
+
+[29]: selector\(\)

@@ -19,7 +19,7 @@
     "build": "rollup -c",
     "changelog": "lerna-changelog",
     "docs": "yarn docs:build && yarn documentation build doc-build/index.js --document-exported --config documentation.yml -f md -o API.md && yarn docs:clean",
-    "docs:build": "tsc --noEmit false --rootDir src/ --outDir doc-build/",
+    "docs:build": "tsc --noEmit false --skipLibCheck true --rootDir src/ --outDir doc-build/",
     "docs:clean": "rm -rf src/*.js src/**/*.js doc-build",
     "lint": "eslint .",
     "prepublish": "yarn build",
