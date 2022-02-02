@@ -25,7 +25,7 @@ import type { default as PageObject } from './page-object';
 export function assertExists(
   msg: string,
   pageObject: PageObject
-): asserts pageObject is PageObject & WithElement {
+): asserts pageObject is WithElement<PageObject> {
   if (!pageObject.element) {
     throw new Error(
       `${msg} >> Tried selector \`${getDescription(pageObject)}\``

@@ -1,11 +1,6 @@
 /* istanbul ignore file */
 
-/**
- * Helper type for array prototype stubbing
- *
- * @see {@link ArrayStub#map} etc.
- */
-type WithElement<T> = T & { element: Element };
+import type { WithElement } from './types';
 
 /**
  * Base class for {@link PageObject} that contains stub implementations of a

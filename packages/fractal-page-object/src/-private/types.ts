@@ -11,9 +11,8 @@ export type PageObjectConstructor<T extends PageObject> = new (
 ) => T | PageObject;
 
 /**
- * A utility interface that can be unioned with a {@link PageObject}
- * to denote that the `element` is _known_ to exist
+ * Helper type for array prototype stubbing
+ *
+ * @see {@link ArrayStub#map} etc.
  */
-export interface WithElement {
-  element: Element;
-}
+export type WithElement<T> = T & { element: Element };
