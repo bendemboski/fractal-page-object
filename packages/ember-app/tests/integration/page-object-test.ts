@@ -15,7 +15,7 @@ module('Integration | page object', function (hooks) {
       target = selector('[data-target]');
     };
     let page = new Page();
-    assert.equal(page.element, this.element);
+    assert.strictEqual(page.element, this.element as Element | null);
 
     let div = document.createElement('div');
     div.setAttribute('data-target', '');
@@ -35,8 +35,8 @@ module('Integration | page object', function (hooks) {
 
     let page = new PageObject('div');
 
-    assert.equal(page.element?.id, 'div1');
-    assert.equal(page[0].element?.id, 'div1');
+    assert.strictEqual(page.element?.id, 'div1');
+    assert.strictEqual(page[0].element?.id, 'div1');
 
     const Page = class extends PageObject {
       get prop() {
@@ -49,8 +49,8 @@ module('Integration | page object', function (hooks) {
     };
     let page2 = new Page('div');
 
-    assert.equal(page2.element?.id, 'div1');
-    assert.equal(page2[0].element?.id, 'div1');
+    assert.strictEqual(page2.element?.id, 'div1');
+    assert.strictEqual(page2[0].element?.id, 'div1');
   });
 
   test('can wrap selector()', async function (assert) {
@@ -143,13 +143,13 @@ module('Integration | page object', function (hooks) {
 
     assert.dom(page.header.title.element).hasText('List of stuff');
     assert.dom(page.list.element).doesNotExist();
-    assert.equal(page.list.listItems.length, 0);
+    assert.strictEqual(page.list.listItems.length, 0);
     assert.dom(page.list.listItems[0].element).doesNotExist();
     assert.dom(page.list.loadMore.element).doesNotExist();
 
     await click(page.header.showList.element!);
     assert.dom(page.list.element).exists();
-    assert.equal(page.list.listItems.length, 6);
+    assert.strictEqual(page.list.listItems.length, 6);
     assert.dom(page.list.listItems[0].element).exists();
     assert.dom(page.list.listItems[1].element).exists();
     assert.dom(page.list.listItems[6].element).doesNotExist();
@@ -161,7 +161,7 @@ module('Integration | page object', function (hooks) {
 
     await click(page.list.loadMore.element!);
     assert.dom(page.list.element).exists();
-    assert.equal(page.list.listItems.length, 11);
+    assert.strictEqual(page.list.listItems.length, 11);
     assert.dom(page.list.listItems[0].element).exists();
     assert.dom(page.list.listItems[1].element).exists();
     assert.dom(page.list.listItems[6].element).exists();
