@@ -1,3 +1,22 @@
+
+## v0.2.2 (2022-02-03)
+
+#### :rocket: Enhancement
+* `fractal-page-object`
+  * [#42](https://github.com/bendemboski/fractal-page-object/pull/42) Add some helpful utilities ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* `ember-app`, `fractal-page-object`, `script-tag-app`
+  * [#48](https://github.com/bendemboski/fractal-page-object/pull/48) Upgrade build/test tooling ([@bendemboski](https://github.com/bendemboski))
+  * [#23](https://github.com/bendemboski/fractal-page-object/pull/23) Update various dependencies ([@bendemboski](https://github.com/bendemboski))
+  * [#22](https://github.com/bendemboski/fractal-page-object/pull/22) Update dependencies ([@bendemboski](https://github.com/bendemboski))
+* Other
+  * [#24](https://github.com/bendemboski/fractal-page-object/pull/24) Create dependabot.yml ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 2
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## v0.2.1 (2021-08-05)
 
 #### :rocket: Enhancement
