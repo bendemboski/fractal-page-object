@@ -139,6 +139,8 @@ let page = new WelcomePage();
 
 Note the use of `querySelectorAll()` rather than `querySelector()` -- this is because, like CSS selectors, how you use page objects determines whether they resolve to the first matching element or all matching elements. Unlike CSS selectors, though, page objects can accommodate list indexing, analagous to the `:eq()` `jQuery` extension.
 
+`selector()` also supports some strings that aren't valid CSS selectors, but can be used to build valid selectors, e.g. `> .email`. The rule is that a string passed to `selector()` is valid if it is itself a valid CSS selector, or if prepending `:scope ` to it would make it a valid CSS selector.
+
 #### Page objects as lists
 
 Page objects expose an array-like API -- they implement the index operator, the `Array` iteration methods such as `map()` and `find()`, and several other `Array` methods. The index operator always returns a page object, but one that is restricted to the element at the given index (if there is one).

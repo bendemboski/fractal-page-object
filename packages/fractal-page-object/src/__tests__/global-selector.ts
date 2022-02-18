@@ -8,6 +8,7 @@ describe('globalSelector()', () => {
   test('it requires a valid selector and the class must be a PageObject subclass', () => {
     expect(() => globalSelector('')).toThrow();
     expect(() => globalSelector('  ')).toThrow();
+    expect(() => selector('$,')).toThrow();
     // @ts-expect-error violate types to make sure validation throws
     expect(() => globalSelector('', class {})).toThrow();
   });
@@ -119,5 +120,29 @@ describe('globalSelector()', () => {
     expect(page.globalP.elementId).toEqual('p1');
     expect(page.globalP[0].element).toEqual(p);
     expect(page.globalP[0].elementId).toEqual('p1');
+  });
+
+  test('it works with a scoped selector', () => {
+    document.body.innerHTML = `
+      <div>
+        <p><span></span></p>
+        <span></span>
+      </div>
+      <span></span>
+    `;
+    let div = document.body.children[0];
+    let span = div.children[1];
+
+    setRoot(div);
+
+    class Page extends PageObject {
+      span = selector('> span');
+      globalSpan = globalSelector('> span');
+    }
+    let page = new Page('span');
+
+    expect(page.span.element).toEqual(null);
+    expect(page.globalSpan.element).toEqual(span);
+    expect(page.globalSpan[0].element).toEqual(span);
   });
 });

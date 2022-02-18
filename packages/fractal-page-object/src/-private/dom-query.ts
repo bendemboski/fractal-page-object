@@ -1,3 +1,5 @@
+import { safeSelector } from './helpers';
+
 /**
  * An element of a {@link SelectorArray}, comprising a selector and optional
  * index. This is to support a DOM query/selector language that allows indexing.
@@ -90,7 +92,7 @@ export default class DOMQuery {
       if (index !== undefined) {
         if (selector) {
           // Selector and index, so query all and index into result set
-          el = el.querySelectorAll(selector)[index];
+          el = el.querySelectorAll(safeSelector(selector))[index];
         } else {
           // Only index, so index into the result set, which is just the current
           // element
@@ -98,7 +100,7 @@ export default class DOMQuery {
         }
       } else {
         // Only a selector
-        el = el.querySelector(selector);
+        el = el.querySelector(safeSelector(selector));
       }
     }
     return el || null;
@@ -122,7 +124,7 @@ export default class DOMQuery {
         let el;
         if (selector) {
           // Selector and index, so query all and index into the result set
-          el = matches[0].querySelectorAll(selector)[index];
+          el = matches[0].querySelectorAll(safeSelector(selector))[index];
         } else {
           // Only index, so index into the result set, which is just the current
           // element
@@ -132,7 +134,9 @@ export default class DOMQuery {
         matches = el ? [el] : [];
       } else {
         // Only a selector, so query for result set and covert to array
-        matches = Array.from(matches[0].querySelectorAll(selector));
+        matches = Array.from(
+          matches[0].querySelectorAll(safeSelector(selector))
+        );
       }
     }
     return matches;

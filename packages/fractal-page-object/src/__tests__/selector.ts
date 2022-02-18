@@ -5,6 +5,7 @@ describe('selector()', () => {
   test('it requires a valid selector and the class must be a PageObject subclass', () => {
     expect(() => selector('')).toThrow();
     expect(() => selector('  ')).toThrow();
+    expect(() => selector('$,')).toThrow();
     // @ts-expect-error violate types to make sure validation throws
     expect(() => selector('div', class {})).toThrow();
   });
@@ -79,5 +80,19 @@ describe('selector()', () => {
 
     expect(page.pane1.form.input.element?.id).toEqual('input1');
     expect(page.pane2.form.input.element?.id).toEqual('input2');
+  });
+
+  test('it works with a scoped selector', () => {
+    document.body.innerHTML = '<div><div></div></div>';
+    let div = document.body.children[0];
+
+    class Page extends PageObject {
+      div = selector('> div');
+    }
+    let page = new Page();
+
+    expect(page.div.length).toEqual(1);
+    expect(page.div.element).toEqual(div);
+    expect(page.div[0].element).toEqual(div);
   });
 });
