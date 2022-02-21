@@ -1,4 +1,14 @@
 
+
+## v0.3.0 (2022-02-21)
+
+#### :rocket: Enhancement
+* `fractal-page-object`
+  * [#49](https://github.com/bendemboski/fractal-page-object/pull/49) Support "scoped selectors" ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+
 ## v0.2.2 (2022-02-03)
 
 #### :rocket: Enhancement
