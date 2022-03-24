@@ -290,7 +290,7 @@ class CompletePurchasePage extends PageObject {
   purchaseInfo = selector('.purchase-info');
   purchaseButton = selector('.purchase');
 
-  loginModal = selector('.login-modal', {
+  loginModal = selector('.login-modal', class extends PageObject {
     loginForm = selector('.login-form', LoginForm);
   });
 }
