@@ -56,10 +56,11 @@ import type { PageObjectConstructor } from './-private/types';
  * When creating a top-level {@link PageObject} directly using `new`, its query
  * will match the root element (the body element or whatever was )
  *
- * @param {string} [selector] the selector to use for this page object's query
- * @param parent (for internal use only)
- * @param index (for internal use only)
- * @param rootElement (for internal use only)
+ * @param selector the selector to use for this page object's query
+ * @param parent the element or page object to use as the root of the page
+ * object's query, defaulting to the global root element
+ * @param index an index to narrow the query to an element at a specific index
+ * within the query results
  *
  * @example
  *
@@ -71,21 +72,18 @@ import type { PageObjectConstructor } from './-private/types';
  *
  * setRoot(rootElement);
  *
- * let page = new Page();
- * page.list.elements; // rootElement.querySelectorAll('.list')
- *
- * @example
- *
- * import { PageObject, selector, setRoot } from 'fractal-page-object';
- *
- * class Page extends PageObject {
- *   list = selector('.list');
- * }
- *
- * setRoot(rootElement);
- *
- * let page = new Page('.container');
- * page.list.elements; // rootElement.querySelectorAll('.container .list')
+ * // rootElement.querySelectorAll('.list')
+ * new Page().list.elements;
+ * // rootElement.querySelectorAll('.container .list')
+ * new Page('.container').list.elements;
+ * // rootElement.querySelectorAll('.container')[0].querySelectorAll('.list')
+ * new Page('.container', null, 0).list.elements;
+ * // document.body.querySelectorAll('.list');
+ * new Page('', document.body).list.elements;
+ * // document.body.querySelectorAll('.container .list');
+ * new Page('.container', document.body).list.elements;
+ * // document.body.querySelectorAll('.container')[1].querySelectorAll('.list');
+ * new Page('.container', document.body, 1).list.elements;
  */
 export default class PageObject extends ArrayStub {
   /**
@@ -142,7 +140,7 @@ export default class PageObject extends ArrayStub {
    */
   [CLONE_WITH_INDEX](index: number): PageObject {
     let Class = this.constructor as PageObjectConstructor<PageObject>;
-    return new Class('', this, index, this.rootElement);
+    return new Class('', this, index);
   }
 
   /**
@@ -169,23 +167,19 @@ export default class PageObject extends ArrayStub {
    * object
    * @param index an optional index, making this page object only describe a
    * single element (or none) rather than a list of elements
-   * @param rootElement an optional element that will be used as the root of
-   * this element's query, overriding the parent and/or global root
    *
    * @private
    */
   constructor(
     selector: string,
     parent?: PageObject | Element | null,
-    index?: number | null,
-    rootElement?: Element | null
+    index?: number | null
   );
 
   constructor(
     private selector: string = '',
     private parent: PageObject | Element | null = null,
-    private index: number | null = null,
-    private rootElement: Element | null = null
+    private index: number | null = null
   ) {
     super();
     return createProxy(this);

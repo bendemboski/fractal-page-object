@@ -77,10 +77,11 @@ will match the root element (the body element or whatever was )
 
 ### Parameters
 
-*   `selector` **[string][24]?** the selector to use for this page object's query (optional, default `''`)
-*   `parent`  (for internal use only) (optional, default `null`)
-*   `index`  (for internal use only) (optional, default `null`)
-*   `rootElement`  (for internal use only) (optional, default `null`)
+*   `selector`  the selector to use for this page object's query (optional, default `''`)
+*   `parent`  the element or page object to use as the root of the page
+    object's query, defaulting to the global root element (optional, default `null`)
+*   `index`  an index to narrow the query to an element at a specific index
+    within the query results (optional, default `null`)
 
 ### Examples
 
@@ -93,21 +94,18 @@ class Page extends PageObject {
 
 setRoot(rootElement);
 
-let page = new Page();
-page.list.elements; // rootElement.querySelectorAll('.list')
-```
-
-```javascript
-import { PageObject, selector, setRoot } from 'fractal-page-object';
-
-class Page extends PageObject {
-  list = selector('.list');
-}
-
-setRoot(rootElement);
-
-let page = new Page('.container');
-page.list.elements; // rootElement.querySelectorAll('.container .list')
+// rootElement.querySelectorAll('.list')
+new Page().list.elements;
+// rootElement.querySelectorAll('.container .list')
+new Page('.container').list.elements;
+// rootElement.querySelectorAll('.container')[0].querySelectorAll('.list')
+new Page('.container', null, 0).list.elements;
+// document.body.querySelectorAll('.list');
+new Page('', document.body).list.elements;
+// document.body.querySelectorAll('.container .list');
+new Page('.container', document.body).list.elements;
+// document.body.querySelectorAll('.container')[1].querySelectorAll('.list');
+new Page('.container', document.body, 1).list.elements;
 ```
 
 ### element
@@ -117,14 +115,14 @@ matching this page object's query if this page object does not have an
 index, or the `index`th matching DOM element if it does have an index
 specified.
 
-Type: ([Element][25] | null)
+Type: ([Element][24] | null)
 
 ### elements
 
 This page object's list of matching DOM elements. If this page object has
 an index, this property will always have a length of 0 or 1.
 
-Type: [Array][26]<[Element][25]>
+Type: [Array][25]<[Element][24]>
 
 ## selector
 
@@ -135,7 +133,7 @@ properties and functions.
 
 ### Parameters
 
-*   `selector` **[string][24]** the selector relative to the parent node
+*   `selector` **[string][26]** the selector relative to the parent node
 *   `Class` **[Function][27]<[PageObject][28]>?** optional [PageObject][1] subclass that
     can be used to extend the functionality of this page object
 
@@ -177,7 +175,7 @@ generates.
 ### Parameters
 
 *   `args` **...any** 
-*   `selector` **[string][24]** the selector
+*   `selector` **[string][26]** the selector
 *   `Class` **[Function][27]<[PageObject][28]>** optional [PageObject][1] subclass that
     can be used to extend the functionality of this page object
 
@@ -232,7 +230,7 @@ element is `document.body`.
 
 ### Parameters
 
-*   `element` **([Element][25] | [Function][27])** the root element or a function that will
+*   `element` **([Element][24] | [Function][27])** the root element or a function that will
     return it
 
 ## assertExists
@@ -246,7 +244,7 @@ you can pass on the element to other utilities.
 
 ### Parameters
 
-*   `msg` **[string][24]** a descriptor for what it could mean when the element doesn't exist
+*   `msg` **[string][26]** a descriptor for what it could mean when the element doesn't exist
 *   `pageObject` **[PageObject][28]** the page object
 
 ### Examples
@@ -313,11 +311,11 @@ Utility to get the fully resolved selector path of a [PageObject][1]
 
 [23]: PageObject#map
 
-[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[24]: https://developer.mozilla.org/docs/Web/API/Element
 
-[25]: https://developer.mozilla.org/docs/Web/API/Element
+[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
 [27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
