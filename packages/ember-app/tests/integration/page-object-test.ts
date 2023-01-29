@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, render } from '@ember/test-helpers';
+import { click, render, RenderingTestContext } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { PageObject, selector } from 'fractal-page-object';
 import type { PageObjectConstructor } from 'fractal-page-object';
@@ -10,7 +10,7 @@ import { action } from '@ember/object';
 module('Integration | page object', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('page objects provide the correct root', async function (assert) {
+  test('page objects provide the correct root', async function (this: RenderingTestContext, assert) {
     const Page = class extends PageObject {
       target = selector('[data-target]');
     };
