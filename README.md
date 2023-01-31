@@ -239,6 +239,36 @@ page.loadButton.element.click(); // populates the DOM with list items
 thirdImage.element; // non-null
 ```
 
+### typescript
+By adding a type parameter to the `selector` you can have the attributes of that particular element without type casting or type narrowing:
+
+```typescript
+// Page object elements do not have a checked attribute
+// But HTMLInputElement elements do!
+class Page extends PageObject {
+  checkbox = selector<PageObject<HTMLInputElement>>('.checkbox');
+}
+
+const page = new Page();
+
+page.checkbox.element?.checked // this should exist without having to type narrow or cast
+
+```
+
+For earlier versions of fractal page object, be sure to type narrow or cast.
+
+```typescript
+// type narrowing, prefer this over type casting 
+class Page extends PageObject {
+  checkbox = selector('.checkbox');
+}
+const page = new Page();
+
+if (page.checkbox.element instanceOf HTMLInputElement) {
+  page.checkbox.element?.checked // should work now
+} 
+```
+
 ### Extending
 
 Page objects can be extended by adding any functionality to the `PageObject` subclass:
@@ -307,6 +337,7 @@ class LoginPage extends PageObject {
   loginForm = LoginForm.selector;
 }
 ```
+
 
 ### API
 
