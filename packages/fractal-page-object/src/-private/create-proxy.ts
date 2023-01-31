@@ -10,7 +10,9 @@ import { CLONE_WITH_INDEX } from './types';
  *
  * @returns the proxy implementing the page object & array functionality
  */
-export default function createProxy(pageObject: PageObject): PageObject {
+export default function createProxy<K extends Element = Element>(
+  pageObject: PageObject<K>
+): PageObject<K> {
   return new Proxy(pageObject, {
     get(pageObject, prop: string, receiver) {
       if (Reflect.has(pageObject, prop)) {

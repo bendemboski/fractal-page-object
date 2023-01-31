@@ -85,7 +85,7 @@ import type { PageObjectConstructor } from './-private/types';
  * // document.body.querySelectorAll('.container')[1].querySelectorAll('.list');
  * new Page('.container', document.body, 1).list.elements;
  */
-export default class PageObject extends ArrayStub {
+export default class PageObject<K extends Element = Element> extends ArrayStub {
   /**
    * This page object's single matching DOM element -- the first DOM element
    * matching this page object's query if this page object does not have an
@@ -94,8 +94,8 @@ export default class PageObject extends ArrayStub {
    *
    * @type {Element | null}
    */
-  get element(): Element | null {
-    return this[DOM_QUERY].query();
+  get element(): K | null {
+    return this[DOM_QUERY].query() as unknown as K;
   }
 
   /**
@@ -182,6 +182,6 @@ export default class PageObject extends ArrayStub {
     private index: number | null = null
   ) {
     super();
-    return createProxy(this);
+    return createProxy<K>(this);
   }
 }
