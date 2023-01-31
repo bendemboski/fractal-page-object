@@ -95,4 +95,15 @@ describe('selector()', () => {
     expect(page.div.element).toEqual(div);
     expect(page.div[0].element).toEqual(div);
   });
+
+  test('it works with different HTMLElement generic', () => {
+    document.body.innerHTML = '<input type="checkbox" class="checkbox" checked />';
+
+    class Page extends PageObject {
+      checkbox = selector<PageObject<HTMLInputElement>>('.checkbox');
+    }
+    let page = new Page();
+
+    expect(page.checkbox.element.checked).toBeTruthy();
+  })
 });
