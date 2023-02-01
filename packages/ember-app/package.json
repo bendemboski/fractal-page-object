@@ -31,7 +31,7 @@
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
     "@types/qunit": "^2.19.4",
-    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.49.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^7.6.0",
