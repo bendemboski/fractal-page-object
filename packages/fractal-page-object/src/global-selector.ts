@@ -3,12 +3,14 @@ import PageObject from './page-object';
 import type { PageObjectConstructor } from './-private/types';
 import { validateSelectorArguments } from './-private/helpers';
 
-type Arguments<T extends PageObject> = [string, PageObjectConstructor<T>?];
-type ArgumentsWithRoot<T extends PageObject> = [
-  string,
-  Element,
-  PageObjectConstructor<T>?
-];
+type Arguments<
+  ElementType extends Element,
+  T extends PageObject<ElementType>
+> = [string, PageObjectConstructor<ElementType, T>?];
+type ArgumentsWithRoot<
+  ElementType extends Element,
+  T extends PageObject<ElementType>
+> = [string, Element, PageObjectConstructor<ElementType, T>?];
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -33,10 +35,10 @@ type ArgumentsWithRoot<T extends PageObject> = [
  * @returns {PageObject} a {@link PageObject} or {@link PageObject} subclass
  * instance
  */
-export default function globalSelector<T extends PageObject>(
-  selector: string,
-  Class?: PageObjectConstructor<T>
-): T;
+export default function globalSelector<
+  ElementType extends Element = Element,
+  T extends PageObject<ElementType> = PageObject<ElementType>
+>(selector: string, Class?: PageObjectConstructor<ElementType, T>): T;
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -63,10 +65,13 @@ export default function globalSelector<T extends PageObject>(
  * @returns {PageObject} a {@link PageObject} or {@link PageObject} subclass
  * instance
  */
-export default function globalSelector<T extends PageObject>(
+export default function globalSelector<
+  ElementType extends Element = Element,
+  T extends PageObject<ElementType> = PageObject<ElementType>
+>(
   selector: string,
-  rootElement: Element,
-  Class?: PageObjectConstructor<T>
+  rootElement: ElementType,
+  Class?: PageObjectConstructor<ElementType, T>
 ): T;
 
 /**
@@ -130,9 +135,10 @@ export default function globalSelector<T extends PageObject>(
  * page.listItems[0].popover; // document.body.querySelectorAll('.popover')
  * page.listItems[0].popover.icon; // document.body.querySelectorAll('.popover .icon')
  */
-export default function globalSelector<T extends PageObject>(
-  ...args: Arguments<T> | ArgumentsWithRoot<T>
-): T {
+export default function globalSelector<
+  ElementType extends Element = Element,
+  T extends PageObject<ElementType> = PageObject<ElementType>
+>(...args: Arguments<ElementType, T> | ArgumentsWithRoot<ElementType, T>): T {
   let selector = args[0];
   let rootElement;
   let Class;

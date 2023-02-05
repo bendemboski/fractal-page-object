@@ -145,4 +145,40 @@ describe('globalSelector()', () => {
     expect(page.globalSpan.element).toEqual(span);
     expect(page.globalSpan[0].element).toEqual(span);
   });
+
+  test('it works with an Element sub-type', () => {
+    document.body.innerHTML = `
+      <input value="value1">
+    `;
+
+    class Page extends PageObject {
+      input = globalSelector<HTMLInputElement>('input');
+    }
+    let page = new Page();
+
+    expect(page.input.element?.value).toEqual('value1');
+    expect(page.input.elements[0].value).toEqual('value1');
+  });
+
+  test('it works with a PageObject sub-class with an Element sub-type', () => {
+    document.body.innerHTML = `
+      <input value="value1">
+    `;
+
+    class Page extends PageObject {
+      input = globalSelector(
+        'input',
+        class extends PageObject<HTMLInputElement> {
+          get value() {
+            return this.element?.value;
+          }
+        }
+      );
+    }
+    let page = new Page('span');
+
+    expect(page.input.element?.value).toEqual('value1');
+    expect(page.input.elements[0].value).toEqual('value1');
+    expect(page.input.value).toEqual('value1');
+  });
 });

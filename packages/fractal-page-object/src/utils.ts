@@ -21,10 +21,10 @@ import type { default as PageObject } from './page-object';
  * @param {string} msg a descriptor for what it could mean when the element doesn't exist
  * @param {PageObject} pageObject the page object
  */
-export function assertExists(
+export function assertExists<ElementType extends Element>(
   msg: string,
-  pageObject: PageObject
-): asserts pageObject is WithElement<PageObject> {
+  pageObject: PageObject<ElementType>
+): asserts pageObject is WithElement<PageObject<ElementType>, ElementType> {
   if (!pageObject.element) {
     throw new Error(
       `${msg} >> Tried selector \`${getDescription(pageObject)}\``
@@ -35,6 +35,8 @@ export function assertExists(
 /**
  * Utility to get the fully resolved selector path of a {@link PageObject}
  */
-export function getDescription(pageObject: PageObject): string {
+export function getDescription<ElementType extends Element>(
+  pageObject: PageObject<ElementType>
+): string {
   return pageObject[DOM_QUERY].selectorArray.toString();
 }

@@ -10,11 +10,11 @@ import type { WithElement } from './types';
  *
  * It really seems like there should be a better way to do this, but I can't
  * figure out how else to make PageObject subclasses look like arrays of
- * `WithElement<this>`.
+ * `WithElement<this, ElementType>`.
  *
  * @private
  */
-export default class ArrayStub {
+export default class ArrayStub<ElementType extends Element> {
   //
   // Array API
   //
@@ -25,7 +25,7 @@ export default class ArrayStub {
   //
   // It really seems like there should be a better way to do this, but I can't
   // figure out how else to make PageObject subclasses look like arrays of
-  // `WithElement<this>`.
+  // `WithElement<this, ElementType>`.
   //
 
   /**
@@ -35,46 +35,58 @@ export default class ArrayStub {
   /**
    * @private
    */
-  declare pop: () => WithElement<this> | undefined;
+  declare pop: () => WithElement<this, ElementType> | undefined;
   /**
    * @private
    */
   declare concat: (
     ...items:
-      | ConcatArray<WithElement<this>>[]
-      | (WithElement<this> | ConcatArray<WithElement<this>>)[]
-      | (WithElement<this> | ConcatArray<WithElement<this>>)[]
-  ) => WithElement<this>[];
+      | ConcatArray<WithElement<this, ElementType>>[]
+      | (
+          | WithElement<this, ElementType>
+          | ConcatArray<WithElement<this, ElementType>>
+        )[]
+      | (
+          | WithElement<this, ElementType>
+          | ConcatArray<WithElement<this, ElementType>>
+        )[]
+  ) => WithElement<this, ElementType>[];
   /**
    * @private
    */
-  declare reverse: () => WithElement<this>[];
+  declare reverse: () => WithElement<this, ElementType>[];
   /**
    * @private
    */
-  declare shift: () => WithElement<this> | undefined;
+  declare shift: () => WithElement<this, ElementType> | undefined;
   /**
    * @private
    */
-  declare slice: (_start?: number, _end?: number) => WithElement<this>[];
+  declare slice: (
+    _start?: number,
+    _end?: number
+  ) => WithElement<this, ElementType>[];
   /**
    * @private
    */
   declare sort: (
-    _compareFn?: (a: WithElement<this>, b: WithElement<this>) => number
+    _compareFn?: (
+      a: WithElement<this, ElementType>,
+      b: WithElement<this, ElementType>
+    ) => number
   ) => this[];
   /**
    * @private
    */
   declare indexOf: (
-    _searchElement: WithElement<this>,
+    _searchElement: WithElement<this, ElementType>,
     _fromIndex?: number
   ) => number;
   /**
    * @private
    */
   declare lastIndexOf: (
-    _searchElement: WithElement<this>,
+    _searchElement: WithElement<this, ElementType>,
     _fromIndex?: number
   ) => number;
   /**
@@ -82,9 +94,9 @@ export default class ArrayStub {
    */
   declare every: (
     predicate: (
-      value: WithElement<this>,
+      value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this>[]
+      array: WithElement<this, ElementType>[]
     ) => unknown,
     _thisArg?: any
   ) => boolean;
@@ -93,9 +105,9 @@ export default class ArrayStub {
    */
   declare some: (
     _predicate: (
-      value: WithElement<this>,
+      value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this>[]
+      array: WithElement<this, ElementType>[]
     ) => unknown,
     _thisArg?: any
   ) => boolean;
@@ -104,9 +116,9 @@ export default class ArrayStub {
    */
   declare forEach: (
     _callbackfn: (
-      value: WithElement<this>,
+      value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this>[]
+      array: WithElement<this, ElementType>[]
     ) => void,
     _thisArg?: any
   ) => void;
@@ -115,9 +127,9 @@ export default class ArrayStub {
    */
   declare map: <U>(
     _callbackfn: (
-      value: WithElement<this>,
+      value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this>[]
+      array: WithElement<this, ElementType>[]
     ) => U,
     _thisArg?: any
   ) => U[];
@@ -126,21 +138,21 @@ export default class ArrayStub {
    */
   declare filter: (
     predicate: (
-      value: WithElement<this>,
+      value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this>[]
+      array: WithElement<this, ElementType>[]
     ) => unknown,
     thisArg?: any
-  ) => WithElement<this>[];
+  ) => WithElement<this, ElementType>[];
   /**
    * @private
    */
   declare reduce: <U>(
     _callbackfn: (
       previousValue: U,
-      currentValue: WithElement<this>,
+      currentValue: WithElement<this, ElementType>,
       currentIndex: number,
-      array: WithElement<this>[]
+      array: WithElement<this, ElementType>[]
     ) => U,
     initialValue: U
   ) => U;
@@ -150,9 +162,9 @@ export default class ArrayStub {
   declare reduceRight: <U>(
     _callbackfn: (
       previousValue: U,
-      currentValue: WithElement<this>,
+      currentValue: WithElement<this, ElementType>,
       currentIndex: number,
-      array: WithElement<this>[]
+      array: WithElement<this, ElementType>[]
     ) => U,
     initialValue: U
   ) => U;
@@ -161,20 +173,20 @@ export default class ArrayStub {
    */
   declare find: (
     predicate: (
-      value: WithElement<this>,
+      value: WithElement<this, ElementType>,
       index: number,
-      obj: WithElement<this>[]
+      obj: WithElement<this, ElementType>[]
     ) => unknown,
     thisArg?: any
-  ) => WithElement<this> | undefined;
+  ) => WithElement<this, ElementType> | undefined;
   /**
    * @private
    */
   declare findIndex: (
     _predicate: (
-      value: WithElement<this>,
+      value: WithElement<this, ElementType>,
       index: number,
-      obj: WithElement<this>[]
+      obj: WithElement<this, ElementType>[]
     ) => unknown,
     _thisArg?: any
   ) => number;
@@ -182,17 +194,21 @@ export default class ArrayStub {
    * @private
    */
   declare includes: (
-    _searchElement: WithElement<this>,
+    _searchElement: WithElement<this, ElementType>,
     _fromIndex?: number
   ) => boolean;
   /**
    * @private
    */
-  declare [Symbol.iterator]: () => IterableIterator<WithElement<this>>;
+  declare [Symbol.iterator]: () => IterableIterator<
+    WithElement<this, ElementType>
+  >;
   /**
    * @private
    */
-  declare entries: () => IterableIterator<[number, WithElement<this>]>;
+  declare entries: () => IterableIterator<
+    [number, WithElement<this, ElementType>]
+  >;
   /**
    * @private
    */
@@ -200,7 +216,7 @@ export default class ArrayStub {
   /**
    * @private
    */
-  declare values: () => IterableIterator<WithElement<this>>;
+  declare values: () => IterableIterator<WithElement<this, ElementType>>;
 
   /**
    * @private

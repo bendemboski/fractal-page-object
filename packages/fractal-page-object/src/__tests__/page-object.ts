@@ -664,5 +664,46 @@ describe('PageObject', () => {
 
       expect(page2.map((o) => o.element.id)).toEqual(['div1']);
     });
+
+    test('the element type can be specified', () => {
+      document.body.innerHTML = `
+        <input value="value1">
+        <input value="value2">
+      `;
+
+      let page = new PageObject<HTMLInputElement>('input');
+
+      expect(page.element?.value).toEqual('value1');
+      expect(page.elements[0].value).toEqual('value1');
+      expect(page.elements[1].value).toEqual('value2');
+      expect(page.elements.map((el) => el.value)).toEqual(['value1', 'value2']);
+    });
+
+    test('the element type applies to subclasses', () => {
+      document.body.innerHTML = `
+        <input value="value1">
+        <input value="value2">
+      `;
+      class Page extends PageObject<HTMLInputElement> {
+        getFn() {
+          return `getFn ${this.element?.value}:[${this.elements
+            .map((e) => e.value)
+            .join(',')}]`;
+        }
+        get getter() {
+          return `getter ${this.element?.value}:[${this.elements
+            .map((e) => e.value)
+            .join(',')}]`;
+        }
+      }
+      let page = new Page('input');
+
+      expect(page.element?.value).toEqual('value1');
+      expect(page.elements[0]?.value).toEqual('value1');
+      expect(page.elements[1]?.value).toEqual('value2');
+      expect(page.elements.map((el) => el.value)).toEqual(['value1', 'value2']);
+      expect(page.getFn()).toEqual('getFn value1:[value1,value2]');
+      expect(page.getter).toEqual('getter value1:[value1,value2]');
+    });
   });
 });

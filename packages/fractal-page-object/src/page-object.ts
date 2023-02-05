@@ -10,7 +10,8 @@ import type { PageObjectConstructor } from './-private/types';
  * objects must inherit from it. It can host {@link selector} and
  * {@link globalSelector} fields, and will properly instantiate them as nested
  * {@link PageObject}s when accessed. Each page object represents a DOM query
- * that matches zero or more {@link Element}s.
+ * that matches zero or more {@link Element}s (or subclasses of {@link Element}
+ * -- see {@link ElementType}).
  *
  * {@link PageObject}s exist in a tree where each {@link PageObject}'s elements
  * are descendants of its parent's elements. The root of the tree is a top-level
@@ -43,12 +44,13 @@ import type { PageObjectConstructor } from './-private/types';
  * {@link PageObject}s expose an API for interacting with their matching
  * elements that comprises {@link PageObject#element},
  * {@link PageObject#elements}, and an {@link Array} API that exposes the page
- * object's matching {@link Element}s wrapped in indexed {@link PageObject}s.
- * The index operator will return an indexed {@link PageObject} that may or may
- * not match an element (similar to how you can index off the end of a native
- * array and get `undefined`), while various array iteration methods like
- * {@link PageObject#map} generate a range of {@link PageObject}s that reflect
- * only the indices that actually match an element.
+ * object's matching {@link ElementType}s wrapped in indexed
+ * {@link PageObject}s. The index operator will return an indexed
+ * {@link PageObject} that may or may not match an element (similar to how you
+ * can index off the end of a native array and get `undefined`), while various
+ * array iteration methods like {@link PageObject#map} generate a range of
+ * {@link PageObject}s that reflect only the indices that actually match an
+ * element.
  *
  * Descendant {@link PageObject}s are defined by subclassing {@link PageObject}
  * and using the {@link selector} factory function to initialize class fields.
@@ -85,27 +87,29 @@ import type { PageObjectConstructor } from './-private/types';
  * // document.body.querySelectorAll('.container')[1].querySelectorAll('.list');
  * new Page('.container', document.body, 1).list.elements;
  */
-export default class PageObject extends ArrayStub {
+export default class PageObject<
+  ElementType extends Element = Element
+> extends ArrayStub<ElementType> {
   /**
    * This page object's single matching DOM element -- the first DOM element
    * matching this page object's query if this page object does not have an
    * index, or the `index`th matching DOM element if it does have an index
    * specified.
    *
-   * @type {Element | null}
+   * @type {ElementType | null}
    */
-  get element(): Element | null {
-    return this[DOM_QUERY].query();
+  get element(): ElementType | null {
+    return this[DOM_QUERY].query() as ElementType | null;
   }
 
   /**
    * This page object's list of matching DOM elements. If this page object has
    * an index, this property will always have a length of 0 or 1.
    *
-   * @type {Element[]}
+   * @type {ElementType[]}
    */
-  get elements(): Element[] {
-    return this[DOM_QUERY].queryAll();
+  get elements(): ElementType[] {
+    return this[DOM_QUERY].queryAll() as ElementType[];
   }
 
   /**
@@ -138,8 +142,11 @@ export default class PageObject extends ArrayStub {
    *
    * @private
    */
-  [CLONE_WITH_INDEX](index: number): PageObject {
-    let Class = this.constructor as PageObjectConstructor<PageObject>;
+  [CLONE_WITH_INDEX](index: number): PageObject<ElementType> {
+    let Class = this.constructor as PageObjectConstructor<
+      ElementType,
+      PageObject<ElementType>
+    >;
     return new Class('', this, index);
   }
 

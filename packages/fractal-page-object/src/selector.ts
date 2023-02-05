@@ -29,10 +29,10 @@ import { validateSelectorArguments } from './-private/helpers';
  * page.list.elements; // document.body.querySelectorAll('.list')
  * page.list.items.elements; // document.body.querySelectorAll('.list li')
  */
-export default function selector<T extends PageObject>(
-  selector: string,
-  Class?: PageObjectConstructor<T>
-): T {
+export default function selector<
+  ElementType extends Element = Element,
+  T extends PageObject<ElementType> = PageObject<ElementType>
+>(selector: string, Class?: PageObjectConstructor<ElementType, T>): T {
   validateSelectorArguments(selector, Class);
 
   // Return a factory, but typed as the class it will instantiate since the

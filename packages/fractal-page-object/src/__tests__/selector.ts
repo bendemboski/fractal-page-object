@@ -95,4 +95,36 @@ describe('selector()', () => {
     expect(page.div.element).toEqual(div);
     expect(page.div[0].element).toEqual(div);
   });
+
+  test('it works with an Element sub-type', () => {
+    document.body.innerHTML = '<input value="value1">';
+
+    class Page extends PageObject {
+      input = selector<HTMLInputElement>('input');
+    }
+    let page = new Page();
+
+    expect(page.input.element?.value).toEqual('value1');
+    expect(page.input.elements[0].value).toEqual('value1');
+  });
+
+  test('it works with a PageObject sub-class with an Element sub-type', () => {
+    document.body.innerHTML = '<input value="value1">';
+
+    class Page extends PageObject {
+      input = selector(
+        'input',
+        class extends PageObject<HTMLInputElement> {
+          get value() {
+            return this.element?.value;
+          }
+        }
+      );
+    }
+    let page = new Page();
+
+    expect(page.input.element?.value).toEqual('value1');
+    expect(page.input.elements[0].value).toEqual('value1');
+    expect(page.input.value).toEqual('value1');
+  });
 });

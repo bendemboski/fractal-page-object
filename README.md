@@ -12,6 +12,7 @@ A lightweight page object implementation with a focus on simplicity and extensib
   - [Mental Model](#mental-model)
     - [Page objects as lists](#page-objects-as-lists)
   - [Lazy evaluation](#lazy-evaluation)
+  - [Element types (typescript)](#element-types-typescript)
   - [Extending](#extending)
   - [Re-use](#re-use)
   - [API](#api)
@@ -237,6 +238,32 @@ thirdImage.element; // null
 
 page.loadButton.element.click(); // populates the DOM with list items
 thirdImage.element; // non-null
+```
+
+### Element types (typescript)
+
+By default all elements returned from page objects are typed as generic `Element`s. However, if a page object is known to always return elements of a particular `Element` sub-type, that can be encoded in the page object's declaration:
+
+```typescript
+class Page extends PageObject {
+  loadButton = selector<HTMLButtonElement>('.load');  
+  form = selector('form', class extends PageObject<HTMLFormElement> {
+    input = selector<HTMLInputElement>('.form-input');
+  });
+}
+let page = new Page();
+
+// the `disabled` property is present because `page.loadButton.element` is an
+// `HTMLButtonElement`
+page.loadButton.element.disabled = false;
+
+// the `value` property is present because `page.form.input.element` is an
+// `HTMLInputElement`
+page.form.input.value = ;
+
+// the `submit` method is present because `page.form.element` is an
+// `HTMLFormElement`
+page.form.submit();
 ```
 
 ### Extending
