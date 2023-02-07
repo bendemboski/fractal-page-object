@@ -1,10 +1,13 @@
 import PageObject from '../page-object';
 import type { PageObjectConstructor } from './types';
 
-function isPageObjectSubclass<T extends PageObject>(
-  Class: PageObjectConstructor<T>
-) {
-  return Class === PageObject || Class.prototype instanceof PageObject;
+function isPageObjectSubclass<
+  ElementType extends Element,
+  T extends PageObject<ElementType>
+>(Class: PageObjectConstructor<ElementType, T>) {
+  return (
+    (Class as unknown) === PageObject || Class.prototype instanceof PageObject
+  );
 }
 
 /**
@@ -21,10 +24,10 @@ export function safeSelector(selector: string): string {
   return `:scope ${selector}`;
 }
 
-export function validateSelectorArguments<T extends PageObject>(
-  selector: string,
-  Class?: PageObjectConstructor<T>
-): void {
+export function validateSelectorArguments<
+  ElementType extends Element,
+  T extends PageObject<ElementType>
+>(selector: string, Class?: PageObjectConstructor<ElementType, T>): void {
   if (!selector.trim()) {
     throw new Error('Cannot specify an empty selector');
   }

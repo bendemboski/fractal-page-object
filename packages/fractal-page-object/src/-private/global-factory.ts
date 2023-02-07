@@ -9,8 +9,9 @@ import Factory from './factory';
  * default to the global root set via {@link setRoot}.
  */
 export default class GlobalPageObjectFactory<
-  T extends PageObject
-> extends Factory<T> {
+  ElementType extends Element,
+  T extends PageObject<ElementType>
+> extends Factory<ElementType, T> {
   /**
    * @param selector the selector for page objects created from this factory
    * @param rootElement the element that will be used to scope the page object's
@@ -21,8 +22,8 @@ export default class GlobalPageObjectFactory<
    */
   constructor(
     selector: string,
-    private rootElement?: Element,
-    Class?: PageObjectConstructor<T>
+    private rootElement?: ElementType,
+    Class?: PageObjectConstructor<ElementType, T>
   ) {
     super(selector, Class);
   }
@@ -33,7 +34,7 @@ export default class GlobalPageObjectFactory<
    * @param parent the {@link PageObject} to set as the new page object's parent
    * @returns the new page object
    */
-  create(): PageObject {
+  create(): PageObject<ElementType> {
     return super.create(this.rootElement);
   }
 }

@@ -3,12 +3,29 @@ import PageObject from './page-object';
 import type { PageObjectConstructor } from './-private/types';
 import { validateSelectorArguments } from './-private/helpers';
 
-type Arguments<T extends PageObject> = [string, PageObjectConstructor<T>?];
-type ArgumentsWithRoot<T extends PageObject> = [
-  string,
-  Element,
-  PageObjectConstructor<T>?
-];
+/**
+ * Define a {@link PageObject} with a global scope, i.e. not scoped by its
+ * parent page object. Useful for cases like popovers and dropdowns, where the
+ * UI control is logically inside a given component, but all or part of it
+ * renders elsewhere in the DOM, such as directly under the body.
+ * {@link globalSelector} accepts a selector and optional custom class like
+ * {@link selector()}, but the queries of the page objects it generates will be
+ * executed from the root (`document.body` or whatever was passed to
+ * {@link setRoot}) rather than the parent page object's elements.
+ *
+ * In some cases, it makes sense to set up a global root using {@link setRoot},
+ * but some elements might be rendered outside even that, such as directly under
+ * the body. For cases like this, {@link globalSelector} accepts an optional
+ * root element to use as the root of the queries of the page object it
+ * generates.
+ *
+ * @param {string} selector the selector
+ *
+ * @returns {PageObject} a {@link PageObject} instance
+ */
+export default function globalSelector<ElementType extends Element = Element>(
+  selector: string
+): PageObject<ElementType>;
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -27,16 +44,15 @@ type ArgumentsWithRoot<T extends PageObject> = [
  * generates.
  *
  * @param {string} selector the selector
- * @param {Function<PageObject>} [Class] optional {@link PageObject} subclass that
+ * @param {Function<PageObject>} [Class] {@link PageObject} subclass that
  * can be used to extend the functionality of this page object
  *
- * @returns {PageObject} a {@link PageObject} or {@link PageObject} subclass
- * instance
+ * @returns {PageObject} a {@link PageObject} subclass instance
  */
-export default function globalSelector<T extends PageObject>(
-  selector: string,
-  Class?: PageObjectConstructor<T>
-): T;
+export default function globalSelector<
+  ElementType extends Element,
+  T extends PageObject<ElementType>
+>(selector: string, Class: PageObjectConstructor<ElementType, T>): T;
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -57,16 +73,45 @@ export default function globalSelector<T extends PageObject>(
  * @param {string} selector the selector
  * @param {Element} rootElement the root element under which to query the
  * selector.
- * @param {Function<PageObject>} Class optional {@link PageObject} subclass that
+ *
+ * @returns {PageObject} a {@link PageObject} instance
+ */
+export default function globalSelector<ElementType extends Element = Element>(
+  selector: string,
+  rootElement: Element
+): PageObject<ElementType>;
+
+/**
+ * Define a {@link PageObject} with a global scope, i.e. not scoped by its
+ * parent page object. Useful for cases like popovers and dropdowns, where the
+ * UI control is logically inside a given component, but all or part of it
+ * renders elsewhere in the DOM, such as directly under the body.
+ * {@link globalSelector} accepts a selector and optional custom class like
+ * {@link selector()}, but the queries of the page objects it generates will be
+ * executed from the root (`document.body` or whatever was passed to
+ * {@link setRoot}) rather than the parent page object's elements.
+ *
+ * In some cases, it makes sense to set up a global root using {@link setRoot},
+ * but some elements might be rendered outside even that, such as directly under
+ * the body. For cases like this, {@link globalSelector} accepts an optional
+ * root element to use as the root of the queries of the page object it
+ * generates.
+ *
+ * @param {string} selector the selector
+ * @param {Element} rootElement the root element under which to query the
+ * selector.
+ * @param {Function<PageObject>} [Class] {@link PageObject} subclass that
  * can be used to extend the functionality of this page object
  *
- * @returns {PageObject} a {@link PageObject} or {@link PageObject} subclass
- * instance
+ * @returns {PageObject} a {@link PageObject} subclass instance
  */
-export default function globalSelector<T extends PageObject>(
+export default function globalSelector<
+  ElementType extends Element,
+  T extends PageObject<ElementType>
+>(
   selector: string,
   rootElement: Element,
-  Class?: PageObjectConstructor<T>
+  Class: PageObjectConstructor<ElementType, T>
 ): T;
 
 /**
@@ -86,6 +131,8 @@ export default function globalSelector<T extends PageObject>(
  * generates.
  *
  * @param {string} selector the selector
+ * @param {Element} rootElement optional the root element under which to query
+ * the selector.
  * @param {Function<PageObject>} Class optional {@link PageObject} subclass that
  * can be used to extend the functionality of this page object
  *
@@ -129,9 +176,25 @@ export default function globalSelector<T extends PageObject>(
  * page.listItems[0]; // testContainer.querySelectorAll('.listItems')[0]
  * page.listItems[0].popover; // document.body.querySelectorAll('.popover')
  * page.listItems[0].popover.icon; // document.body.querySelectorAll('.popover .icon')
+ *
+ * @example
+ *
+ * import { PageObject, globalSelector } from 'fractal-page-object';
+ *
+ * class Page extends PageObject {
+ *   input = globalSelector<HTMLInputElement>('input');
+ * }
+ * let page = new Page();
+ * page.input.element; // type is HTMLInputElement
+ * page.input.element.value; // no type cast needed
  */
-export default function globalSelector<T extends PageObject>(
-  ...args: Arguments<T> | ArgumentsWithRoot<T>
+export default function globalSelector<
+  ElementType extends Element = Element,
+  T extends PageObject<ElementType> = PageObject<ElementType>
+>(
+  ...args:
+    | [string, PageObjectConstructor<ElementType, T>?]
+    | [string, Element, PageObjectConstructor<ElementType, T>?]
 ): T {
   let selector = args[0];
   let rootElement;
