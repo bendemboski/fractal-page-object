@@ -131,7 +131,9 @@ Type: [Array][23]\<ElementType>
 Define a child PageObject. It can optionally be supplied with a
 [PageObject][1] subclass definition to allow customizing functionality on
 the page object, such as defining (grand)child page objects, or other helpful
-properties and functions.
+properties and functions. Alternatively, it can be passed an [Element][19]
+subclass as a type argument so elements its page objects produces will be
+typed more specifically.
 
 ### Parameters
 
@@ -152,6 +154,17 @@ class Page extends PageObject {
 let page = new Page();
 page.list.elements; // document.body.querySelectorAll('.list')
 page.list.items.elements; // document.body.querySelectorAll('.list li')
+```
+
+```javascript
+import { PageObject, selector } from 'fractal-page-object';
+
+class Page extends PageObject {
+  input = selector<HTMLInputElement>('input');
+}
+let page = new Page();
+page.input.element; // type is HTMLInputElement
+page.input.element.value; // no type cast needed
 ```
 
 Returns **[PageObject][1]** a [PageObject][1] or [PageObject][1] subclass
@@ -178,6 +191,8 @@ generates.
 
 *   `args` **...any**&#x20;
 *   `selector` **[string][25]** the selector
+*   `rootElement` **[Element][19]** optional the root element under which to query
+    the selector.
 *   `Class` **[Function][26]<[PageObject][1]>** optional [PageObject][1] subclass that
     can be used to extend the functionality of this page object
 
@@ -219,6 +234,17 @@ let page = new Page();
 page.listItems[0]; // testContainer.querySelectorAll('.listItems')[0]
 page.listItems[0].popover; // document.body.querySelectorAll('.popover')
 page.listItems[0].popover.icon; // document.body.querySelectorAll('.popover .icon')
+```
+
+```javascript
+import { PageObject, globalSelector } from 'fractal-page-object';
+
+class Page extends PageObject {
+  input = globalSelector<HTMLInputElement>('input');
+}
+let page = new Page();
+page.input.element; // type is HTMLInputElement
+page.input.element.value; // no type cast needed
 ```
 
 Returns **[PageObject][1]** a [PageObject][1] or [PageObject][1] subclass

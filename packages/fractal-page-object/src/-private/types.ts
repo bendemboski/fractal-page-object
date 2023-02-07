@@ -9,9 +9,7 @@ export const CLONE_WITH_INDEX = Symbol('withIndex');
 export type PageObjectConstructor<
   ElementType extends Element,
   T extends PageObject<ElementType>
-> = new (...args: ConstructorParameters<typeof PageObject<ElementType>>) =>
-  | T
-  | PageObject<ElementType>;
+> = new (...args: ConstructorParameters<typeof PageObject<ElementType>>) => T;
 
 /**
  * Helper type for a {@link PageObject}s and subclasses that are known to match an element
