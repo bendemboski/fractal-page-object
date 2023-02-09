@@ -39,21 +39,6 @@ export default class ArrayStub<ElementType extends Element> {
   /**
    * @private
    */
-  declare concat: (
-    ...items:
-      | ConcatArray<WithElement<this, ElementType>>[]
-      | (
-          | WithElement<this, ElementType>
-          | ConcatArray<WithElement<this, ElementType>>
-        )[]
-      | (
-          | WithElement<this, ElementType>
-          | ConcatArray<WithElement<this, ElementType>>
-        )[]
-  ) => WithElement<this, ElementType>[];
-  /**
-   * @private
-   */
   declare reverse: () => WithElement<this, ElementType>[];
   /**
    * @private
@@ -75,20 +60,6 @@ export default class ArrayStub<ElementType extends Element> {
       b: WithElement<this, ElementType>
     ) => number
   ) => this[];
-  /**
-   * @private
-   */
-  declare indexOf: (
-    _searchElement: WithElement<this, ElementType>,
-    _fromIndex?: number
-  ) => number;
-  /**
-   * @private
-   */
-  declare lastIndexOf: (
-    _searchElement: WithElement<this, ElementType>,
-    _fromIndex?: number
-  ) => number;
   /**
    * @private
    */
@@ -190,13 +161,6 @@ export default class ArrayStub<ElementType extends Element> {
     ) => unknown,
     _thisArg?: any
   ) => number;
-  /**
-   * @private
-   */
-  declare includes: (
-    _searchElement: WithElement<this, ElementType>,
-    _fromIndex?: number
-  ) => boolean;
   /**
    * @private
    */

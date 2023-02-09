@@ -22,7 +22,7 @@ export default class GlobalPageObjectFactory<
    */
   constructor(
     selector: string,
-    private rootElement?: ElementType,
+    private rootElement?: Element,
     Class?: PageObjectConstructor<ElementType, T>
   ) {
     super(selector, Class);
