@@ -266,6 +266,8 @@ page.form.input.value = ;
 page.form.submit();
 ```
 
+Note that there are no runtime checks enforcing this -- it's just the equivalent of `document.querySelector('.thing') as HTMLButtonElement`.
+
 ### Extending
 
 Page objects can be extended by adding any functionality to the `PageObject` subclass:
