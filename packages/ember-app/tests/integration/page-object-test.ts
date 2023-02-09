@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { click, render, RenderingTestContext } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
-import { PageObject, selector } from 'fractal-page-object';
+import { globalSelector, PageObject, selector } from 'fractal-page-object';
 import type { PageObjectConstructor } from 'fractal-page-object';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
@@ -54,15 +54,62 @@ module('Integration | page object', function (hooks) {
   });
 
   test('can wrap selector()', async function (assert) {
-    const s = <T extends PageObject>(
-      name: string,
-      Cls?: PageObjectConstructor<T>
-    ): T => selector(`[data-name="${name}"]`, Cls);
+    /**
+     * A helper to wrap the `selector()` function, mainly to ease the type
+     * juggling
+     *
+     * @param transform a function that takes the arguments to {@link selector},
+     * optionally transforms them, and returns the new transformed arguments
+     * @returns a function that can be used in place of {@link selector} but
+     * applies the given transformation
+     */
+    function wrapSelector(
+      transform: <
+        ElementType extends Element,
+        T extends PageObject<ElementType>
+      >(
+        name: string,
+        Class?: PageObjectConstructor<ElementType, T>
+      ) => [string, PageObjectConstructor<ElementType, T>?]
+    ) {
+      function s<
+        ElementType extends Element = Element
+      >(name: string): PageObject<ElementType>;
+      function s<
+        ElementType extends Element,
+        T extends PageObject<ElementType>
+      >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
+
+      function s<
+        ElementType extends Element = Element,
+        T extends PageObject<ElementType> = PageObject<ElementType>
+      >(name: string, Class?: PageObjectConstructor<ElementType, T>) {
+        [name, Class] = transform(name, Class);
+        return Class ? selector(name, Class) : selector<ElementType>(name);
+      }
+      return s;
+    }
+
+    const s = wrapSelector(<T>(name: string, Class: T) => [
+      `[data-name="${name}"]`,
+      Class,
+    ]);
+
+    // Check that `wrapSelector` produces functions that are type-compatible
+    // with `selector`
+    function testSelector(sFn: typeof selector) {
+      return sFn;
+    }
+    assert.strictEqual(testSelector(s), s);
 
     await render(hbs`
       <div data-name="one" class="div-one"/>
       <div data-name="two" class="div-two">
-        <div data-name="three" class="div-three"/>
+        <input
+          data-name="three"
+          value="three"
+          {{! template-lint-disable require-input-label }}
+        >
       </div>
     `);
 
@@ -71,7 +118,7 @@ module('Integration | page object', function (hooks) {
       two = s(
         'two',
         class extends PageObject {
-          three = s('three');
+          three = s<HTMLInputElement>('three');
         }
       );
     };
@@ -79,7 +126,144 @@ module('Integration | page object', function (hooks) {
 
     assert.dom(page.one.element).hasClass('div-one');
     assert.dom(page.two.element).hasClass('div-two');
-    assert.dom(page.two.three.element).hasClass('div-three');
+    assert.strictEqual(page.two.three.element?.value, 'three');
+  });
+
+  test('can wrap globalSelector()', async function (assert) {
+    /**
+     * A helper to wrap the `globalSelector()` function, mainly to ease the type
+     * juggling
+     *
+     * @param transform a function that takes the arguments to
+     * {@link globalSelector}, optionally transforms them, and returns the new
+     * transformed arguments
+     * @returns a function that can be used in place of {@link globalSelector}
+     * but applies the given transformation
+     */
+    function wrapGlobalSelector(
+      transform: <
+        ElementType extends Element,
+        T extends PageObject<ElementType>
+      >(
+        name: string,
+        rootElement?: Element,
+        Class?: PageObjectConstructor<ElementType, T>
+      ) => [string, Element?, PageObjectConstructor<ElementType, T>?]
+    ) {
+      function gs<
+        ElementType extends Element = Element
+      >(selector: string): PageObject<ElementType>;
+      function gs<
+        ElementType extends Element,
+        T extends PageObject<ElementType>
+      >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
+
+      function gs<
+        ElementType extends Element = Element
+      >(selector: string, rootElement: Element): PageObject<ElementType>;
+      function gs<
+        ElementType extends Element,
+        T extends PageObject<ElementType>
+      >(name: string, rootElement: Element, Class: PageObjectConstructor<ElementType, T>): T;
+
+      function gs<
+        ElementType extends Element = Element,
+        T extends PageObject<ElementType> = PageObject<ElementType>
+      >(...args: [string, PageObjectConstructor<ElementType, T>?] | [string, Element, PageObjectConstructor<ElementType, T>?]) {
+        let name;
+        let rootElement;
+        let Class;
+
+        if (args[1] instanceof Element) {
+          [name, rootElement, Class] = transform(args[0], args[1], args[2]);
+        } else {
+          [name, rootElement, Class] = transform(args[0], undefined, args[1]);
+        }
+
+        if (rootElement) {
+          return Class
+            ? globalSelector(name, rootElement, Class)
+            : globalSelector<ElementType>(name, rootElement);
+        } else {
+          return Class
+            ? globalSelector(name, Class)
+            : globalSelector<ElementType>(name);
+        }
+      }
+      return gs;
+    }
+
+    const gs = wrapGlobalSelector(
+      <S, T>(name: string, rootElement: S, Class: T) => [
+        `[data-name="${name}"]`,
+        rootElement,
+        Class,
+      ]
+    );
+
+    // Check that `wrapGlobalSelector` produces functions that are
+    // type-compatible with `globalSelector`
+    function testGlobalSelector(gsFn: typeof globalSelector) {
+      return gsFn;
+    }
+    testGlobalSelector(gs);
+
+    await render(hbs`
+      <div data-name="one" class="div-one"/>
+      <div data-name="two" class="div-two">
+        <input
+          data-name="three"
+          value="three"
+          {{! template-lint-disable require-input-label }}
+        >
+      </div>
+    `);
+
+    assert.expect(6);
+
+    let div = document.createElement('div');
+    document.body.append(div);
+    try {
+      const Page = class extends PageObject {
+        one = gs('one');
+        two = gs(
+          'two',
+          class extends PageObject {
+            three = gs<HTMLInputElement>('three');
+          }
+        );
+
+        oneRoot = gs('one-root', document.body);
+        twoRoot = gs(
+          'two-root',
+          document.body,
+          class extends PageObject {
+            threeRoot = gs<HTMLInputElement>('three-root', document.body);
+          }
+        );
+      };
+      let page = new Page();
+
+      div.innerHTML = `
+        <div data-name="one-root" class="div-one-root"/>
+        <div data-name="two-root" class="div-two-root">
+          <input
+            data-name="three-root"
+            value="three-root"
+          >
+        </div>
+      `;
+
+      assert.dom(page.one.element).hasClass('div-one');
+      assert.dom(page.two.element).hasClass('div-two');
+      assert.strictEqual(page.two.three.element?.value, 'three');
+
+      assert.dom(page.oneRoot.element).hasClass('div-one-root');
+      assert.dom(page.twoRoot.element).hasClass('div-two-root');
+      assert.strictEqual(page.twoRoot.threeRoot.element?.value, 'three-root');
+    } finally {
+      div.remove();
+    }
   });
 
   test('smoke test', async function (assert) {
