@@ -1,5 +1,26 @@
 
 
+
+## v0.4.0 (2023-02-10)
+
+#### :boom: Breaking Change
+* `fractal-page-object`
+  * [#89](https://github.com/bendemboski/fractal-page-object/pull/89) Support Element sub-types ([@bendemboski](https://github.com/bendemboski))
+
+#### :rocket: Enhancement
+* `ember-app`, `fractal-page-object`
+  * [#90](https://github.com/bendemboski/fractal-page-object/pull/90) Update typescript config ([@bendemboski](https://github.com/bendemboski))
+* `fractal-page-object`
+  * [#89](https://github.com/bendemboski/fractal-page-object/pull/89) Support Element sub-types ([@bendemboski](https://github.com/bendemboski))
+
+#### :bug: Bug Fix
+* `ember-app`
+  * [#91](https://github.com/bendemboski/fractal-page-object/pull/91) Fix type errors in Ember tests ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 2
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+- Devin Weaver ([@sukima](https://github.com/sukima))
+
 ## v0.3.0 (2022-02-21)
 
 #### :rocket: Enhancement
