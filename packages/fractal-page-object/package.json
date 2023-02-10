@@ -6,6 +6,7 @@
     "browser",
     "dom",
     "ember",
+    "ember-addon",
     "ember.js",
     "html",
     "testing"
