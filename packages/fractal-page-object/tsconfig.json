@@ -16,6 +16,7 @@
     "noEmitOnError": false,
     "declaration": true,
     "experimentalDecorators": true,
+    "strict": true,
     "lib": [
       "ES2017",
       "DOM"

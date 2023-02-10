@@ -2,7 +2,11 @@ import ArrayStub from './-private/array-stub';
 import { getRoot } from './-private/root';
 import DOMQuery from './-private/dom-query';
 import createProxy from './-private/create-proxy';
-import { DOM_QUERY, CLONE_WITH_INDEX } from './-private/types';
+import {
+  DOM_QUERY,
+  CLONE_WITH_INDEX,
+  IPageObjectParent,
+} from './-private/types';
 import type { PageObjectConstructor } from './-private/types';
 
 /**
@@ -87,9 +91,10 @@ import type { PageObjectConstructor } from './-private/types';
  * // document.body.querySelectorAll('.container')[1].querySelectorAll('.list');
  * new Page('.container', document.body, 1).list.elements;
  */
-export default class PageObject<
-  ElementType extends Element = Element
-> extends ArrayStub<ElementType> {
+export default class PageObject<ElementType extends Element = Element>
+  extends ArrayStub<ElementType>
+  implements IPageObjectParent
+{
   /**
    * This page object's single matching DOM element -- the first DOM element
    * matching this page object's query if this page object does not have an
@@ -179,13 +184,13 @@ export default class PageObject<
    */
   constructor(
     selector: string,
-    parent?: PageObject | Element | null,
+    parent?: IPageObjectParent | Element | null,
     index?: number | null
   );
 
   constructor(
     private selector: string = '',
-    private parent: PageObject | Element | null = null,
+    private parent: IPageObjectParent | Element | null = null,
     private index: number | null = null
   ) {
     super();
