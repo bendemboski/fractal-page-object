@@ -1,4 +1,4 @@
-import { safeSelector } from './helpers';
+import safeSelector from './safe-selector';
 
 /**
  * An element of a {@link SelectorArray}, comprising a selector and optional
