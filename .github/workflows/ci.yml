@@ -32,6 +32,9 @@ jobs:
       - name: Test script tag app
         run: yarn test
         working-directory: packages/script-tag-app
+      - name: Test typescript library
+        run: yarn test
+        working-directory: packages/ts-library
   embroider:
     strategy:
       matrix:
