@@ -1,6 +1,16 @@
 
 
 
+
+## v0.4.1 (2023-02-23)
+
+#### :bug: Bug Fix
+* `fractal-page-object`, `ts-library`
+  * [#95](https://github.com/bendemboski/fractal-page-object/pull/95) Fix declaration generation in consumers ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+
 ## v0.4.0 (2023-02-10)
 
 #### :boom: Breaking Change
