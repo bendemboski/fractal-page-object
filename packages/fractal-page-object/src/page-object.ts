@@ -1,13 +1,7 @@
 import ArrayStub from './-private/array-stub';
-import { getRoot } from './-private/root';
-import DOMQuery from './-private/dom-query';
 import createProxy from './-private/create-proxy';
-import {
-  DOM_QUERY,
-  CLONE_WITH_INDEX,
-  IPageObjectParent,
-} from './-private/types';
-import type { PageObjectConstructor } from './-private/types';
+import { getDOMQuery, setPageObjectState } from './-private/page-object-state';
+import type { GenericPageObject } from './-private/types';
 
 /**
  * This class implements all the basic page object functionality, and all page
@@ -91,10 +85,9 @@ import type { PageObjectConstructor } from './-private/types';
  * // document.body.querySelectorAll('.container')[1].querySelectorAll('.list');
  * new Page('.container', document.body, 1).list.elements;
  */
-export default class PageObject<ElementType extends Element = Element>
-  extends ArrayStub<ElementType>
-  implements IPageObjectParent
-{
+export default class PageObject<
+  ElementType extends Element = Element
+> extends ArrayStub<ElementType> {
   /**
    * This page object's single matching DOM element -- the first DOM element
    * matching this page object's query if this page object does not have an
@@ -104,7 +97,7 @@ export default class PageObject<ElementType extends Element = Element>
    * @type {ElementType | null}
    */
   get element(): ElementType | null {
-    return this[DOM_QUERY].query() as ElementType | null;
+    return getDOMQuery(this).query() as ElementType | null;
   }
 
   /**
@@ -114,45 +107,7 @@ export default class PageObject<ElementType extends Element = Element>
    * @type {ElementType[]}
    */
   get elements(): ElementType[] {
-    return this[DOM_QUERY].queryAll() as ElementType[];
-  }
-
-  /**
-   * A {@link DOMQuery} object for querying this page object's matching DOM
-   * elements
-   *
-   * @private
-   */
-  get [DOM_QUERY](): DOMQuery {
-    let parentQuery;
-    if (this.parent instanceof PageObject) {
-      parentQuery = this.parent[DOM_QUERY];
-    } else if (this.parent instanceof Element) {
-      parentQuery = new DOMQuery(this.parent);
-    } else {
-      parentQuery = new DOMQuery(getRoot());
-    }
-    return parentQuery.createChild(this.selector, this.index);
-  }
-
-  /**
-   * Create a clone of this {@link PageObject}, but with an index specified. If
-   * called on an instance of a subclass of {@link PageObject}, the clone will
-   * be an instance of that subclass.
-   *
-   * @param index the index
-   *
-   * @returns a clone of this page object, but only selecting the DOM element in
-   * the matching elements at the given index
-   *
-   * @private
-   */
-  [CLONE_WITH_INDEX](index: number): PageObject<ElementType> {
-    let Class = this.constructor as PageObjectConstructor<
-      ElementType,
-      PageObject<ElementType>
-    >;
-    return new Class('', this, index);
+    return getDOMQuery(this).queryAll() as ElementType[];
   }
 
   /**
@@ -184,16 +139,19 @@ export default class PageObject<ElementType extends Element = Element>
    */
   constructor(
     selector: string,
-    parent?: IPageObjectParent | Element | null,
+    parent?: GenericPageObject | Element | null,
     index?: number | null
   );
 
   constructor(
-    private selector: string = '',
-    private parent: IPageObjectParent | Element | null = null,
-    private index: number | null = null
+    selector = '',
+    parent: GenericPageObject | Element | null = null,
+    index: number | null = null
   ) {
     super();
-    return createProxy(this);
+    let proxy = createProxy(this);
+    setPageObjectState(this, { selector, parent, index });
+    setPageObjectState(proxy, { selector, parent, index });
+    return proxy;
   }
 }

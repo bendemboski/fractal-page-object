@@ -1,6 +1,6 @@
 import PageObjectFactory from './factory';
 import type PageObject from '../page-object';
-import { CLONE_WITH_INDEX } from './types';
+import cloneWithIndex from './clone-with-index';
 
 /**
  * Create a proxy wrapping a {@link PageObject} and implementing array
@@ -29,7 +29,7 @@ export default function createProxy<ElementType extends Element>(
         // we want users to be use an index for which there isn't actually a
         // matching element in the DOM and still get a valid page object (just
         // without an element), e.g. `assert.notOk(page.foo[3].element)`
-        return pageObject[CLONE_WITH_INDEX](index);
+        return cloneWithIndex(pageObject, index);
       }
 
       if (Reflect.has([], prop)) {
@@ -44,7 +44,7 @@ export default function createProxy<ElementType extends Element>(
         // object parent).
         let arrayProp = prop as keyof Array<unknown>;
         let elements = pageObject.elements;
-        let children = elements.map((_e, i) => pageObject[CLONE_WITH_INDEX](i));
+        let children = elements.map((_e, i) => cloneWithIndex(pageObject, i));
         let value = children[arrayProp];
         if (typeof value === 'function') {
           return value.bind(children);

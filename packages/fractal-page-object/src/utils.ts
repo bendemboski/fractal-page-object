@@ -1,4 +1,5 @@
-import { DOM_QUERY, WithElement } from './-private/types';
+import { getDOMQuery } from './-private/page-object-state';
+import { WithElement } from './-private/types';
 
 import type { default as PageObject } from './page-object';
 
@@ -42,5 +43,5 @@ export function getDescription<
   ElementType extends Element,
   T extends PageObject<ElementType>
 >(pageObject: T): string {
-  return pageObject[DOM_QUERY].selectorArray.toString();
+  return getDOMQuery(pageObject).selectorArray.toString();
 }
