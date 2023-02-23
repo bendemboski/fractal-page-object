@@ -1,5 +1,5 @@
-import type { IPageObjectParent, PageObjectConstructor } from './types';
 import PageObject from '../page-object';
+import type { GenericPageObject, PageObjectConstructor } from './types';
 
 /**
  * A factory for creating {@link PageObject}s. The factory is constructed with a
@@ -28,7 +28,7 @@ export default class PageObjectFactory<
    * @param parent the {@link PageObject} to set as the new page object's parent
    * @returns the new page object
    */
-  create(parent?: IPageObjectParent | Element): PageObject<ElementType> {
+  create(parent?: GenericPageObject | Element): PageObject<ElementType> {
     let Class =
       this.Class ||
       (PageObject as PageObjectConstructor<

@@ -1,19 +1,10 @@
 import type PageObject from '../page-object';
-import type DOMQuery from './dom-query';
-
-export const DOM_QUERY = Symbol('DOM query');
-export const CLONE_WITH_INDEX = Symbol('withIndex');
 
 /**
- * An interface for a {@link PageObject}'s parent page object. We use this
- * rather than just {@link PageObject} because the parent's element type might
- * be different which would severely complicate the types, but also the parent's
- * element type doesn't matter since it's just a starting point for a query. So
- * we type a page object parent to just be a {@link DOMQuery}-haver.
+ * A generic page object, used in places where we don't care about the page
+ * object's `ElementType`
  */
-export interface IPageObjectParent {
-  readonly [DOM_QUERY]: DOMQuery;
-}
+export type GenericPageObject = PageObject<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 /**
  * A constructor for a {@link PageObject} or {@link PageObject} subclass

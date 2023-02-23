@@ -64,5 +64,9 @@ describe('utils', () => {
         '.thing[1] .subthing[0]'
       );
     });
+
+    test('it throws when passed a non-page-object', () => {
+      expect(() => getDescription({} as PageObject)).toThrow();
+    });
   });
 });

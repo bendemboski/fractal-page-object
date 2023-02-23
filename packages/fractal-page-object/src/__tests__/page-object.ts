@@ -1,7 +1,8 @@
 import { describe, afterEach, test, expect } from '@jest/globals';
 import { PageObject, setRoot } from '..';
 import { resetRoot } from '../-private/root';
-import { DOM_QUERY, CLONE_WITH_INDEX } from '../-private/types';
+import { getDOMQuery } from '../-private/page-object-state';
+import cloneWithIndex from '../-private/clone-with-index';
 
 describe('PageObject', () => {
   afterEach(() => resetRoot());
@@ -18,10 +19,10 @@ describe('PageObject', () => {
         selector: string,
         elements: Element[]
       ) {
-        expect(page[DOM_QUERY].root).toEqual(document.body);
-        expect(page[DOM_QUERY].selectorArray.toString()).toEqual(selector);
-        expect(page.element).toEqual(page[DOM_QUERY].query());
-        expect(page.elements).toEqual(page[DOM_QUERY].queryAll());
+        expect(getDOMQuery(page).root).toEqual(document.body);
+        expect(getDOMQuery(page).selectorArray.toString()).toEqual(selector);
+        expect(page.element).toEqual(getDOMQuery(page).query());
+        expect(page.elements).toEqual(getDOMQuery(page).queryAll());
         expect(page.element).toEqual(elements[0] || null);
         expect(page.elements).toEqual(elements);
       }
@@ -38,7 +39,7 @@ describe('PageObject', () => {
       describe('without parent', () => {
         test('defaults to body', () => {
           let page = new PageObject();
-          expect(page[DOM_QUERY].root).toEqual(document.body);
+          expect(getDOMQuery(page).root).toEqual(document.body);
         });
 
         test('respects setRoot()', () => {
@@ -48,7 +49,7 @@ describe('PageObject', () => {
           setRoot(div);
 
           let page = new PageObject();
-          expect(page[DOM_QUERY].root).toEqual(div);
+          expect(getDOMQuery(page).root).toEqual(div);
         });
       });
 
@@ -56,7 +57,7 @@ describe('PageObject', () => {
         test('defaults to body', () => {
           let parent = new PageObject();
           let page = new PageObject('', parent);
-          expect(page[DOM_QUERY].root).toEqual(document.body);
+          expect(getDOMQuery(page).root).toEqual(document.body);
         });
 
         test('respects setRoot()', () => {
@@ -67,7 +68,7 @@ describe('PageObject', () => {
 
           let parent = new PageObject();
           let page = new PageObject('', parent);
-          expect(page[DOM_QUERY].root).toEqual(div);
+          expect(getDOMQuery(page).root).toEqual(div);
         });
 
         test('is parent when parent is element', () => {
@@ -75,7 +76,7 @@ describe('PageObject', () => {
           let div = document.body.children[0];
 
           let page = new PageObject('', div);
-          expect(page[DOM_QUERY].root).toEqual(div);
+          expect(getDOMQuery(page).root).toEqual(div);
         });
 
         test('inherits parent root when grandparent is element', () => {
@@ -84,10 +85,10 @@ describe('PageObject', () => {
 
           let parent = new PageObject('', div);
           let page = new PageObject('', parent);
-          expect(page[DOM_QUERY].root).toEqual(div);
+          expect(getDOMQuery(page).root).toEqual(div);
 
-          page = parent[CLONE_WITH_INDEX](0);
-          expect(page[DOM_QUERY].root).toEqual(div);
+          page = cloneWithIndex(parent, 0);
+          expect(getDOMQuery(page).root).toEqual(div);
         });
       });
     });
@@ -97,40 +98,46 @@ describe('PageObject', () => {
         describe('without a selector', () => {
           test('it can have an index', () => {
             let page = new PageObject('', null, 0);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('[0]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual('[0]');
 
             page = new PageObject('', null, 1);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('[1]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual('[1]');
           });
 
           test('it can clone with index', () => {
             let page = new PageObject();
 
-            let page0 = page[CLONE_WITH_INDEX](0);
-            expect(page0[DOM_QUERY].selectorArray.toString()).toEqual('[0]');
+            let page0 = cloneWithIndex(page, 0);
+            expect(getDOMQuery(page0).selectorArray.toString()).toEqual('[0]');
 
-            let page1 = page[CLONE_WITH_INDEX](1);
-            expect(page1[DOM_QUERY].selectorArray.toString()).toEqual('[1]');
+            let page1 = cloneWithIndex(page, 1);
+            expect(getDOMQuery(page1).selectorArray.toString()).toEqual('[1]');
           });
         });
 
         describe('with a selector', () => {
           test('it works', () => {
             let page = new PageObject('div');
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual('div');
           });
 
           test('it can have an index', () => {
             document.body.innerHTML = '<div></div><div></div>';
 
             let page = new PageObject('div', null, 0);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[0]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
+              'div[0]'
+            );
 
             page = new PageObject('div', null, 1);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[1]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
+              'div[1]'
+            );
 
             page = new PageObject('div', null, 2);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[2]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
+              'div[2]'
+            );
           });
 
           test('it can clone with index', () => {
@@ -138,14 +145,20 @@ describe('PageObject', () => {
 
             let page = new PageObject('div');
 
-            let page0 = page[CLONE_WITH_INDEX](0);
-            expect(page0[DOM_QUERY].selectorArray.toString()).toEqual('div[0]');
+            let page0 = cloneWithIndex(page, 0);
+            expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
+              'div[0]'
+            );
 
-            let page1 = page[CLONE_WITH_INDEX](1);
-            expect(page1[DOM_QUERY].selectorArray.toString()).toEqual('div[1]');
+            let page1 = cloneWithIndex(page, 1);
+            expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
+              'div[1]'
+            );
 
-            let page2 = page[CLONE_WITH_INDEX](2);
-            expect(page2[DOM_QUERY].selectorArray.toString()).toEqual('div[2]');
+            let page2 = cloneWithIndex(page, 2);
+            expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
+              'div[2]'
+            );
           });
         });
       });
@@ -156,7 +169,7 @@ describe('PageObject', () => {
           let span = document.body.children[0];
 
           let page = new PageObject('div', span);
-          expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div');
+          expect(getDOMQuery(page).selectorArray.toString()).toEqual('div');
         });
 
         test('it can have an index', () => {
@@ -170,13 +183,13 @@ describe('PageObject', () => {
           let span = document.body.children[0];
 
           let page = new PageObject('div', span, 0);
-          expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[0]');
+          expect(getDOMQuery(page).selectorArray.toString()).toEqual('div[0]');
 
           page = new PageObject('div', span, 1);
-          expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[1]');
+          expect(getDOMQuery(page).selectorArray.toString()).toEqual('div[1]');
 
           page = new PageObject('div', span, 2);
-          expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[2]');
+          expect(getDOMQuery(page).selectorArray.toString()).toEqual('div[2]');
         });
 
         test('it can clone with index', () => {
@@ -191,14 +204,14 @@ describe('PageObject', () => {
 
           let page = new PageObject('div', span);
 
-          let page0 = page[CLONE_WITH_INDEX](0);
-          expect(page0[DOM_QUERY].selectorArray.toString()).toEqual('div[0]');
+          let page0 = cloneWithIndex(page, 0);
+          expect(getDOMQuery(page0).selectorArray.toString()).toEqual('div[0]');
 
-          let page1 = page[CLONE_WITH_INDEX](1);
-          expect(page1[DOM_QUERY].selectorArray.toString()).toEqual('div[1]');
+          let page1 = cloneWithIndex(page, 1);
+          expect(getDOMQuery(page1).selectorArray.toString()).toEqual('div[1]');
 
-          let page2 = page[CLONE_WITH_INDEX](2);
-          expect(page2[DOM_QUERY].selectorArray.toString()).toEqual('div[2]');
+          let page2 = cloneWithIndex(page, 2);
+          expect(getDOMQuery(page2).selectorArray.toString()).toEqual('div[2]');
         });
       });
 
@@ -208,7 +221,7 @@ describe('PageObject', () => {
             let parent = new PageObject();
 
             let page = new PageObject('div', parent);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual('div');
           });
 
           test('it can have an index', () => {
@@ -217,13 +230,19 @@ describe('PageObject', () => {
             let parent = new PageObject();
 
             let page = new PageObject('div', parent, 0);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[0]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
+              'div[0]'
+            );
 
             page = new PageObject('div', parent, 1);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[1]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
+              'div[1]'
+            );
 
             page = new PageObject('div', parent, 2);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual('div[2]');
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
+              'div[2]'
+            );
           });
 
           test('it can clone with index', () => {
@@ -232,14 +251,20 @@ describe('PageObject', () => {
             let parent = new PageObject();
             let page = new PageObject('div', parent);
 
-            let page0 = page[CLONE_WITH_INDEX](0);
-            expect(page0[DOM_QUERY].selectorArray.toString()).toEqual('div[0]');
+            let page0 = cloneWithIndex(page, 0);
+            expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
+              'div[0]'
+            );
 
-            let page1 = page[CLONE_WITH_INDEX](1);
-            expect(page1[DOM_QUERY].selectorArray.toString()).toEqual('div[1]');
+            let page1 = cloneWithIndex(page, 1);
+            expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
+              'div[1]'
+            );
 
-            let page2 = page[CLONE_WITH_INDEX](2);
-            expect(page2[DOM_QUERY].selectorArray.toString()).toEqual('div[2]');
+            let page2 = cloneWithIndex(page, 2);
+            expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
+              'div[2]'
+            );
           });
         });
 
@@ -249,8 +274,8 @@ describe('PageObject', () => {
 
             let parent = new PageObject('div');
             let page = new PageObject('span', parent);
-            expect(page[DOM_QUERY].root).toEqual(document.body);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).root).toEqual(document.body);
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div span'
             );
           });
@@ -261,17 +286,17 @@ describe('PageObject', () => {
             let parent = new PageObject('div');
 
             let page = new PageObject('span', parent, 0);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div span[0]'
             );
 
             page = new PageObject('span', parent, 1);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div span[1]'
             );
 
             page = new PageObject('span', parent, 2);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div span[2]'
             );
           });
@@ -282,18 +307,18 @@ describe('PageObject', () => {
             let parent = new PageObject('div');
             let page = new PageObject('span', parent);
 
-            let page0 = page[CLONE_WITH_INDEX](0);
-            expect(page0[DOM_QUERY].selectorArray.toString()).toEqual(
+            let page0 = cloneWithIndex(page, 0);
+            expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
               'div span[0]'
             );
 
-            let page1 = page[CLONE_WITH_INDEX](1);
-            expect(page1[DOM_QUERY].selectorArray.toString()).toEqual(
+            let page1 = cloneWithIndex(page, 1);
+            expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
               'div span[1]'
             );
 
-            let page2 = page[CLONE_WITH_INDEX](2);
-            expect(page2[DOM_QUERY].selectorArray.toString()).toEqual(
+            let page2 = cloneWithIndex(page, 2);
+            expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
               'div span[2]'
             );
           });
@@ -305,7 +330,7 @@ describe('PageObject', () => {
 
             let parent = new PageObject('div', null, 1);
             let page = new PageObject('span', parent);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div[1] span'
             );
           });
@@ -316,17 +341,17 @@ describe('PageObject', () => {
             let parent = new PageObject('div', null, 1);
 
             let page = new PageObject('span', parent, 0);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div[1] span[0]'
             );
 
             page = new PageObject('span', parent, 1);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div[1] span[1]'
             );
 
             page = new PageObject('span', parent, 2);
-            expect(page[DOM_QUERY].selectorArray.toString()).toEqual(
+            expect(getDOMQuery(page).selectorArray.toString()).toEqual(
               'div[1] span[2]'
             );
           });
@@ -337,18 +362,18 @@ describe('PageObject', () => {
             let parent = new PageObject('div', null, 1);
             let page = new PageObject('span', parent);
 
-            let page0 = page[CLONE_WITH_INDEX](0);
-            expect(page0[DOM_QUERY].selectorArray.toString()).toEqual(
+            let page0 = cloneWithIndex(page, 0);
+            expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
               'div[1] span[0]'
             );
 
-            let page1 = page[CLONE_WITH_INDEX](1);
-            expect(page1[DOM_QUERY].selectorArray.toString()).toEqual(
+            let page1 = cloneWithIndex(page, 1);
+            expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
               'div[1] span[1]'
             );
 
-            let page2 = page[CLONE_WITH_INDEX](2);
-            expect(page2[DOM_QUERY].selectorArray.toString()).toEqual(
+            let page2 = cloneWithIndex(page, 2);
+            expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
               'div[1] span[2]'
             );
           });
