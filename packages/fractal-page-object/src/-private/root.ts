@@ -1,4 +1,6 @@
-let root: Element | undefined;
+import { isElementLike, type ElementLike } from './types';
+
+let root: ElementLike | undefined;
 
 function getEmberTestRoot() {
   // Ideally we would detect if we are running in Ember and if so use
@@ -18,10 +20,10 @@ function getEmberTestRoot() {
  * only match elements that are descendants of this element. The default root
  * element is `document.body`.
  *
- * @param {Element|Function} element the root element or a function that will
- * return it
+ * @param {ElementLike|Function} element the root element or a function that
+ * will return it
  */
-export function setRoot(element: Element): void {
+export function setRoot(element: ElementLike): void {
   root = element;
 }
 
@@ -32,8 +34,8 @@ export function setRoot(element: Element): void {
  *
  * @private
  */
-export function getRoot(): Element {
-  if (root instanceof Element) {
+export function getRoot(): ElementLike {
+  if (isElementLike(root)) {
     return root;
   } else {
     return getEmberTestRoot() || document.body;

@@ -525,6 +525,29 @@ describe('PageObject', () => {
     });
   });
 
+  describe('document fragments', () => {
+    test('it works with a document fragment root', () => {
+      let fragment = document.createDocumentFragment();
+      let span = document.createElement('span');
+      fragment.append(span);
+
+      setRoot(fragment);
+
+      let page = new PageObject();
+      expect(getDOMQuery(page).root).toEqual(fragment);
+      expect(getDOMQuery(page).createChild('span', null).query()).toEqual(span);
+    });
+
+    test('it can have a document fragment parent', () => {
+      let fragment = document.createDocumentFragment();
+      let span = document.createElement('span');
+      fragment.append(span);
+
+      let page = new PageObject('span', fragment);
+      expect(getDOMQuery(page).query()).toEqual(span);
+    });
+  });
+
   describe('subclasses', () => {
     let div1: Element;
     let div2: Element;

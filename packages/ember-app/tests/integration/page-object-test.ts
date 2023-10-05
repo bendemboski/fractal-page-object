@@ -3,7 +3,11 @@ import { setupRenderingTest } from 'ember-qunit';
 import { click, render, RenderingTestContext } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { globalSelector, PageObject, selector } from 'fractal-page-object';
-import type { PageObjectConstructor } from 'fractal-page-object';
+import {
+  type ElementLike,
+  isElementLike,
+  type PageObjectConstructor,
+} from 'fractal-page-object';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
@@ -65,7 +69,7 @@ module('Integration | page object', function (hooks) {
      */
     function wrapSelector(
       transform: <
-        ElementType extends Element,
+        ElementType extends ElementLike,
         T extends PageObject<ElementType>
       >(
         name: string,
@@ -73,15 +77,15 @@ module('Integration | page object', function (hooks) {
       ) => [string, PageObjectConstructor<ElementType, T>?]
     ) {
       function s<
-        ElementType extends Element = Element
+        ElementType extends ElementLike = Element
       >(name: string): PageObject<ElementType>;
       function s<
-        ElementType extends Element,
+        ElementType extends ElementLike,
         T extends PageObject<ElementType>
       >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
 
       function s<
-        ElementType extends Element = Element,
+        ElementType extends ElementLike = Element,
         T extends PageObject<ElementType> = PageObject<ElementType>
       >(name: string, Class?: PageObjectConstructor<ElementType, T>) {
         [name, Class] = transform(name, Class);
@@ -142,39 +146,39 @@ module('Integration | page object', function (hooks) {
      */
     function wrapGlobalSelector(
       transform: <
-        ElementType extends Element,
+        ElementType extends ElementLike,
         T extends PageObject<ElementType>
       >(
         name: string,
-        rootElement?: Element,
+        rootElement?: ElementLike,
         Class?: PageObjectConstructor<ElementType, T>
-      ) => [string, Element?, PageObjectConstructor<ElementType, T>?]
+      ) => [string, ElementLike?, PageObjectConstructor<ElementType, T>?]
     ) {
       function gs<
-        ElementType extends Element = Element
+        ElementType extends ElementLike = Element
       >(selector: string): PageObject<ElementType>;
       function gs<
-        ElementType extends Element,
+        ElementType extends ElementLike,
         T extends PageObject<ElementType>
       >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
 
       function gs<
-        ElementType extends Element = Element
-      >(selector: string, rootElement: Element): PageObject<ElementType>;
+        ElementType extends ElementLike = Element
+      >(selector: string, rootElement: ElementLike): PageObject<ElementType>;
       function gs<
-        ElementType extends Element,
+        ElementType extends ElementLike,
         T extends PageObject<ElementType>
-      >(name: string, rootElement: Element, Class: PageObjectConstructor<ElementType, T>): T;
+      >(name: string, rootElement: ElementLike, Class: PageObjectConstructor<ElementType, T>): T;
 
       function gs<
-        ElementType extends Element = Element,
+        ElementType extends ElementLike = Element,
         T extends PageObject<ElementType> = PageObject<ElementType>
-      >(...args: [string, PageObjectConstructor<ElementType, T>?] | [string, Element, PageObjectConstructor<ElementType, T>?]) {
+      >(...args: [string, PageObjectConstructor<ElementType, T>?] | [string, ElementLike, PageObjectConstructor<ElementType, T>?]) {
         let name;
         let rootElement;
         let Class;
 
-        if (args[1] instanceof Element) {
+        if (isElementLike(args[1])) {
           [name, rootElement, Class] = transform(args[0], args[1], args[2]);
         } else {
           [name, rootElement, Class] = transform(args[0], undefined, args[1]);
@@ -264,6 +268,48 @@ module('Integration | page object', function (hooks) {
     } finally {
       div.remove();
     }
+  });
+
+  test('it can query the shadow DOM', async function (this: RenderingTestContext, assert) {
+    await render(hbs`<div data-target><div data-child></div></div>`);
+
+    let target = this.element.querySelector('[data-target]')!;
+    let span = document.createElement('span');
+    target?.attachShadow({ mode: 'open' }).append(span);
+
+    let child = this.element.querySelector('[data-child]')!;
+    let childSpan = document.createElement('span');
+    child?.attachShadow({ mode: 'open' }).append(childSpan);
+
+    const ShadowPage = class extends PageObject {
+      span = selector('span');
+    };
+
+    const Page = class extends PageObject {
+      get shadowRoot() {
+        return this.element?.shadowRoot
+          ? new ShadowPage('', this.element.shadowRoot)
+          : new ShadowPage('does_not_exist');
+      }
+
+      get shadowSpan() {
+        return this.element?.shadowRoot
+          ? new PageObject('span', this.element.shadowRoot)
+          : new PageObject('does_not_exist');
+      }
+
+      get childShadowSpan() {
+        let child = this.element?.querySelector('[data-child]')?.shadowRoot;
+        return child
+          ? new PageObject('span', child)
+          : new PageObject('does_not_exist');
+      }
+    };
+    let page = new Page('[data-target]');
+
+    assert.strictEqual(page.shadowRoot.span.element, span);
+    assert.strictEqual(page.shadowSpan.element, span);
+    assert.strictEqual(page.childShadowSpan.element, childSpan);
   });
 
   test('smoke test', async function (assert) {

@@ -1,5 +1,5 @@
 import { getDOMQuery } from './-private/page-object-state';
-import { WithElement } from './-private/types';
+import { ElementLike, WithElement } from './-private/types';
 
 import type { default as PageObject } from './page-object';
 
@@ -23,7 +23,7 @@ import type { default as PageObject } from './page-object';
  * @param {PageObject} pageObject the page object
  */
 export function assertExists<
-  ElementType extends Element,
+  ElementType extends ElementLike,
   T extends PageObject<ElementType>
 >(
   msg: string,
@@ -40,7 +40,7 @@ export function assertExists<
  * Utility to get the fully resolved selector path of a {@link PageObject}
  */
 export function getDescription<
-  ElementType extends Element,
+  ElementType extends ElementLike,
   T extends PageObject<ElementType>
 >(pageObject: T): string {
   return getDOMQuery(pageObject).selectorArray.toString();

@@ -1,6 +1,7 @@
 import PageObjectFactory from './factory';
 import type PageObject from '../page-object';
 import cloneWithIndex from './clone-with-index';
+import { ElementLike } from './types';
 
 /**
  * Create a proxy wrapping a {@link PageObject} and implementing array
@@ -10,7 +11,7 @@ import cloneWithIndex from './clone-with-index';
  *
  * @returns the proxy implementing the page object & array functionality
  */
-export default function createProxy<ElementType extends Element>(
+export default function createProxy<ElementType extends ElementLike>(
   pageObject: PageObject<ElementType>
 ): PageObject<ElementType> {
   return new Proxy(pageObject, {
@@ -71,7 +72,7 @@ export default function createProxy<ElementType extends Element>(
  * {@link PageObject} if the actual property value is a
  * {@link PageObjectFactory}
  */
-function getWithFactorySupport<ElementType extends Element>(
+function getWithFactorySupport<ElementType extends ElementLike>(
   pageObject: PageObject<ElementType>,
   prop: string,
   receiver: unknown

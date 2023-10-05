@@ -1,5 +1,9 @@
 import PageObject from '../page-object';
-import type { GenericPageObject, PageObjectConstructor } from './types';
+import type {
+  ElementLike,
+  GenericPageObject,
+  PageObjectConstructor,
+} from './types';
 
 /**
  * A factory for creating {@link PageObject}s. The factory is constructed with a
@@ -8,7 +12,7 @@ import type { GenericPageObject, PageObjectConstructor } from './types';
  * the data provided to the factoryt.
  */
 export default class PageObjectFactory<
-  ElementType extends Element,
+  ElementType extends ElementLike,
   T extends PageObject<ElementType>
 > {
   /**
@@ -28,7 +32,7 @@ export default class PageObjectFactory<
    * @param parent the {@link PageObject} to set as the new page object's parent
    * @returns the new page object
    */
-  create(parent?: GenericPageObject | Element): PageObject<ElementType> {
+  create(parent?: GenericPageObject | ElementLike): PageObject<ElementType> {
     let Class =
       this.Class ||
       (PageObject as PageObjectConstructor<

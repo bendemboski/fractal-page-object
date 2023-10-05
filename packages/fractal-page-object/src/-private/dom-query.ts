@@ -1,4 +1,34 @@
 import safeSelector from './safe-selector';
+import { ElementLike } from './types';
+
+/**
+ * A helper to run `querySelector()`, trying first with the selector given, and
+ * then if that errors, with the result of passing it through
+ * {@link safeSelector}.
+ */
+function querySelector(root: ElementLike, selector: string): Element | null {
+  try {
+    return root.querySelector(selector);
+  } catch (e) {
+    return root.querySelector(safeSelector(selector));
+  }
+}
+
+/**
+ * A helper to run `querySelectorAll()`, trying first with the selector given,
+ * and then if that errors, with the result of passing it through
+ * {@link safeSelector}.
+ */
+function querySelectorAll(
+  root: ElementLike,
+  selector: string
+): NodeListOf<Element> {
+  try {
+    return root.querySelectorAll(selector);
+  } catch (e) {
+    return root.querySelectorAll(safeSelector(selector));
+  }
+}
 
 /**
  * An element of a {@link SelectorArray}, comprising a selector and optional
@@ -75,14 +105,14 @@ export default class DOMQuery {
    * @param selectorArray the selector array describing the query to execute
    */
   constructor(
-    public readonly root: Element | null,
+    public readonly root: ElementLike | null,
     public readonly selectorArray: SelectorArray = new SelectorArray()
   ) {}
 
   /**
    * Query the first matching element
    */
-  query(): Element | null {
+  query(): ElementLike | null {
     let el = this.root;
     for (let { selector, index } of this.selectorArray) {
       if (!el) {
@@ -92,7 +122,7 @@ export default class DOMQuery {
       if (index !== undefined) {
         if (selector) {
           // Selector and index, so query all and index into result set
-          el = el.querySelectorAll(safeSelector(selector))[index];
+          el = querySelectorAll(el, selector)[index];
         } else {
           // Only index, so index into the result set, which is just the current
           // element
@@ -100,7 +130,7 @@ export default class DOMQuery {
         }
       } else {
         // Only a selector
-        el = el.querySelector(safeSelector(selector));
+        el = querySelector(el, selector);
       }
     }
     return el || null;
@@ -109,7 +139,7 @@ export default class DOMQuery {
   /**
    * Query all matching elements
    */
-  queryAll(): Element[] {
+  queryAll(): ElementLike[] {
     if (!this.root) {
       return [];
     }
@@ -124,7 +154,7 @@ export default class DOMQuery {
         let el;
         if (selector) {
           // Selector and index, so query all and index into the result set
-          el = matches[0].querySelectorAll(safeSelector(selector))[index];
+          el = querySelectorAll(matches[0], selector)[index];
         } else {
           // Only index, so index into the result set, which is just the current
           // element
@@ -134,9 +164,7 @@ export default class DOMQuery {
         matches = el ? [el] : [];
       } else {
         // Only a selector, so query for result set and covert to array
-        matches = Array.from(
-          matches[0].querySelectorAll(safeSelector(selector))
-        );
+        matches = Array.from(querySelectorAll(matches[0], selector));
       }
     }
     return matches;
@@ -146,8 +174,8 @@ export default class DOMQuery {
    * Create a child {@link DOMQuery} from a selector and an optional index.
    *
    * @param selector selector to query
-   * @param index target index of the {@link Element} in the query results, or
-   * null if this isn't an index query
+   * @param index target index of the {@link ElementLike} in the query results,
+   * or null if this isn't an index query
    */
   createChild(selector: string, index: number | null): DOMQuery {
     let child = this.selectorArray;
