@@ -1,5 +1,10 @@
 export { setRoot } from './-private/root';
-export type { PageObjectConstructor, WithElement } from './-private/types';
+export {
+  type ElementLike,
+  isElementLike,
+  type PageObjectConstructor,
+  type WithElement,
+} from './-private/types';
 
 export { default as PageObject } from './page-object';
 

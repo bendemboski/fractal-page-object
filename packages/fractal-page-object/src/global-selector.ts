@@ -1,6 +1,10 @@
 import GlobalPageObjectFactory from './-private/global-factory';
 import PageObject from './page-object';
-import type { PageObjectConstructor } from './-private/types';
+import {
+  isElementLike,
+  type ElementLike,
+  type PageObjectConstructor,
+} from './-private/types';
 import { validateSelectorArguments } from './-private/helpers';
 
 /**
@@ -23,9 +27,9 @@ import { validateSelectorArguments } from './-private/helpers';
  *
  * @returns {PageObject} a {@link PageObject} instance
  */
-export default function globalSelector<ElementType extends Element = Element>(
-  selector: string
-): PageObject<ElementType>;
+export default function globalSelector<
+  ElementType extends ElementLike = Element
+>(selector: string): PageObject<ElementType>;
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -50,7 +54,7 @@ export default function globalSelector<ElementType extends Element = Element>(
  * @returns {PageObject} a {@link PageObject} subclass instance
  */
 export default function globalSelector<
-  ElementType extends Element,
+  ElementType extends ElementLike,
   T extends PageObject<ElementType>
 >(selector: string, Class: PageObjectConstructor<ElementType, T>): T;
 
@@ -71,15 +75,14 @@ export default function globalSelector<
  * generates.
  *
  * @param {string} selector the selector
- * @param {Element} rootElement the root element under which to query the
+ * @param {ElementLike} rootElement the root element under which to query the
  * selector.
  *
  * @returns {PageObject} a {@link PageObject} instance
  */
-export default function globalSelector<ElementType extends Element = Element>(
-  selector: string,
-  rootElement: Element
-): PageObject<ElementType>;
+export default function globalSelector<
+  ElementType extends ElementLike = Element
+>(selector: string, rootElement: ElementLike): PageObject<ElementType>;
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -98,19 +101,19 @@ export default function globalSelector<ElementType extends Element = Element>(
  * generates.
  *
  * @param {string} selector the selector
- * @param {Element} rootElement the root element under which to query the
+ * @param {ElementLike} rootElement the root element under which to query the
  * selector.
- * @param {Function<PageObject>} [Class] {@link PageObject} subclass that
- * can be used to extend the functionality of this page object
+ * @param {Function<PageObject>} [Class] {@link PageObject} subclass that can be
+ * used to extend the functionality of this page object
  *
  * @returns {PageObject} a {@link PageObject} subclass instance
  */
 export default function globalSelector<
-  ElementType extends Element,
+  ElementType extends ElementLike,
   T extends PageObject<ElementType>
 >(
   selector: string,
-  rootElement: Element,
+  rootElement: ElementLike,
   Class: PageObjectConstructor<ElementType, T>
 ): T;
 
@@ -131,7 +134,7 @@ export default function globalSelector<
  * generates.
  *
  * @param {string} selector the selector
- * @param {Element} rootElement optional the root element under which to query
+ * @param {ElementLike} rootElement optional the root element under which to query
  * the selector.
  * @param {Function<PageObject>} Class optional {@link PageObject} subclass that
  * can be used to extend the functionality of this page object
@@ -189,18 +192,18 @@ export default function globalSelector<
  * page.input.element.value; // no type cast needed
  */
 export default function globalSelector<
-  ElementType extends Element = Element,
+  ElementType extends ElementLike = Element,
   T extends PageObject<ElementType> = PageObject<ElementType>
 >(
   ...args:
     | [string, PageObjectConstructor<ElementType, T>?]
-    | [string, Element, PageObjectConstructor<ElementType, T>?]
+    | [string, ElementLike, PageObjectConstructor<ElementType, T>?]
 ): T {
   let selector = args[0];
   let rootElement;
   let Class;
 
-  if (args[1] instanceof Element) {
+  if (isElementLike(args[1])) {
     rootElement = args[1];
     Class = args[2];
   } else {

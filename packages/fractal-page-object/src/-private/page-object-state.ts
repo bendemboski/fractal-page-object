@@ -1,6 +1,10 @@
 import DOMQuery from './dom-query';
 import { getRoot } from './root';
-import type { GenericPageObject } from './types';
+import {
+  isElementLike,
+  type ElementLike,
+  type GenericPageObject,
+} from './types';
 
 /**
  * This interface describes the internal/private state of a {@link PageObject}.
@@ -10,7 +14,7 @@ import type { GenericPageObject } from './types';
  */
 interface IPageObjectState {
   selector: string;
-  parent: GenericPageObject | Element | null;
+  parent: GenericPageObject | ElementLike | null;
   index: number | null;
 }
 
@@ -42,7 +46,7 @@ export function getDOMQuery(pageObject: GenericPageObject): DOMQuery {
   let { parent, selector, index } = state;
 
   let parentQuery;
-  if (parent instanceof Element) {
+  if (isElementLike(parent)) {
     parentQuery = new DOMQuery(parent);
   } else if (parent) {
     parentQuery = getDOMQuery(parent);

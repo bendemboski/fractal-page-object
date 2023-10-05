@@ -1,4 +1,4 @@
-import type { PageObjectConstructor } from './types';
+import type { ElementLike, PageObjectConstructor } from './types';
 import PageObject from '../page-object';
 import Factory from './factory';
 
@@ -9,7 +9,7 @@ import Factory from './factory';
  * default to the global root set via {@link setRoot}.
  */
 export default class GlobalPageObjectFactory<
-  ElementType extends Element,
+  ElementType extends ElementLike,
   T extends PageObject<ElementType>
 > extends Factory<ElementType, T> {
   /**
@@ -22,7 +22,7 @@ export default class GlobalPageObjectFactory<
    */
   constructor(
     selector: string,
-    private rootElement?: Element,
+    private rootElement?: ElementLike,
     Class?: PageObjectConstructor<ElementType, T>
   ) {
     super(selector, Class);

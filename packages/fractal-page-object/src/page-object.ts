@@ -1,14 +1,15 @@
 import ArrayStub from './-private/array-stub';
 import createProxy from './-private/create-proxy';
 import { getDOMQuery, setPageObjectState } from './-private/page-object-state';
-import type { GenericPageObject } from './-private/types';
+import type { ElementLike, GenericPageObject } from './-private/types';
 
 /**
  * This class implements all the basic page object functionality, and all page
  * objects must inherit from it. It can host {@link selector} and
  * {@link globalSelector} fields, and will properly instantiate them as nested
  * {@link PageObject}s when accessed. Each page object represents a DOM query
- * that matches zero or more {@link Element}s (or subclasses of {@link Element}
+ * that matches zero or more {@link ElementLike}s (or subclasses of
+ * {@link Element}
  * -- see {@link ElementType}).
  *
  * {@link PageObject}s exist in a tree where each {@link PageObject}'s elements
@@ -86,7 +87,7 @@ import type { GenericPageObject } from './-private/types';
  * new Page('.container', document.body, 1).list.elements;
  */
 export default class PageObject<
-  ElementType extends Element = Element
+  ElementType extends ElementLike = Element
 > extends ArrayStub<ElementType> {
   /**
    * This page object's single matching DOM element -- the first DOM element
@@ -139,13 +140,13 @@ export default class PageObject<
    */
   constructor(
     selector: string,
-    parent?: GenericPageObject | Element | null,
+    parent?: GenericPageObject | ElementLike | null,
     index?: number | null
   );
 
   constructor(
     selector = '',
-    parent: GenericPageObject | Element | null = null,
+    parent: GenericPageObject | ElementLike | null = null,
     index: number | null = null
   ) {
     super();
