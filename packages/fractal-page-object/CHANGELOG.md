@@ -2,6 +2,16 @@
 
 
 
+
+## v0.5.0 (2023-10-06)
+
+#### :rocket: Enhancement
+* `ember-app`, `fractal-page-object`
+  * [#110](https://github.com/bendemboski/fractal-page-object/pull/110) Support DocumentFragments & ShadowRoots ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+
 ## v0.4.1 (2023-02-23)
 
 #### :bug: Bug Fix
