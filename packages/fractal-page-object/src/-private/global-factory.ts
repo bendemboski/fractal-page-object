@@ -10,7 +10,7 @@ import Factory from './factory';
  */
 export default class GlobalPageObjectFactory<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 > extends Factory<ElementType, T> {
   /**
    * @param selector the selector for page objects created from this factory
@@ -23,7 +23,7 @@ export default class GlobalPageObjectFactory<
   constructor(
     selector: string,
     private rootElement?: ElementLike,
-    Class?: PageObjectConstructor<ElementType, T>
+    Class?: PageObjectConstructor<ElementType, T>,
   ) {
     super(selector, Class);
   }

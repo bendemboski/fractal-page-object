@@ -1,4 +1,4 @@
-import { describe, afterEach, test, expect } from '@jest/globals';
+import { describe, afterEach, test, expect } from 'vitest';
 import { PageObject, selector, assertExists, getDescription } from '../index';
 import { resetRoot } from '../-private/root';
 
@@ -53,7 +53,7 @@ describe('utils', () => {
           '.thing',
           class extends PageObject {
             subthing = selector('.subthing');
-          }
+          },
         );
       }
       let page = new Page();
@@ -61,7 +61,7 @@ describe('utils', () => {
       expect(getDescription(page.thing)).toEqual('.thing');
       expect(getDescription(page.thing.subthing)).toEqual('.thing .subthing');
       expect(getDescription(page.thing[1].subthing[0])).toEqual(
-        '.thing[1] .subthing[0]'
+        '.thing[1] .subthing[0]',
       );
     });
 

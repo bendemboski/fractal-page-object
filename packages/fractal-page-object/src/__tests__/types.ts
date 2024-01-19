@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect } from 'vitest';
 import { ElementLike, isElementLike } from '../index';
 
 describe('types', () => {
@@ -17,7 +17,7 @@ describe('types', () => {
 
       doThing(
         // @ts-expect-error should produce error
-        obj
+        obj,
       );
 
       if (isElementLike(obj)) {

@@ -4,7 +4,7 @@ import type { ElementLike, PageObjectConstructor } from './types';
 
 function isPageObjectSubclass<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(Class: PageObjectConstructor<ElementType, T>) {
   return (
     (Class as unknown) === PageObject || Class.prototype instanceof PageObject
@@ -13,7 +13,7 @@ function isPageObjectSubclass<
 
 export function validateSelectorArguments<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(selector: string, Class?: PageObjectConstructor<ElementType, T>): void {
   if (!selector.trim()) {
     throw new Error('Cannot specify an empty selector');
@@ -31,7 +31,7 @@ export function validateSelectorArguments<
 
   if (Class && !isPageObjectSubclass(Class)) {
     throw new Error(
-      'Custom selector()/globalSelector() class must be PageObject or PageObject subclass'
+      'Custom selector()/globalSelector() class must be PageObject or PageObject subclass',
     );
   }
 }

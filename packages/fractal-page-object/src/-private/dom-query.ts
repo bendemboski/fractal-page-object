@@ -21,7 +21,7 @@ function querySelector(root: ElementLike, selector: string): Element | null {
  */
 function querySelectorAll(
   root: ElementLike,
-  selector: string
+  selector: string,
 ): NodeListOf<Element> {
   try {
     return root.querySelectorAll(selector);
@@ -106,7 +106,7 @@ export default class DOMQuery {
    */
   constructor(
     public readonly root: ElementLike | null,
-    public readonly selectorArray: SelectorArray = new SelectorArray()
+    public readonly selectorArray: SelectorArray = new SelectorArray(),
   ) {}
 
   /**

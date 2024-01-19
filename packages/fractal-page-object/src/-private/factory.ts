@@ -13,7 +13,7 @@ import type {
  */
 export default class PageObjectFactory<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 > {
   /**
    * @param selector the selector for page objects created from this factory
@@ -23,7 +23,7 @@ export default class PageObjectFactory<
    */
   constructor(
     private selector: string,
-    private Class?: PageObjectConstructor<ElementType, T>
+    private Class?: PageObjectConstructor<ElementType, T>,
   ) {}
 
   /**

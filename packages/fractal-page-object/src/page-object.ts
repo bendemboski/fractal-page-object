@@ -87,7 +87,7 @@ import type { ElementLike, GenericPageObject } from './-private/types';
  * new Page('.container', document.body, 1).list.elements;
  */
 export default class PageObject<
-  ElementType extends ElementLike = Element
+  ElementType extends ElementLike = Element,
 > extends ArrayStub<ElementType> {
   /**
    * This page object's single matching DOM element -- the first DOM element
@@ -141,13 +141,13 @@ export default class PageObject<
   constructor(
     selector: string,
     parent?: GenericPageObject | ElementLike | null,
-    index?: number | null
+    index?: number | null,
   );
 
   constructor(
     selector = '',
     parent: GenericPageObject | ElementLike | null = null,
-    index: number | null = null
+    index: number | null = null,
   ) {
     super();
     let proxy = createProxy(this);

@@ -3,9 +3,26 @@
   "private": true,
   "repository": "https://github.com/bendemboski/fractal-page-object",
   "scripts": {
-    "lint": "yarn workspaces run lint"
+    "build": "cd packages/fractal-page-object && pnpm run build",
+    "docs": "cd packages/fractal-page-object && pnpm run docs",
+    "prepare": "pnpm build",
+    "release": "cd packages/fractal-page-object && pnpm run release",
+    "lint": "pnpm --filter '*' lint",
+    "lint:fix": "pnpm --filter '*' lint:fix",
+    "test": "pnpm --filter '*' test"
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "engines": {
+    "node": ">= 18.*",
+    "yarn": "use pnpm",
+    "npm": "use pnpm"
+  },
+  "volta": {
+    "node": "18.18.2",
+    "pnpm": "8.14.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@glimmer/validator": "0.84.3"
+    }
+  }
 }

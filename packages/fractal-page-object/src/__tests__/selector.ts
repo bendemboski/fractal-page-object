@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect } from 'vitest';
 import { selector, PageObject } from '..';
 
 describe('selector()', () => {
@@ -34,7 +34,7 @@ describe('selector()', () => {
           get elementId() {
             return this.element?.id;
           }
-        }
+        },
       );
     }
     let page = new Page();
@@ -118,7 +118,7 @@ describe('selector()', () => {
           get value() {
             return this.element?.value;
           }
-        }
+        },
       );
     }
     let page = new Page();
@@ -167,13 +167,13 @@ describe('selector()', () => {
       // arguments
       i = selector<HTMLInputElement, CustomPageObjectCustomElement>(
         '.foo',
-        CustomPageObjectCustomElement
+        CustomPageObjectCustomElement,
       );
       // Specify an element type argument that is different from, but cast-able
       // to, the page object's element type
       j = selector<Element, CustomPageObjectCustomElement>(
         '.foo',
-        CustomPageObjectCustomElement
+        CustomPageObjectCustomElement,
       );
       // Specify a custom page object type whose element type is different from,
       // but cast-able to, the element type argument
@@ -188,7 +188,7 @@ describe('selector()', () => {
         // @ts-expect-error cannot specify element type argument when passing a
         // custom page object function argument because the page object function
         // argument's type already includes the element type
-        CustomPageObject
+        CustomPageObject,
       );
       // @ts-expect-error cannot specify a page object type argument without
       // passing the page object class as a function argument
@@ -197,7 +197,7 @@ describe('selector()', () => {
         '.foo',
         // @ts-expect-error cannot pass a class function argument whose type is
         // incompatible with the page object type argument
-        PageObject
+        PageObject,
       );
 
       o = selector<

@@ -9,32 +9,28 @@ on:
   schedule:
     - cron: '0 3 * * *' # daily, at 3am
 
+env:
+  VOLTA_FEATURE_PNPM: 1
 jobs:
   test:
     name: Tests
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
+      - uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3
         with:
-          node-version: 14
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
-      - run: yarn install --frozen-lockfile
-      - run: yarn lint
-      - run: yarn build
-        working-directory: packages/fractal-page-object
-      - run: yarn test:coverage
-        working-directory: packages/fractal-page-object
-      - name: Test Ember app
-        run: yarn test:ember
-        working-directory: packages/ember-app
-      - name: Test script tag app
-        run: yarn test
-        working-directory: packages/script-tag-app
-      - name: Test typescript library
-        run: yarn test
-        working-directory: packages/ts-library
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm test
+
   embroider:
     strategy:
       matrix:
@@ -44,13 +40,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+      - uses: volta-cli/action@d253558a6e356722728a10e9a469190de21a83ef # v4
+      - uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84 # v3
         with:
-          node-version: 14
+          path: "**/node_modules"
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
-      - run: yarn install --frozen-lockfile
-      - run: yarn build
-        working-directory: packages/fractal-page-object
-      - run: yarn ember try:one embroider-${{ matrix.scenario }} --skip-cleanup
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm ember try:one embroider-${{ matrix.scenario }} --skip-cleanup
         working-directory: packages/ember-app
