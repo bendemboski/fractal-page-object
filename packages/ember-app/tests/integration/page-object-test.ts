@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, render, RenderingTestContext } from '@ember/test-helpers';
+import { click, render, type RenderingTestContext } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { globalSelector, PageObject, selector } from 'fractal-page-object';
 import {
@@ -70,23 +70,23 @@ module('Integration | page object', function (hooks) {
     function wrapSelector(
       transform: <
         ElementType extends ElementLike,
-        T extends PageObject<ElementType>
+        T extends PageObject<ElementType>,
       >(
         name: string,
-        Class?: PageObjectConstructor<ElementType, T>
-      ) => [string, PageObjectConstructor<ElementType, T>?]
+        Class?: PageObjectConstructor<ElementType, T>,
+      ) => [string, PageObjectConstructor<ElementType, T>?],
     ) {
-      function s<
-        ElementType extends ElementLike = Element
-      >(name: string): PageObject<ElementType>;
+      function s<ElementType extends ElementLike = Element>(
+        name: string,
+      ): PageObject<ElementType>;
       function s<
         ElementType extends ElementLike,
-        T extends PageObject<ElementType>
+        T extends PageObject<ElementType>,
       >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
 
       function s<
         ElementType extends ElementLike = Element,
-        T extends PageObject<ElementType> = PageObject<ElementType>
+        T extends PageObject<ElementType> = PageObject<ElementType>,
       >(name: string, Class?: PageObjectConstructor<ElementType, T>) {
         [name, Class] = transform(name, Class);
         return Class ? selector(name, Class) : selector<ElementType>(name);
@@ -123,7 +123,7 @@ module('Integration | page object', function (hooks) {
         'two',
         class extends PageObject {
           three = s<HTMLInputElement>('three');
-        }
+        },
       );
     };
     let page = new Page();
@@ -147,33 +147,42 @@ module('Integration | page object', function (hooks) {
     function wrapGlobalSelector(
       transform: <
         ElementType extends ElementLike,
-        T extends PageObject<ElementType>
+        T extends PageObject<ElementType>,
       >(
         name: string,
         rootElement?: ElementLike,
-        Class?: PageObjectConstructor<ElementType, T>
-      ) => [string, ElementLike?, PageObjectConstructor<ElementType, T>?]
+        Class?: PageObjectConstructor<ElementType, T>,
+      ) => [string, ElementLike?, PageObjectConstructor<ElementType, T>?],
     ) {
-      function gs<
-        ElementType extends ElementLike = Element
-      >(selector: string): PageObject<ElementType>;
+      function gs<ElementType extends ElementLike = Element>(
+        selector: string,
+      ): PageObject<ElementType>;
       function gs<
         ElementType extends ElementLike,
-        T extends PageObject<ElementType>
+        T extends PageObject<ElementType>,
       >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
 
-      function gs<
-        ElementType extends ElementLike = Element
-      >(selector: string, rootElement: ElementLike): PageObject<ElementType>;
+      function gs<ElementType extends ElementLike = Element>(
+        selector: string,
+        rootElement: ElementLike,
+      ): PageObject<ElementType>;
       function gs<
         ElementType extends ElementLike,
-        T extends PageObject<ElementType>
-      >(name: string, rootElement: ElementLike, Class: PageObjectConstructor<ElementType, T>): T;
+        T extends PageObject<ElementType>,
+      >(
+        name: string,
+        rootElement: ElementLike,
+        Class: PageObjectConstructor<ElementType, T>,
+      ): T;
 
       function gs<
         ElementType extends ElementLike = Element,
-        T extends PageObject<ElementType> = PageObject<ElementType>
-      >(...args: [string, PageObjectConstructor<ElementType, T>?] | [string, ElementLike, PageObjectConstructor<ElementType, T>?]) {
+        T extends PageObject<ElementType> = PageObject<ElementType>,
+      >(
+        ...args:
+          | [string, PageObjectConstructor<ElementType, T>?]
+          | [string, ElementLike, PageObjectConstructor<ElementType, T>?]
+      ) {
         let name;
         let rootElement;
         let Class;
@@ -202,7 +211,7 @@ module('Integration | page object', function (hooks) {
         `[data-name="${name}"]`,
         rootElement,
         Class,
-      ]
+      ],
     );
 
     // Check that `wrapGlobalSelector` produces functions that are
@@ -223,8 +232,6 @@ module('Integration | page object', function (hooks) {
       </div>
     `);
 
-    assert.expect(6);
-
     let div = document.createElement('div');
     document.body.append(div);
     try {
@@ -234,7 +241,7 @@ module('Integration | page object', function (hooks) {
           'two',
           class extends PageObject {
             three = gs<HTMLInputElement>('three');
-          }
+          },
         );
 
         oneRoot = gs('one-root', document.body);
@@ -243,7 +250,7 @@ module('Integration | page object', function (hooks) {
           document.body,
           class extends PageObject {
             threeRoot = gs<HTMLInputElement>('three-root', document.body);
-          }
+          },
         );
       };
       let page = new Page();
@@ -325,7 +332,7 @@ module('Integration | page object', function (hooks) {
         class extends PageObject {
           title = selector('.title');
           showList = selector('button');
-        }
+        },
       );
 
       list = selector(
@@ -333,7 +340,7 @@ module('Integration | page object', function (hooks) {
         class extends PageObject {
           listItems = selector('li', ListItem);
           loadMore = selector('.load-more');
-        }
+        },
       );
     };
     let page = new Page();
@@ -385,7 +392,7 @@ module('Integration | page object', function (hooks) {
     assert.dom(page.list.listItems[6].element).doesNotExist();
     assert.deepEqual(
       page.list.listItems.map((item) => item.text),
-      ['item0', 'item1', 'item2', 'item3', 'item4', 'load more']
+      ['item0', 'item1', 'item2', 'item3', 'item4', 'load more'],
     );
     assert.dom(page.list.loadMore.element).exists();
 
@@ -411,7 +418,7 @@ module('Integration | page object', function (hooks) {
         'item8',
         'item9',
         'load more',
-      ]
+      ],
     );
     assert.dom(page.list.loadMore.element).exists();
   });

@@ -133,7 +133,10 @@ describe('DOMQuery', () => {
     expect(rootQuery.createChild('strong', 9).queryAll()).toEqual([]);
 
     expect(
-      rootQuery.createChild('span', null).createChild('strong', null).queryAll()
+      rootQuery
+        .createChild('span', null)
+        .createChild('strong', null)
+        .queryAll(),
     ).toEqual([
       strong1,
       nestedStrong1,
@@ -144,38 +147,38 @@ describe('DOMQuery', () => {
       nestedStrong4,
     ]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 0).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 0).queryAll(),
     ).toEqual([strong1]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 1).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 1).queryAll(),
     ).toEqual([nestedStrong1]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 2).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 2).queryAll(),
     ).toEqual([strong2]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 3).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 3).queryAll(),
     ).toEqual([nestedStrong2]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 4).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 4).queryAll(),
     ).toEqual([nestedStrong3]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 5).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 5).queryAll(),
     ).toEqual([strong3]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 6).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 6).queryAll(),
     ).toEqual([nestedStrong4]);
     expect(
-      rootQuery.createChild('span', null).createChild('strong', 7).queryAll()
+      rootQuery.createChild('span', null).createChild('strong', 7).queryAll(),
     ).toEqual([]);
 
     expect(
-      rootQuery.createChild('span', 0).createChild('strong', null).queryAll()
+      rootQuery.createChild('span', 0).createChild('strong', null).queryAll(),
     ).toEqual([strong1, nestedStrong1, strong2, nestedStrong2, nestedStrong3]);
     expect(
-      rootQuery.createChild('span', 2).createChild('strong', null).queryAll()
+      rootQuery.createChild('span', 2).createChild('strong', null).queryAll(),
     ).toEqual([strong3, nestedStrong4]);
     expect(
-      rootQuery.createChild('span', 3).createChild('strong', null).queryAll()
+      rootQuery.createChild('span', 3).createChild('strong', null).queryAll(),
     ).toEqual([]);
   });
 

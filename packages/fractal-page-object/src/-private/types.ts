@@ -25,7 +25,7 @@ export type GenericPageObject = PageObject<any>; // eslint-disable-line @typescr
  */
 export type PageObjectConstructor<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 > = new (...args: ConstructorParameters<typeof PageObject<ElementType>>) => T;
 
 /**

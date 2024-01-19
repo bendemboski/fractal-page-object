@@ -19,5 +19,10 @@
   "volta": {
     "node": "18.18.2",
     "pnpm": "8.14.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@glimmer/validator": "0.84.3"
+    }
   }
 }

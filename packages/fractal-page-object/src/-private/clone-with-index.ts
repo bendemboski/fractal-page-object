@@ -14,7 +14,7 @@ import type { ElementLike, PageObjectConstructor } from './types';
  */
 export default function cloneWithIndex<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(obj: T, index: number): T {
   let Class = obj.constructor as PageObjectConstructor<
     ElementType,

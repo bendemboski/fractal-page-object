@@ -28,7 +28,7 @@ import { validateSelectorArguments } from './-private/helpers';
  * @returns {PageObject} a {@link PageObject} instance
  */
 export default function globalSelector<
-  ElementType extends ElementLike = Element
+  ElementType extends ElementLike = Element,
 >(selector: string): PageObject<ElementType>;
 
 /**
@@ -55,7 +55,7 @@ export default function globalSelector<
  */
 export default function globalSelector<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(selector: string, Class: PageObjectConstructor<ElementType, T>): T;
 
 /**
@@ -81,7 +81,7 @@ export default function globalSelector<
  * @returns {PageObject} a {@link PageObject} instance
  */
 export default function globalSelector<
-  ElementType extends ElementLike = Element
+  ElementType extends ElementLike = Element,
 >(selector: string, rootElement: ElementLike): PageObject<ElementType>;
 
 /**
@@ -110,11 +110,11 @@ export default function globalSelector<
  */
 export default function globalSelector<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(
   selector: string,
   rootElement: ElementLike,
-  Class: PageObjectConstructor<ElementType, T>
+  Class: PageObjectConstructor<ElementType, T>,
 ): T;
 
 /**
@@ -193,7 +193,7 @@ export default function globalSelector<
  */
 export default function globalSelector<
   ElementType extends ElementLike = Element,
-  T extends PageObject<ElementType> = PageObject<ElementType>
+  T extends PageObject<ElementType> = PageObject<ElementType>,
 >(
   ...args:
     | [string, PageObjectConstructor<ElementType, T>?]
@@ -218,6 +218,6 @@ export default function globalSelector<
   return new GlobalPageObjectFactory(
     selector,
     rootElement,
-    Class
+    Class,
   ) as unknown as T;
 }

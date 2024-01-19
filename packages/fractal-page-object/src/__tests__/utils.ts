@@ -53,7 +53,7 @@ describe('utils', () => {
           '.thing',
           class extends PageObject {
             subthing = selector('.subthing');
-          }
+          },
         );
       }
       let page = new Page();
@@ -61,7 +61,7 @@ describe('utils', () => {
       expect(getDescription(page.thing)).toEqual('.thing');
       expect(getDescription(page.thing.subthing)).toEqual('.thing .subthing');
       expect(getDescription(page.thing[1].subthing[0])).toEqual(
-        '.thing[1] .subthing[0]'
+        '.thing[1] .subthing[0]',
       );
     });
 

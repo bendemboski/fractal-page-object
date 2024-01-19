@@ -24,14 +24,14 @@ import type { default as PageObject } from './page-object';
  */
 export function assertExists<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(
   msg: string,
-  pageObject: T
+  pageObject: T,
 ): asserts pageObject is WithElement<T, ElementType> {
   if (!pageObject.element) {
     throw new Error(
-      `${msg} >> Tried selector \`${getDescription(pageObject)}\``
+      `${msg} >> Tried selector \`${getDescription(pageObject)}\``,
     );
   }
 }
@@ -41,7 +41,7 @@ export function assertExists<
  */
 export function getDescription<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(pageObject: T): string {
   return getDOMQuery(pageObject).selectorArray.toString();
 }

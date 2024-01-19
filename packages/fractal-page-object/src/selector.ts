@@ -16,7 +16,7 @@ import { validateSelectorArguments } from './-private/helpers';
  * @returns {PageObject} a {@link PageObject} instance
  */
 export default function selector<ElementType extends ElementLike = Element>(
-  selector: string
+  selector: string,
 ): PageObject<ElementType>;
 
 /**
@@ -35,7 +35,7 @@ export default function selector<ElementType extends ElementLike = Element>(
  */
 export default function selector<
   ElementType extends ElementLike,
-  T extends PageObject<ElementType>
+  T extends PageObject<ElementType>,
 >(selector: string, Class: PageObjectConstructor<ElementType, T>): T;
 
 /**
@@ -79,7 +79,7 @@ export default function selector<
  */
 export default function selector<
   ElementType extends ElementLike = Element,
-  T extends PageObject<ElementType> = PageObject<ElementType>
+  T extends PageObject<ElementType> = PageObject<ElementType>,
 >(selector: string, Class?: PageObjectConstructor<ElementType, T>): T {
   validateSelectorArguments(selector, Class);
 

@@ -5,6 +5,6 @@ export default class Page extends PageObject {
     '.thing',
     class extends PageObject {
       subthing = selector('.subthing');
-    }
+    },
   );
 }

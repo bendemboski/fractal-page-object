@@ -49,7 +49,7 @@ export default class ArrayStub<ElementType extends ElementLike> {
    */
   declare slice: (
     _start?: number,
-    _end?: number
+    _end?: number,
   ) => WithElement<this, ElementType>[];
   /**
    * @private
@@ -57,8 +57,8 @@ export default class ArrayStub<ElementType extends ElementLike> {
   declare sort: (
     _compareFn?: (
       a: WithElement<this, ElementType>,
-      b: WithElement<this, ElementType>
-    ) => number
+      b: WithElement<this, ElementType>,
+    ) => number,
   ) => this[];
   /**
    * @private
@@ -67,9 +67,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
     predicate: (
       value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this, ElementType>[]
+      array: WithElement<this, ElementType>[],
     ) => unknown,
-    _thisArg?: any
+    _thisArg?: any,
   ) => boolean;
   /**
    * @private
@@ -78,9 +78,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
     _predicate: (
       value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this, ElementType>[]
+      array: WithElement<this, ElementType>[],
     ) => unknown,
-    _thisArg?: any
+    _thisArg?: any,
   ) => boolean;
   /**
    * @private
@@ -89,9 +89,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
     _callbackfn: (
       value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this, ElementType>[]
+      array: WithElement<this, ElementType>[],
     ) => void,
-    _thisArg?: any
+    _thisArg?: any,
   ) => void;
   /**
    * @private
@@ -100,9 +100,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
     _callbackfn: (
       value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this, ElementType>[]
+      array: WithElement<this, ElementType>[],
     ) => U,
-    _thisArg?: any
+    _thisArg?: any,
   ) => U[];
   /**
    * @private
@@ -111,9 +111,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
     predicate: (
       value: WithElement<this, ElementType>,
       index: number,
-      array: WithElement<this, ElementType>[]
+      array: WithElement<this, ElementType>[],
     ) => unknown,
-    thisArg?: any
+    thisArg?: any,
   ) => WithElement<this, ElementType>[];
   /**
    * @private
@@ -123,9 +123,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
       previousValue: U,
       currentValue: WithElement<this, ElementType>,
       currentIndex: number,
-      array: WithElement<this, ElementType>[]
+      array: WithElement<this, ElementType>[],
     ) => U,
-    initialValue: U
+    initialValue: U,
   ) => U;
   /**
    * @private
@@ -135,9 +135,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
       previousValue: U,
       currentValue: WithElement<this, ElementType>,
       currentIndex: number,
-      array: WithElement<this, ElementType>[]
+      array: WithElement<this, ElementType>[],
     ) => U,
-    initialValue: U
+    initialValue: U,
   ) => U;
   /**
    * @private
@@ -146,9 +146,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
     predicate: (
       value: WithElement<this, ElementType>,
       index: number,
-      obj: WithElement<this, ElementType>[]
+      obj: WithElement<this, ElementType>[],
     ) => unknown,
-    thisArg?: any
+    thisArg?: any,
   ) => WithElement<this, ElementType> | undefined;
   /**
    * @private
@@ -157,9 +157,9 @@ export default class ArrayStub<ElementType extends ElementLike> {
     _predicate: (
       value: WithElement<this, ElementType>,
       index: number,
-      obj: WithElement<this, ElementType>[]
+      obj: WithElement<this, ElementType>[],
     ) => unknown,
-    _thisArg?: any
+    _thisArg?: any,
   ) => number;
   /**
    * @private

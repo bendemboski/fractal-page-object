@@ -28,7 +28,7 @@ const pageObjectState = new WeakMap<GenericPageObject, IPageObjectState>();
  */
 export function setPageObjectState(
   pageObject: GenericPageObject,
-  state: IPageObjectState
+  state: IPageObjectState,
 ) {
   pageObjectState.set(pageObject, state);
 }
@@ -40,7 +40,7 @@ export function getDOMQuery(pageObject: GenericPageObject): DOMQuery {
   let state = pageObjectState.get(pageObject);
   if (!state) {
     throw new Error(
-      'Page object state not found, this is probably a bug in fractal-page-object'
+      'Page object state not found, this is probably a bug in fractal-page-object',
     );
   }
   let { parent, selector, index } = state;

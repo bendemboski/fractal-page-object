@@ -76,7 +76,7 @@ describe('globalSelector()', () => {
           get elementId() {
             return this.element?.id;
           }
-        }
+        },
       );
     }
     let page = new Page('span');
@@ -110,7 +110,7 @@ describe('globalSelector()', () => {
           get elementId() {
             return this.element?.id;
           }
-        }
+        },
       );
     }
     let page = new Page('span');
@@ -172,7 +172,7 @@ describe('globalSelector()', () => {
           get value() {
             return this.element?.value;
           }
-        }
+        },
       );
     }
     let page = new Page('span');
@@ -222,13 +222,13 @@ describe('globalSelector()', () => {
         // arguments
         i = globalSelector<HTMLInputElement, CustomPageObjectCustomElement>(
           '.foo',
-          CustomPageObjectCustomElement
+          CustomPageObjectCustomElement,
         );
         // Specify an element type argument that is different from, but cast-able
         // to, the page object's element type
         j = globalSelector<Element, CustomPageObjectCustomElement>(
           '.foo',
-          CustomPageObjectCustomElement
+          CustomPageObjectCustomElement,
         );
         // Specify a custom page object type whose element type is different from,
         // but cast-able to, the element type argument
@@ -243,7 +243,7 @@ describe('globalSelector()', () => {
           // @ts-expect-error cannot specify element type argument when passing a
           // custom page object function argument because the page object function
           // argument's type already includes the element type
-          CustomPageObject
+          CustomPageObject,
         );
         // @ts-expect-error cannot specify a page object type argument without
         // passing the page object class as a function argument
@@ -252,7 +252,7 @@ describe('globalSelector()', () => {
           '.foo',
           // @ts-expect-error cannot pass a class function argument whose type is
           // incompatible with the page object type argument
-          PageObject
+          PageObject,
         );
 
         o = globalSelector<
@@ -283,7 +283,7 @@ describe('globalSelector()', () => {
         d = globalSelector(
           '.foo',
           document.body,
-          CustomPageObjectCustomElement
+          CustomPageObjectCustomElement,
         );
 
         /**
@@ -297,35 +297,35 @@ describe('globalSelector()', () => {
         g = globalSelector<Element, PageObject>(
           '.foo',
           document.body,
-          PageObject
+          PageObject,
         );
         // Unnecessarily specify the default element and custom page object type
         // arguments
         h = globalSelector<Element, CustomPageObject>(
           '.foo',
           document.body,
-          CustomPageObject
+          CustomPageObject,
         );
         // Unnecessarily specify the custom element and custom page object type
         // arguments
         i = globalSelector<HTMLInputElement, CustomPageObjectCustomElement>(
           '.foo',
           document.body,
-          CustomPageObjectCustomElement
+          CustomPageObjectCustomElement,
         );
         // Specify an element type argument that is different from, but cast-able
         // to, the page object's element type
         j = globalSelector<Element, CustomPageObjectCustomElement>(
           '.foo',
           document.body,
-          CustomPageObjectCustomElement
+          CustomPageObjectCustomElement,
         );
         // Specify a custom page object type whose element type is different from,
         // but cast-able to, the element type argument
         k = globalSelector<Element, PageObject>(
           '.foo',
           document.body,
-          CustomPageObject
+          CustomPageObject,
         );
 
         /**
@@ -338,7 +338,7 @@ describe('globalSelector()', () => {
           // @ts-expect-error cannot specify element type argument when passing a
           // custom page object function argument because the page object function
           // argument's type already includes the element type
-          CustomPageObject
+          CustomPageObject,
         );
         // @ts-expect-error cannot specify a page object type argument without
         // passing the page object class as a function argument
@@ -348,7 +348,7 @@ describe('globalSelector()', () => {
           document.body,
           // @ts-expect-error cannot pass a class function argument whose type is
           // incompatible with the page object type argument
-          PageObject
+          PageObject,
         );
 
         o = globalSelector<

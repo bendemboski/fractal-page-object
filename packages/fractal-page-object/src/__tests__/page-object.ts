@@ -17,7 +17,7 @@ describe('PageObject', () => {
       function checkQuery(
         page: PageObject,
         selector: string,
-        elements: Element[]
+        elements: Element[],
       ) {
         expect(getDOMQuery(page).root).toEqual(document.body);
         expect(getDOMQuery(page).selectorArray.toString()).toEqual(selector);
@@ -126,17 +126,17 @@ describe('PageObject', () => {
 
             let page = new PageObject('div', null, 0);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[0]'
+              'div[0]',
             );
 
             page = new PageObject('div', null, 1);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[1]'
+              'div[1]',
             );
 
             page = new PageObject('div', null, 2);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[2]'
+              'div[2]',
             );
           });
 
@@ -147,17 +147,17 @@ describe('PageObject', () => {
 
             let page0 = cloneWithIndex(page, 0);
             expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
-              'div[0]'
+              'div[0]',
             );
 
             let page1 = cloneWithIndex(page, 1);
             expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
-              'div[1]'
+              'div[1]',
             );
 
             let page2 = cloneWithIndex(page, 2);
             expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
-              'div[2]'
+              'div[2]',
             );
           });
         });
@@ -231,17 +231,17 @@ describe('PageObject', () => {
 
             let page = new PageObject('div', parent, 0);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[0]'
+              'div[0]',
             );
 
             page = new PageObject('div', parent, 1);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[1]'
+              'div[1]',
             );
 
             page = new PageObject('div', parent, 2);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[2]'
+              'div[2]',
             );
           });
 
@@ -253,17 +253,17 @@ describe('PageObject', () => {
 
             let page0 = cloneWithIndex(page, 0);
             expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
-              'div[0]'
+              'div[0]',
             );
 
             let page1 = cloneWithIndex(page, 1);
             expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
-              'div[1]'
+              'div[1]',
             );
 
             let page2 = cloneWithIndex(page, 2);
             expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
-              'div[2]'
+              'div[2]',
             );
           });
         });
@@ -276,7 +276,7 @@ describe('PageObject', () => {
             let page = new PageObject('span', parent);
             expect(getDOMQuery(page).root).toEqual(document.body);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div span'
+              'div span',
             );
           });
 
@@ -287,17 +287,17 @@ describe('PageObject', () => {
 
             let page = new PageObject('span', parent, 0);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div span[0]'
+              'div span[0]',
             );
 
             page = new PageObject('span', parent, 1);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div span[1]'
+              'div span[1]',
             );
 
             page = new PageObject('span', parent, 2);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div span[2]'
+              'div span[2]',
             );
           });
 
@@ -309,17 +309,17 @@ describe('PageObject', () => {
 
             let page0 = cloneWithIndex(page, 0);
             expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
-              'div span[0]'
+              'div span[0]',
             );
 
             let page1 = cloneWithIndex(page, 1);
             expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
-              'div span[1]'
+              'div span[1]',
             );
 
             let page2 = cloneWithIndex(page, 2);
             expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
-              'div span[2]'
+              'div span[2]',
             );
           });
         });
@@ -331,7 +331,7 @@ describe('PageObject', () => {
             let parent = new PageObject('div', null, 1);
             let page = new PageObject('span', parent);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[1] span'
+              'div[1] span',
             );
           });
 
@@ -342,17 +342,17 @@ describe('PageObject', () => {
 
             let page = new PageObject('span', parent, 0);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[1] span[0]'
+              'div[1] span[0]',
             );
 
             page = new PageObject('span', parent, 1);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[1] span[1]'
+              'div[1] span[1]',
             );
 
             page = new PageObject('span', parent, 2);
             expect(getDOMQuery(page).selectorArray.toString()).toEqual(
-              'div[1] span[2]'
+              'div[1] span[2]',
             );
           });
 
@@ -364,17 +364,17 @@ describe('PageObject', () => {
 
             let page0 = cloneWithIndex(page, 0);
             expect(getDOMQuery(page0).selectorArray.toString()).toEqual(
-              'div[1] span[0]'
+              'div[1] span[0]',
             );
 
             let page1 = cloneWithIndex(page, 1);
             expect(getDOMQuery(page1).selectorArray.toString()).toEqual(
-              'div[1] span[1]'
+              'div[1] span[1]',
             );
 
             let page2 = cloneWithIndex(page, 2);
             expect(getDOMQuery(page2).selectorArray.toString()).toEqual(
-              'div[1] span[2]'
+              'div[1] span[2]',
             );
           });
         });
@@ -402,28 +402,28 @@ describe('PageObject', () => {
       expect(page.map((o) => o.element.id)).toEqual(['span1', 'span2']);
       expect(empty.map((o) => o.element.id)).toEqual([]);
       expect(page.find((o) => o.element.id === 'span2')?.element).toEqual(
-        span2
+        span2,
       );
       expect(empty.find((o) => o.element.id === 'span2')).toEqual(undefined);
       expect(
-        page.filter((o) => o.element.id === 'span2').map((o) => o.element)
+        page.filter((o) => o.element.id === 'span2').map((o) => o.element),
       ).toEqual([span2]);
       expect(empty.filter((o) => o.element.id === 'span2')).toEqual([]);
       expect(
         page
           .sort(
             (a, b) =>
-              Number(b.element.id.slice(-1)) - Number(a.element.id.slice(-1))
+              Number(b.element.id.slice(-1)) - Number(a.element.id.slice(-1)),
           )
-          .map((o) => o.element)
+          .map((o) => o.element),
       ).toEqual([span2, span1]);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       expect(empty.sort((_a, _b) => -1)).toEqual([]);
       expect(Array.from(page[Symbol.iterator]()).map((o) => o.element)).toEqual(
-        [span1, span2]
+        [span1, span2],
       );
       expect(
-        Array.from(empty[Symbol.iterator]()).map((o) => o.element)
+        Array.from(empty[Symbol.iterator]()).map((o) => o.element),
       ).toEqual([]);
     });
 
@@ -585,12 +585,12 @@ describe('PageObject', () => {
       class Page extends PageObject {
         getFn() {
           return `getFn ${this[1].element?.id}:[${this.map(
-            (o) => o.element.id
+            (o) => o.element.id,
           ).join(',')}]`;
         }
         get getter(): string {
           return `getter ${this[1].element?.id}:[${this.map(
-            (o) => o.element.id
+            (o) => o.element.id,
           ).join(',')}]`;
         }
       }

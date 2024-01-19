@@ -17,7 +17,7 @@ describe('types', () => {
 
       doThing(
         // @ts-expect-error should produce error
-        obj
+        obj,
       );
 
       if (isElementLike(obj)) {

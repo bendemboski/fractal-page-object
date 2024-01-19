@@ -12,7 +12,7 @@ import { ElementLike } from './types';
  * @returns the proxy implementing the page object & array functionality
  */
 export default function createProxy<ElementType extends ElementLike>(
-  pageObject: PageObject<ElementType>
+  pageObject: PageObject<ElementType>,
 ): PageObject<ElementType> {
   return new Proxy(pageObject, {
     get(pageObject, prop: string, receiver) {
@@ -75,7 +75,7 @@ export default function createProxy<ElementType extends ElementLike>(
 function getWithFactorySupport<ElementType extends ElementLike>(
   pageObject: PageObject<ElementType>,
   prop: string,
-  receiver: unknown
+  receiver: unknown,
 ) {
   let value = Reflect.get(pageObject, prop, receiver);
   if (value instanceof PageObjectFactory) {
