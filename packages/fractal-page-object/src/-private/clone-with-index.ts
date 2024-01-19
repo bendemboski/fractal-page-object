@@ -1,5 +1,5 @@
 import type PageObject from '../page-object';
-import type { ElementLike, PageObjectConstructor } from './types';
+import type { PageObjectConstructor } from './types';
 
 /**
  * Create a clone of a {@link PageObject}, but with an index specified. If
@@ -13,7 +13,7 @@ import type { ElementLike, PageObjectConstructor } from './types';
  * the matching elements at the given index
  */
 export default function cloneWithIndex<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 >(obj: T, index: number): T {
   let Class = obj.constructor as PageObjectConstructor<

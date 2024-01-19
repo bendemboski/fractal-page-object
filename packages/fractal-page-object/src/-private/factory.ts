@@ -12,7 +12,7 @@ import type {
  * the data provided to the factoryt.
  */
 export default class PageObjectFactory<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 > {
   /**

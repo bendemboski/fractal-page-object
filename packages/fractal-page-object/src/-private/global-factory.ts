@@ -9,7 +9,7 @@ import Factory from './factory';
  * default to the global root set via {@link setRoot}.
  */
 export default class GlobalPageObjectFactory<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 > extends Factory<ElementType, T> {
   /**

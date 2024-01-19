@@ -1,6 +1,6 @@
 import PageObjectFactory from './-private/factory';
 import PageObject from './page-object';
-import type { ElementLike, PageObjectConstructor } from './-private/types';
+import type { PageObjectConstructor } from './-private/types';
 import { validateSelectorArguments } from './-private/helpers';
 
 /**
@@ -15,7 +15,7 @@ import { validateSelectorArguments } from './-private/helpers';
  *
  * @returns {PageObject} a {@link PageObject} instance
  */
-export default function selector<ElementType extends ElementLike = Element>(
+export default function selector<ElementType extends Element = Element>(
   selector: string,
 ): PageObject<ElementType>;
 
@@ -34,7 +34,7 @@ export default function selector<ElementType extends ElementLike = Element>(
  * @returns {PageObject} a {@link PageObject} subclass instance
  */
 export default function selector<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 >(selector: string, Class: PageObjectConstructor<ElementType, T>): T;
 
@@ -78,7 +78,7 @@ export default function selector<
  * page.input.element.value; // no type cast needed
  */
 export default function selector<
-  ElementType extends ElementLike = Element,
+  ElementType extends Element = Element,
   T extends PageObject<ElementType> = PageObject<ElementType>,
 >(selector: string, Class?: PageObjectConstructor<ElementType, T>): T {
   validateSelectorArguments(selector, Class);

@@ -8,8 +8,7 @@ import type { ElementLike, GenericPageObject } from './-private/types';
  * objects must inherit from it. It can host {@link selector} and
  * {@link globalSelector} fields, and will properly instantiate them as nested
  * {@link PageObject}s when accessed. Each page object represents a DOM query
- * that matches zero or more {@link ElementLike}s (or subclasses of
- * {@link Element}
+ * that matches zero or more {@link Element}s (or subclasses of {@link Element}
  * -- see {@link ElementType}).
  *
  * {@link PageObject}s exist in a tree where each {@link PageObject}'s elements
@@ -87,7 +86,7 @@ import type { ElementLike, GenericPageObject } from './-private/types';
  * new Page('.container', document.body, 1).list.elements;
  */
 export default class PageObject<
-  ElementType extends ElementLike = Element,
+  ElementType extends Element = Element,
 > extends ArrayStub<ElementType> {
   /**
    * This page object's single matching DOM element -- the first DOM element

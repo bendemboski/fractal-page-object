@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import type { ElementLike, WithElement } from './types';
+import type { WithElement } from './types';
 
 /**
  * Base class for {@link PageObject} that contains stub implementations of a
@@ -14,7 +14,7 @@ import type { ElementLike, WithElement } from './types';
  *
  * @private
  */
-export default class ArrayStub<ElementType extends ElementLike> {
+export default class ArrayStub<ElementType extends Element> {
   //
   // Array API
   //

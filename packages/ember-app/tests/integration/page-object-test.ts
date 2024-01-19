@@ -69,23 +69,23 @@ module('Integration | page object', function (hooks) {
      */
     function wrapSelector(
       transform: <
-        ElementType extends ElementLike,
+        ElementType extends Element,
         T extends PageObject<ElementType>,
       >(
         name: string,
         Class?: PageObjectConstructor<ElementType, T>,
       ) => [string, PageObjectConstructor<ElementType, T>?],
     ) {
-      function s<ElementType extends ElementLike = Element>(
+      function s<ElementType extends Element = Element>(
         name: string,
       ): PageObject<ElementType>;
       function s<
-        ElementType extends ElementLike,
+        ElementType extends Element,
         T extends PageObject<ElementType>,
       >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
 
       function s<
-        ElementType extends ElementLike = Element,
+        ElementType extends Element = Element,
         T extends PageObject<ElementType> = PageObject<ElementType>,
       >(name: string, Class?: PageObjectConstructor<ElementType, T>) {
         [name, Class] = transform(name, Class);
@@ -146,7 +146,7 @@ module('Integration | page object', function (hooks) {
      */
     function wrapGlobalSelector(
       transform: <
-        ElementType extends ElementLike,
+        ElementType extends Element,
         T extends PageObject<ElementType>,
       >(
         name: string,
@@ -154,20 +154,20 @@ module('Integration | page object', function (hooks) {
         Class?: PageObjectConstructor<ElementType, T>,
       ) => [string, ElementLike?, PageObjectConstructor<ElementType, T>?],
     ) {
-      function gs<ElementType extends ElementLike = Element>(
+      function gs<ElementType extends Element = Element>(
         selector: string,
       ): PageObject<ElementType>;
       function gs<
-        ElementType extends ElementLike,
+        ElementType extends Element,
         T extends PageObject<ElementType>,
       >(name: string, Class: PageObjectConstructor<ElementType, T>): T;
 
-      function gs<ElementType extends ElementLike = Element>(
+      function gs<ElementType extends Element = Element>(
         selector: string,
         rootElement: ElementLike,
       ): PageObject<ElementType>;
       function gs<
-        ElementType extends ElementLike,
+        ElementType extends Element,
         T extends PageObject<ElementType>,
       >(
         name: string,
@@ -176,7 +176,7 @@ module('Integration | page object', function (hooks) {
       ): T;
 
       function gs<
-        ElementType extends ElementLike = Element,
+        ElementType extends Element = Element,
         T extends PageObject<ElementType> = PageObject<ElementType>,
       >(
         ...args:

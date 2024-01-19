@@ -31,6 +31,65 @@ function querySelectorAll(
 }
 
 /**
+ * Given a root {@link ElementLike}, run the query described by a
+ * {@link SelectorFragment}, and return the result
+ */
+function query(root: ElementLike, fragment: SelectorFragment): Element | null {
+  let { selector, index } = fragment;
+  if (index !== undefined) {
+    if (selector) {
+      // Selector and index, so query all and index into result set
+      return querySelectorAll(root, selector)[index] || null;
+    } else {
+      // Only index, so since we're just acting on one element, the only index
+      // that could possibly match anything is 0.
+      if (index === 0) {
+        // We never match DocumentFragments
+        return root instanceof DocumentFragment ? null : root;
+      } else {
+        return null;
+      }
+    }
+  } else {
+    // Only a selector
+    return querySelector(root, selector);
+  }
+}
+
+/**
+ * Given a root {@link ElementLike} array, run the query described by a
+ * {@link SelectorFragment}, and return the result
+ */
+function queryAll(root: ElementLike[], fragment: SelectorFragment) {
+  if (root.length === 0) {
+    return [];
+  }
+
+  let { selector, index } = fragment;
+
+  if (index !== undefined) {
+    if (selector) {
+      // Selector and index, so query all and index into the result set
+      let results = querySelectorAll(root[0], selector);
+      if (index < results.length) {
+        return [results[index]];
+      }
+    } else {
+      // Only index, so index into the root array
+      if (index < root.length) {
+        // We never match DocumentFragments
+        let result = root[index];
+        return result instanceof DocumentFragment ? [] : [result];
+      }
+    }
+    return [];
+  } else {
+    // Only a selector, so query for result set and covert to array
+    return Array.from(querySelectorAll(root[0], selector));
+  }
+}
+
+/**
  * An element of a {@link SelectorArray}, comprising a selector and optional
  * index. This is to support a DOM query/selector language that allows indexing.
  */
@@ -112,60 +171,49 @@ export default class DOMQuery {
   /**
    * Query the first matching element
    */
-  query(): ElementLike | null {
-    let el = this.root;
-    for (let { selector, index } of this.selectorArray) {
+  query(): Element | null {
+    if (!this.root) {
+      return null;
+    }
+
+    let [first, ...rest] = this.selectorArray;
+
+    if (!first) {
+      // No selector info, so return the root unless it's a DocumentFragment
+      return this.root instanceof DocumentFragment ? null : this.root;
+    }
+
+    let el = query(this.root, this.selectorArray[0]);
+    for (let fragment of rest) {
       if (!el) {
         break;
       }
-
-      if (index !== undefined) {
-        if (selector) {
-          // Selector and index, so query all and index into result set
-          el = querySelectorAll(el, selector)[index];
-        } else {
-          // Only index, so index into the result set, which is just the current
-          // element
-          el = [el][index];
-        }
-      } else {
-        // Only a selector
-        el = querySelector(el, selector);
-      }
+      el = query(el, fragment);
     }
-    return el || null;
+    return el;
   }
 
   /**
    * Query all matching elements
    */
-  queryAll(): ElementLike[] {
+  queryAll(): Element[] {
     if (!this.root) {
       return [];
     }
 
-    let matches = [this.root];
-    for (let { selector, index } of this.selectorArray) {
+    let [first, ...rest] = this.selectorArray;
+
+    if (!first) {
+      // No selector info, so return the root unless it's a DocumentFragment
+      return this.root instanceof DocumentFragment ? [] : [this.root];
+    }
+
+    let matches = queryAll([this.root], first);
+    for (let fragment of rest) {
       if (matches.length === 0) {
         break;
       }
-
-      if (index !== undefined && index !== null) {
-        let el;
-        if (selector) {
-          // Selector and index, so query all and index into the result set
-          el = querySelectorAll(matches[0], selector)[index];
-        } else {
-          // Only index, so index into the result set, which is just the current
-          // element
-          el = matches[index];
-        }
-        // Convert to singleton array
-        matches = el ? [el] : [];
-      } else {
-        // Only a selector, so query for result set and covert to array
-        matches = Array.from(querySelectorAll(matches[0], selector));
-      }
+      matches = queryAll(matches, fragment);
     }
     return matches;
   }
@@ -174,8 +222,8 @@ export default class DOMQuery {
    * Create a child {@link DOMQuery} from a selector and an optional index.
    *
    * @param selector selector to query
-   * @param index target index of the {@link ElementLike} in the query results,
-   * or null if this isn't an index query
+   * @param index target index of the {@link Element} in the query results, or
+   * null if this isn't an index query
    */
   createChild(selector: string, index: number | null): DOMQuery {
     let child = this.selectorArray;
