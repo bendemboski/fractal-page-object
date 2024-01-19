@@ -592,8 +592,8 @@ describe('DOMQuery', () => {
     span1.attachShadow({ mode: 'open' }).append(shadowSpan1, shadowSpan2);
 
     let shadowQuery = new DOMQuery(span1.shadowRoot);
-    expect(shadowQuery.query()).toEqual(span1.shadowRoot);
-    expect(shadowQuery.queryAll()).toEqual([span1.shadowRoot]);
+    expect(shadowQuery.query()).toEqual(null);
+    expect(shadowQuery.queryAll()).toEqual([]);
 
     let child = shadowQuery.createChild('span', null);
     expect(child.query()).toEqual(shadowSpan1);

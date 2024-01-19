@@ -1,9 +1,9 @@
 import PageObject from '../page-object';
 import safeSelector from './safe-selector';
-import type { ElementLike, PageObjectConstructor } from './types';
+import type { PageObjectConstructor } from './types';
 
 function isPageObjectSubclass<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 >(Class: PageObjectConstructor<ElementType, T>) {
   return (
@@ -12,7 +12,7 @@ function isPageObjectSubclass<
 }
 
 export function validateSelectorArguments<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 >(selector: string, Class?: PageObjectConstructor<ElementType, T>): void {
   if (!selector.trim()) {

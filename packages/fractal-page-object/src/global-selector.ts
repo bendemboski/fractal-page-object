@@ -27,9 +27,9 @@ import { validateSelectorArguments } from './-private/helpers';
  *
  * @returns {PageObject} a {@link PageObject} instance
  */
-export default function globalSelector<
-  ElementType extends ElementLike = Element,
->(selector: string): PageObject<ElementType>;
+export default function globalSelector<ElementType extends Element = Element>(
+  selector: string,
+): PageObject<ElementType>;
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -54,7 +54,7 @@ export default function globalSelector<
  * @returns {PageObject} a {@link PageObject} subclass instance
  */
 export default function globalSelector<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 >(selector: string, Class: PageObjectConstructor<ElementType, T>): T;
 
@@ -80,9 +80,10 @@ export default function globalSelector<
  *
  * @returns {PageObject} a {@link PageObject} instance
  */
-export default function globalSelector<
-  ElementType extends ElementLike = Element,
->(selector: string, rootElement: ElementLike): PageObject<ElementType>;
+export default function globalSelector<ElementType extends Element = Element>(
+  selector: string,
+  rootElement: ElementLike,
+): PageObject<ElementType>;
 
 /**
  * Define a {@link PageObject} with a global scope, i.e. not scoped by its
@@ -109,7 +110,7 @@ export default function globalSelector<
  * @returns {PageObject} a {@link PageObject} subclass instance
  */
 export default function globalSelector<
-  ElementType extends ElementLike,
+  ElementType extends Element,
   T extends PageObject<ElementType>,
 >(
   selector: string,
@@ -192,7 +193,7 @@ export default function globalSelector<
  * page.input.element.value; // no type cast needed
  */
 export default function globalSelector<
-  ElementType extends ElementLike = Element,
+  ElementType extends Element = Element,
   T extends PageObject<ElementType> = PageObject<ElementType>,
 >(
   ...args:
