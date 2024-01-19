@@ -1,4 +1,4 @@
-import { describe, beforeEach, test, expect } from '@jest/globals';
+import { describe, beforeEach, test, expect } from 'vitest';
 import DOMQuery from '../-private/dom-query';
 
 describe('DOMQuery', () => {

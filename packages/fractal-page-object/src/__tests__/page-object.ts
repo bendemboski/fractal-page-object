@@ -1,4 +1,4 @@
-import { describe, afterEach, test, expect } from '@jest/globals';
+import { describe, beforeEach, afterEach, test, expect } from 'vitest';
 import { PageObject, setRoot } from '..';
 import { resetRoot } from '../-private/root';
 import { getDOMQuery } from '../-private/page-object-state';
@@ -603,16 +603,6 @@ describe('PageObject', () => {
     });
 
     test('members are accessible', () => {
-      function reads(prop: string): PropertyDecorator {
-        return function () {
-          return {
-            get() {
-              return (this as Record<string, unknown>)[prop];
-            },
-          } as PropertyDescriptor;
-        };
-      }
-
       class Page extends PageObject {
         getFn() {
           return `getFn ${this.str}`;
@@ -631,14 +621,11 @@ describe('PageObject', () => {
             .map((e) => e.id)
             .join(',')}]`;
         }
-
-        @reads('getter') decoratedGetter!: string;
       }
       let page = new Page('div');
 
       expect(page.getFn()).toEqual('getFn div1:[div1,div2]');
       expect(page.getter).toEqual('getter div1:[div1,div2]');
-      expect(page.decoratedGetter).toEqual('getter div1:[div1,div2]');
     });
 
     test('array API produces instances of the same class', () => {

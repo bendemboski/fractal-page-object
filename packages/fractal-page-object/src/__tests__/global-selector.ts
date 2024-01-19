@@ -1,4 +1,4 @@
-import { describe, afterEach, test, expect } from '@jest/globals';
+import { describe, afterEach, test, expect } from 'vitest';
 import { selector, globalSelector, PageObject, setRoot } from '..';
 import { resetRoot } from '../-private/root';
 
