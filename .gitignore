@@ -1,5 +1,31 @@
-node_modules/
-.env
-.vscode
+# See https://help.github.com/ignore-files/ for more about ignoring files.
 
+# compiled output
+dist
+tmp
+*.tgz
+
+# dependencies
+node_modules
+
+# misc
+.eslintcache
+coverage/
+.pnpm-debug.log
+npm-debug.log*
 yarn-error.log
+testem.log
+
+# ember-try
+.node_modules.ember-try/
+bower.json.ember-try
+package.json.ember-try
+
+# rollup-plugin-typescript2
+.rpt2_cache
+
+# dotenv-cli
+.env
+
+# VSCode
+.vscode

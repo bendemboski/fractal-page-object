@@ -1,5 +1,5 @@
 import safeSelector from './safe-selector';
-import { ElementLike } from './types';
+import type { ElementLike } from './types';
 
 /**
  * A helper to run `querySelector()`, trying first with the selector given, and

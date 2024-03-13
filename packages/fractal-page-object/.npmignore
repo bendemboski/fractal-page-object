@@ -1,6 +1,5 @@
 **/__tests__/
 .*
 coverage/
-documentation.yml
-rollup.config.js
+rollup.config.mjs
 tsconfig.json

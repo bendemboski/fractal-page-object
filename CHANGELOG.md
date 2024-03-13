@@ -1,0 +1,1 @@
+packages/fractal-page-object/CHANGELOG.md
