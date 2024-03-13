@@ -1,5 +1,5 @@
 import { describe, beforeEach, afterEach, test, expect } from 'vitest';
-import { PageObject, setRoot } from '..';
+import { PageObject, setRoot } from '../fractal-page-object';
 import { resetRoot } from '../-private/root';
 import { getDOMQuery } from '../-private/page-object-state';
 import cloneWithIndex from '../-private/clone-with-index';

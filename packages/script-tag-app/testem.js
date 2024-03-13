@@ -9,7 +9,7 @@ const descriptorsMain = require.resolve('dom-element-descriptors');
 const descriptorsJs = path.resolve(path.dirname(descriptorsMain), '../dom-element-descriptors.js');
 
 const fractalMain = require.resolve('fractal-page-object');
-const fractalJs = path.resolve(path.dirname(fractalMain), 'fractal-page-object.js');
+const fractalJs = path.resolve(path.dirname(fractalMain), '../fractal-page-object.js');
 
 const relToHere = path.relative('../..', '.');
 

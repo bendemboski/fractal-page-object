@@ -1,5 +1,5 @@
 import { getDOMQuery } from './-private/page-object-state';
-import { WithElement } from './-private/types';
+import type { WithElement } from './-private/types';
 
 import type { default as PageObject } from './page-object';
 

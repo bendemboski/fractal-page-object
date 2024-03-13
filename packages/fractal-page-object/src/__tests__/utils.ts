@@ -1,5 +1,10 @@
 import { describe, afterEach, test, expect } from 'vitest';
-import { PageObject, selector, assertExists, getDescription } from '../index';
+import {
+  PageObject,
+  selector,
+  assertExists,
+  getDescription,
+} from '../fractal-page-object';
 import { resetRoot } from '../-private/root';
 
 describe('utils', () => {

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { selector, PageObject } from '..';
+import { selector, PageObject } from '../fractal-page-object';
 
 describe('selector()', () => {
   test('it requires a valid selector and the class must be a PageObject subclass', () => {

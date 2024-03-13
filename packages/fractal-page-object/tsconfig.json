@@ -1,28 +1,25 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "allowJs": false,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictNullChecks": true,
-    "strictPropertyInitialization": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noEmitOnError": false,
-    "declaration": true,
-    "experimentalDecorators": true,
     "strict": true,
+    "noImplicitAny": true,
+    "declaration": true,
+    // Forces import type when imports are only used as types.
+    "verbatimModuleSyntax": true,
+    // We build to ESM, so we need to tell TS that we build to ESM otherwise TS
+    // uses fake ESM (you use imports, but it assumes the compilation is to CJS)
+    // These are also required when using verbatimModuleSyntax, because it's an
+    // ESM-only feature
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+
     "lib": [
-      "ES2017",
-      "DOM"
+      "ES6",
+      "DOM",
+      "DOM.Iterable"
     ],
   },
   "include": [
     "src/**/*"
-  ],
+  ]
 }
