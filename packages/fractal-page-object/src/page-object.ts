@@ -1,7 +1,33 @@
 import ArrayStub from './-private/array-stub';
 import createProxy from './-private/create-proxy';
+import type DOMQuery from './-private/dom-query';
 import { getDOMQuery, setPageObjectState } from './-private/page-object-state';
 import type { ElementLike, GenericPageObject } from './-private/types';
+import {
+  IDOMElementDescriptor,
+  IS_DESCRIPTOR,
+  registerDescriptorData,
+} from 'dom-element-descriptors';
+
+/**
+ * Descriptor data implemented by a {@link DOMQuery} -- used by
+ * {@link PageObject} to "implement" {@link IDOMElementDescriptor}
+ */
+class DOMQueryDescriptorData {
+  constructor(private getQuery: () => DOMQuery) {}
+
+  get element(): Element | null {
+    return this.getQuery().query();
+  }
+
+  get elements(): Element[] {
+    return this.getQuery().queryAll();
+  }
+
+  get description(): string {
+    return this.getQuery().selectorArray.toString();
+  }
+}
 
 /**
  * This class implements all the basic page object functionality, and all page
@@ -85,9 +111,12 @@ import type { ElementLike, GenericPageObject } from './-private/types';
  * // document.body.querySelectorAll('.container')[1].querySelectorAll('.list');
  * new Page('.container', document.body, 1).list.elements;
  */
-export default class PageObject<
-  ElementType extends Element = Element,
-> extends ArrayStub<ElementType> {
+export default class PageObject<ElementType extends Element = Element>
+  extends ArrayStub<ElementType>
+  implements IDOMElementDescriptor
+{
+  readonly [IS_DESCRIPTOR] = true;
+
   /**
    * This page object's single matching DOM element -- the first DOM element
    * matching this page object's query if this page object does not have an
@@ -149,9 +178,17 @@ export default class PageObject<
     index: number | null = null,
   ) {
     super();
+
     let proxy = createProxy(this);
+
     setPageObjectState(this, { selector, parent, index });
     setPageObjectState(proxy, { selector, parent, index });
+
+    registerDescriptorData(
+      proxy,
+      new DOMQueryDescriptorData(() => getDOMQuery(proxy)),
+    );
+
     return proxy;
   }
 }

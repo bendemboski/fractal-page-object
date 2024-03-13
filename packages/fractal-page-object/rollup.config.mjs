@@ -10,7 +10,12 @@ const iifeBundle = {
     file: 'dist/fractal-page-object.js',
     format: 'iife',
     sourcemap: true,
+    globals: {
+      'dom-element-descriptors': 'DOMElementDescriptors',
+    },
   },
+
+  external: ['dom-element-descriptors'],
 };
 
 const esBundle = {
@@ -23,6 +28,8 @@ const esBundle = {
     format: 'es',
     sourcemap: true,
   },
+
+  external: ['dom-element-descriptors'],
 };
 
 export default [iifeBundle, esBundle];

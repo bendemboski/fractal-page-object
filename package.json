@@ -23,6 +23,9 @@
   "pnpm": {
     "overrides": {
       "@glimmer/validator": "0.84.3"
+    },
+    "patchedDependencies": {
+      "qunit-dom@3.0.0": "patches/qunit-dom@3.0.0.patch"
     }
   }
 }

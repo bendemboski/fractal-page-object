@@ -3,6 +3,12 @@ import { PageObject, setRoot } from '..';
 import { resetRoot } from '../-private/root';
 import { getDOMQuery } from '../-private/page-object-state';
 import cloneWithIndex from '../-private/clone-with-index';
+import {
+  resolveDOMElement,
+  resolveDOMElements,
+  resolveDescription,
+} from 'dom-element-descriptors';
+import selector from '../selector';
 
 describe('PageObject', () => {
   afterEach(() => resetRoot());
@@ -739,6 +745,63 @@ describe('PageObject', () => {
       expect(page.elements.map((el) => el.value)).toEqual(['value1', 'value2']);
       expect(page.getFn()).toEqual('getFn value1:[value1,value2]');
       expect(page.getter).toEqual('getter value1:[value1,value2]');
+    });
+  });
+
+  describe('dom-element-descriptors integration', () => {
+    test('works', () => {
+      document.body.innerHTML = '<div id="div1"></div><div id="div2"></div>';
+      let [div1, div2] = Array.from(document.body.children);
+
+      class Page extends PageObject {
+        divs = selector('div');
+      }
+      let page = new Page();
+
+      expect(resolveDOMElement(page.divs)).toEqual(div1);
+      expect(resolveDOMElements(page.divs)).toEqual([div1, div2]);
+    });
+
+    test('evaluates the root lazily', () => {
+      document.body.innerHTML = [
+        '<div id="div1"></div>',
+        '<span id="root">',
+        '<div id="div2"></div>',
+        '<div id="div3"></div>',
+        '</span>',
+      ].join('');
+      let [div1, root] = Array.from(document.body.children);
+      let [div2, div3] = Array.from(root.children);
+
+      class Page extends PageObject {
+        divs = selector('div');
+      }
+      let page = new Page();
+
+      expect(resolveDOMElement(page.divs)).toEqual(div1);
+      expect(resolveDOMElements(page.divs)).toEqual([div1, div2, div3]);
+
+      setRoot(root);
+      expect(resolveDOMElement(page.divs)).toEqual(div2);
+      expect(resolveDOMElements(page.divs)).toEqual([div2, div3]);
+    });
+
+    test('implements a description', () => {
+      class Page extends PageObject {
+        divs = selector(
+          'div',
+          class extends PageObject {
+            spans = selector('span');
+          },
+        );
+      }
+      let page = new Page();
+
+      expect(resolveDescription(page)).toEqual('');
+      expect(resolveDescription(page.divs)).toEqual('div');
+      expect(resolveDescription(page.divs[0].spans[1])).toEqual(
+        'div[0] span[1]',
+      );
     });
   });
 });

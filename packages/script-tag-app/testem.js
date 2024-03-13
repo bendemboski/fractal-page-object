@@ -2,11 +2,14 @@
 
 const path = require('path');
 
-const qunitDomMain = path.relative('../..', require.resolve('qunit-dom'));
-const qunitDomJs = path.join(path.dirname(qunitDomMain), 'dist/qunit-dom.js');
+const qunitDomMain = require.resolve('qunit-dom');
+const qunitDomJs = path.resolve(path.dirname(qunitDomMain), '../../dist/qunit-dom.js');
 
-const fractalMain = path.relative('../..', require.resolve('fractal-page-object'));
-const fractalJs = path.join(path.dirname(fractalMain), 'fractal-page-object.js');
+const descriptorsMain = require.resolve('dom-element-descriptors');
+const descriptorsJs = path.resolve(path.dirname(descriptorsMain), '../dom-element-descriptors.js');
+
+const fractalMain = require.resolve('fractal-page-object');
+const fractalJs = path.resolve(path.dirname(fractalMain), 'fractal-page-object.js');
 
 const relToHere = path.relative('../..', '.');
 
@@ -36,6 +39,7 @@ module.exports = {
   'test_page': `${relToHere}/index.mustache`,
   'cwd': '../..',
   'serve_files': [
+    descriptorsJs,
     qunitDomJs,
     fractalJs,
     `${relToHere}/tests.js`
