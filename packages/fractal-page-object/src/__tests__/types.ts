@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { ElementLike, isElementLike } from '../index';
+import { type ElementLike, isElementLike } from '../fractal-page-object';
 
 describe('types', () => {
   describe('isElementLike', () => {

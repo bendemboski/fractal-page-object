@@ -1,5 +1,10 @@
 import { describe, afterEach, test, expect } from 'vitest';
-import { selector, globalSelector, PageObject, setRoot } from '..';
+import {
+  selector,
+  globalSelector,
+  PageObject,
+  setRoot,
+} from '../fractal-page-object';
 import { resetRoot } from '../-private/root';
 
 describe('globalSelector()', () => {

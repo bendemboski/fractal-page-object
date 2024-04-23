@@ -4,7 +4,7 @@ import type DOMQuery from './-private/dom-query';
 import { getDOMQuery, setPageObjectState } from './-private/page-object-state';
 import type { ElementLike, GenericPageObject } from './-private/types';
 import {
-  IDOMElementDescriptor,
+  type IDOMElementDescriptor,
   IS_DESCRIPTOR,
   registerDescriptorData,
 } from 'dom-element-descriptors';
