@@ -187,7 +187,7 @@ importers:
     devDependencies:
       '@arethetypeswrong/cli':
         specifier: ^0.15.1
-        version: 0.15.1
+        version: 0.15.3
       '@release-it-plugins/lerna-changelog':
         specifier: ^6.0.0
         version: 6.1.0(release-it@17.1.1)
@@ -322,14 +322,14 @@ packages:
     resolution: {integrity: sha512-Jh15/qVmrLGhkKJBdXlK1+9tY4lZruYjsgkDFj08ZmDiWVBLJcqkok7Z0/R0In+i1rScBpJlSvrTS2Lm41Pbnw==}
     dev: true
 
-  /@arethetypeswrong/cli@0.15.1:
-    resolution: {integrity: sha512-c4+MVbhktzLDnUFpvWvVkGRAb7zwd9b9ZW4eG62PkBsRRsTM6TKUNR23mLhz6tyYTalyqe8E6v09q4k0KuN3eQ==}
+  /@arethetypeswrong/cli@0.15.3:
+    resolution: {integrity: sha512-sIMA9ZJBWDEg1+xt5RkAEflZuf8+PO8SdKj17x6PtETuUho+qlZJg4DgmKc3q+QwQ9zOB5VLK6jVRbFdNLdUIA==}
     engines: {node: '>=18'}
     hasBin: true
     dependencies:
       '@arethetypeswrong/core': 0.15.1
       chalk: 4.1.2
-      cli-table3: 0.6.3
+      cli-table3: 0.6.5
       commander: 10.0.1
       marked: 9.1.6
       marked-terminal: 6.2.0(marked@9.1.6)
@@ -345,7 +345,7 @@ packages:
       semver: 7.6.2
       ts-expose-internals-conditionally: 1.0.0-empty.0
       typescript: 5.3.3
-      validate-npm-package-name: 5.0.0
+      validate-npm-package-name: 5.0.1
     dev: true
 
   /@babel/code-frame@7.24.7:
@@ -4473,11 +4473,9 @@ packages:
       type-fest: 0.21.3
     dev: true
 
-  /ansi-escapes@6.2.0:
-    resolution: {integrity: sha512-kzRaCqXnpzWs+3z5ABPQiVke+iq0KXkHo8xiWV4RPTi5Yli0l97BEQuhXV1s7+aSU/fu1kUuxgS4MsQ0fRuygw==}
+  /ansi-escapes@6.2.1:
+    resolution: {integrity: sha512-4nJ3yixlEthEJ9Rk4vPcdBRkZvQZlYyu8j4/Mqz5sgIkddmEnH2Yj2ZrnP9S3tQOvSNRUIgVNF/1yPpRAGNRig==}
     engines: {node: '>=14.16'}
-    dependencies:
-      type-fest: 3.13.1
     dev: true
 
   /ansi-html@0.0.7:
@@ -6573,8 +6571,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /cli-table3@0.6.3:
-    resolution: {integrity: sha512-w5Jac5SykAeZJKntOxJCrm63Eg5/4dhMWIcuTbo9rpE+brgaSZo0RuNJZeOyMgsUdhDeojvgyQLmjI+K50ZGyg==}
+  /cli-table3@0.6.5:
+    resolution: {integrity: sha512-+W/5efTR7y5HRD7gACw9yQjqMVvEMLBHmboM/kPWam+H+Hmyrgjh6YncVKK122YZkXrLudzTuAukUw9FnMf7IQ==}
     engines: {node: 10.* || >= 12.*}
     dependencies:
       string-width: 4.2.3
@@ -8588,7 +8586,7 @@ packages:
     engines: {node: 16.* || >= 18.*}
     dependencies:
       chalk: 4.1.2
-      cli-table3: 0.6.3
+      cli-table3: 0.6.5
       core-object: 3.1.5
       debug: 4.3.5(supports-color@9.4.0)
       ember-try-config: 4.0.0
@@ -12210,10 +12208,10 @@ packages:
     peerDependencies:
       marked: '>=1 <12'
     dependencies:
-      ansi-escapes: 6.2.0
+      ansi-escapes: 6.2.1
       cardinal: 2.1.1
       chalk: 5.3.0
-      cli-table3: 0.6.3
+      cli-table3: 0.6.5
       marked: 9.1.6
       node-emoji: 2.1.3
       supports-hyperlinks: 3.0.0
@@ -13227,7 +13225,7 @@ packages:
       hosted-git-info: 6.1.1
       proc-log: 3.0.0
       semver: 7.6.2
-      validate-npm-package-name: 5.0.0
+      validate-npm-package-name: 5.0.1
     dev: true
 
   /npm-packlist@5.1.3:
@@ -13442,7 +13440,7 @@ packages:
       is-unicode-supported: 2.0.0
       log-symbols: 6.0.0
       stdin-discarder: 0.2.2
-      string-width: 7.1.0
+      string-width: 7.2.0
       strip-ansi: 7.1.0
     dev: true
 
@@ -15707,8 +15705,8 @@ packages:
       strip-ansi: 7.1.0
     dev: true
 
-  /string-width@7.1.0:
-    resolution: {integrity: sha512-SEIJCWiX7Kg4c129n48aDRwLbFb2LJmXXFrWBG4NGaRtMQ3myKPKbwrD1BKqQn74oCoNMBVrfDEr5M9YxCsrkw==}
+  /string-width@7.2.0:
+    resolution: {integrity: sha512-tsaTIkKW9b4N+AEj+SVA+WhJzV7/zMhcSu78mLKWSk7cXMOSHsBKFWUs0fWwq8QyK3MgJBQRX6Gbi4kYbdvGkQ==}
     engines: {node: '>=18'}
     dependencies:
       emoji-regex: 10.3.0
@@ -16538,11 +16536,6 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /type-fest@3.13.1:
-    resolution: {integrity: sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==}
-    engines: {node: '>=14.16'}
-    dev: true
-
   /type-is@1.6.18:
     resolution: {integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g==}
     engines: {node: '>= 0.6'}
@@ -16930,11 +16923,9 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /validate-npm-package-name@5.0.0:
-    resolution: {integrity: sha512-YuKoXDAhBYxY7SfOKxHBDoSyENFeW5VvIIQp2TGQuit8gpK6MnWaQelBKxso72DoxTZfZdcP3W90LqpSkgPzLQ==}
+  /validate-npm-package-name@5.0.1:
+    resolution: {integrity: sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
-    dependencies:
-      builtins: 5.0.1
     dev: true
 
   /validate-peer-dependencies@1.2.0:
