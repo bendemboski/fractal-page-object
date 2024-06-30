@@ -7,5 +7,17 @@
   "lockFileMaintenance": {
     "enabled": true
   },
-  "labels": ["dependencies", "renovatebot"]
+  "labels": ["dependencies", "renovatebot"],
+  "packageRules": [
+    {
+      "extends": [
+        ":automergePatch",
+        ":automergeLinters",
+        ":automergeTesters",
+        ":automergeStableNonMajor",
+        "schedule:automergeNonOfficeHours"
+      ],
+      "matchDepTypes": ["devDependencies"]
+    }
+  ]
 }

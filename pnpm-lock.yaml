@@ -146,7 +146,7 @@ importers:
         specifier: ^8.0.1
         version: 8.1.1(eslint@8.57.0)
       fractal-page-object:
-        specifier: '*'
+        specifier: workspace:*
         version: link:../fractal-page-object
       loader.js:
         specifier: ^4.7.0
@@ -264,7 +264,7 @@ importers:
         specifier: ^8.33.0
         version: 8.57.0
       fractal-page-object:
-        specifier: '*'
+        specifier: workspace:*
         version: link:../fractal-page-object
       qunit:
         specifier: ^2.19.4
@@ -294,7 +294,7 @@ importers:
         specifier: ^5.1.3
         version: 5.1.3(eslint-config-prettier@9.1.0)(eslint@8.57.0)(prettier@3.2.5)
       fractal-page-object:
-        specifier: '*'
+        specifier: workspace:*
         version: link:../fractal-page-object
       prettier:
         specifier: ^3.2.4
