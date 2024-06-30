@@ -13,7 +13,7 @@
     "@babel/eslint-parser": "^7.19.1",
     "dom-element-descriptors": "^0.5.0",
     "eslint": "^8.33.0",
-    "fractal-page-object": "*",
+    "fractal-page-object": "workspace:*",
     "qunit": "^2.19.4",
     "qunit-dom": "^3.2.0",
     "testem": "^3.10.1"
