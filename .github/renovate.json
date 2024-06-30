@@ -19,5 +19,6 @@
       ],
       "matchDepTypes": ["devDependencies"]
     }
-  ]
+  ],
+  "postUpdateOptions": ["pnpmDedupe"]
 }
