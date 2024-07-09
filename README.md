@@ -90,12 +90,12 @@ module('album list page', function() {
   test('it renders albums and tracks (using Ember & qunit-dom)', function(assert) {
     await visit('/album-list');
 
-    assert.dom(page.artistName.element).hasText('"Weird Al" Yancovic');
+    assert.dom(page.artistName).hasText('"Weird Al" Yancovic');
     assert.equal(page.albums.length, 2);
 
-    assert.dom(page.albums[0].title.element).hasText('Even Worse');
-    assert.dom(page.albums[1].title.element).hasText('Bad Hair Day');
-    assert.dom(page.albums[2].title.element).hasText('Mandatory Fun');
+    assert.dom(page.albums[0].title).hasText('Even Worse');
+    assert.dom(page.albums[1].title).hasText('Bad Hair Day');
+    assert.dom(page.albums[2].title).hasText('Mandatory Fun');
 
     let badHairDay = page.albums[1];
 
@@ -103,11 +103,11 @@ module('album list page', function() {
       'Amish Paradise',
       'Everything You Know is Wrong',
       'Cavity Search'
-    ].forEach((title, i) => assert.dom(badHairDay.tracks[i].element).hasText(title));
-    assert.dom(badHairDay.play.element).doesNotHaveClass('playing');
+    ].forEach((title, i) => assert.dom(badHairDay.tracks[i]).hasText(title));
+    assert.dom(badHairDay.play).doesNotHaveClass('playing');
 
-    await click(badHairDay.play.element);
-    assert.dom(badHairDay.play.element).hasClass('playing');
+    await click(badHairDay.play);
+    assert.dom(badHairDay.play).hasClass('playing');
   });
 });
 ```
@@ -347,7 +347,7 @@ See [API.md](packages/fractal-page-object/API.md)
 
 ### Integrating with `qunit-dom` and `@ember/test-helpers`
 
-Currently `fractal-page-object` works with `qunit-dom` and `@ember/test-helpers` because their APIs both accept a DOM `Element`. However, this doesn't allow for very helpful error messages, as there is no way to pass any information about the selector used to query the element. My hope is that the Ember community will be able to define an interface that both `qunit-dom` and `@ember/test-helpers` can support for allowing external DOM query implementations, which is fundamentally what `fractal-page-object` is, to supplement their existing support for selector-based queries and passing `Element`s. This would allow syntax like
+Both `qunit-dom` and `@ember/test-helpers` have built-in support for `fractal-page-objects`' page objects (via [dom-element-descriptors](https://github.com/bendemboski/dom-element-descriptors)), so page objects can be passed directly into their DOM helper and assertion methods:
 
 ```javascript
 assert.dom(page.header).hasText('Welcome back!');
@@ -356,7 +356,13 @@ assert.dom(page.listItems[1].title).hasClass('selected');
 await click(page.loadMoreButton);
 ```
 
-and allow better debug/error messages. See [this RFC](https://github.com/bendemboski/rfcs/blob/dom-query-interface/text/0726-dom-element-descriptor-interface.md) for a proposal for how this might work.
+When using similar helpers from other libraries that don't (yet?) have this support built-in, it's always possible to use the `element` property, e.g.
+
+```javascript
+import { openDropdown } from 'some-dropdown-library/test-support';
+
+await openDropdown(page.dropdownTrigger.element);
+```
 
 ### `fractal-page-object` vs. `ember-cli-page-object`
 
