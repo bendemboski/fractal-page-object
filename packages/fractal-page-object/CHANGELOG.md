@@ -3,6 +3,30 @@
 
 
 
+
+## v1.0.0 (2024-07-09)
+
+#### :rocket: Enhancement
+* `ember-app`, `fractal-page-object`, `script-tag-app`
+  * [#114](https://github.com/bendemboski/fractal-page-object/pull/114) Implement DOM element descriptors ([@bendemboski](https://github.com/bendemboski))
+
+#### :house: Internal
+* `ember-app`, `script-tag-app`, `ts-library`
+  * [#158](https://github.com/bendemboski/fractal-page-object/pull/158) Better renovate ([@bendemboski](https://github.com/bendemboski))
+* `script-tag-app`
+  * [#116](https://github.com/bendemboski/fractal-page-object/pull/116) Use Renovate ([@bendemboski](https://github.com/bendemboski))
+* `ember-app`, `script-tag-app`
+  * [#117](https://github.com/bendemboski/fractal-page-object/pull/117) Test against released `qunit-dom` ([@bendemboski](https://github.com/bendemboski))
+* `fractal-page-object`, `script-tag-app`
+  * [#115](https://github.com/bendemboski/fractal-page-object/pull/115) Improve tooling ([@bendemboski](https://github.com/bendemboski))
+* `ember-app`, `fractal-page-object`
+  * [#112](https://github.com/bendemboski/fractal-page-object/pull/112) Better shadow DOM implementation ([@bendemboski](https://github.com/bendemboski))
+* `ember-app`, `fractal-page-object`, `script-tag-app`, `ts-library`
+  * [#113](https://github.com/bendemboski/fractal-page-object/pull/113) Upgrade tooling ([@bendemboski](https://github.com/bendemboski))
+
+#### Committers: 1
+- Ben Demboski ([@bendemboski](https://github.com/bendemboski))
+
 ## v0.5.0 (2023-10-06)
 
 #### :rocket: Enhancement
