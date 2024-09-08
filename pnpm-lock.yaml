@@ -99,7 +99,7 @@ importers:
         version: 3.0.0
       ember-data:
         specifier: ~5.3.0
-        version: 5.3.8(@ember/string@3.1.1)(@ember/test-helpers@3.3.1)(@ember/test-waiters@3.1.0)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.20.1)
+        version: 5.3.8(@ember/string@3.1.1)(@ember/test-helpers@3.3.1)(@ember/test-waiters@3.1.0)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.22.0)
       ember-fetch:
         specifier: ^8.1.2
         version: 8.1.2
@@ -114,7 +114,7 @@ importers:
         version: 8.2.3(ember-source@5.11.0)
       ember-qunit:
         specifier: ^8.0.2
-        version: 8.1.0(@ember/test-helpers@3.3.1)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.20.1)
+        version: 8.1.0(@ember/test-helpers@3.3.1)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.22.0)
       ember-resolver:
         specifier: ^11.0.1
         version: 11.0.1(ember-source@5.11.0)
@@ -156,7 +156,7 @@ importers:
         version: 3.3.3
       qunit:
         specifier: ^2.20.0
-        version: 2.20.1
+        version: 2.22.0
       qunit-dom:
         specifier: ^3.2.0
         version: 3.2.0
@@ -268,7 +268,7 @@ importers:
         version: link:../fractal-page-object
       qunit:
         specifier: ^2.19.4
-        version: 2.20.1
+        version: 2.22.0
       qunit-dom:
         specifier: ^3.2.0
         version: 3.2.0
@@ -7783,7 +7783,7 @@ packages:
       - supports-color
     dev: true
 
-  /ember-data@5.3.8(@ember/string@3.1.1)(@ember/test-helpers@3.3.1)(@ember/test-waiters@3.1.0)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.20.1):
+  /ember-data@5.3.8(@ember/string@3.1.1)(@ember/test-helpers@3.3.1)(@ember/test-waiters@3.1.0)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.22.0):
     resolution: {integrity: sha512-ZFd0dxTCkX5OHe/Xdfpglg+3OELsd0xNFziogoKV0JPLzyXmasn/8vAeHeUta9rAJDYH8lix3/1t6iIeY+DzYQ==}
     engines: {node: '>= 18.20.3'}
     peerDependencies:
@@ -7815,7 +7815,7 @@ packages:
       '@embroider/macros': 1.16.6(@glint/template@1.4.0)
       '@warp-drive/build-config': 0.0.0-beta.6(@glint/template@1.4.0)
       '@warp-drive/core-types': 0.0.0-beta.11(@glint/template@1.4.0)
-      qunit: 2.20.1
+      qunit: 2.22.0
     transitivePeerDependencies:
       - '@ember/string'
       - '@glint/template'
@@ -7889,7 +7889,7 @@ packages:
       - supports-color
     dev: true
 
-  /ember-qunit@8.1.0(@ember/test-helpers@3.3.1)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.20.1):
+  /ember-qunit@8.1.0(@ember/test-helpers@3.3.1)(@glint/template@1.4.0)(ember-source@5.11.0)(qunit@2.22.0):
     resolution: {integrity: sha512-55/xqvVQwhiNcnh/tCzWyvlYzrYqwDY0/cIPyDQbAxGKtkUt9jCfRUGllfyOofC6LX0fL/0fIi+5e9sg1m6vXw==}
     peerDependencies:
       '@ember/test-helpers': '>=3.0.3'
@@ -7901,7 +7901,7 @@ packages:
       '@embroider/macros': 1.16.6(@glint/template@1.4.0)
       ember-cli-test-loader: 3.1.0
       ember-source: 5.11.0(@glimmer/component@1.1.2)(@glint/template@1.4.0)(rsvp@4.8.5)(webpack@5.91.0)
-      qunit: 2.20.1
+      qunit: 2.22.0
       qunit-theme-ember: 1.0.0
     transitivePeerDependencies:
       - '@glint/template'
@@ -13642,8 +13642,8 @@ packages:
     resolution: {integrity: sha512-vdMVVo6ecdCkWttMTKeyq1ZTLGHcA6zdze2zhguNuc3ritlJMhOXY5RDseqazOwqZVfCg3rtlmL3fMUyIzUyFQ==}
     dev: true
 
-  /qunit@2.20.1:
-    resolution: {integrity: sha512-scZfyhX8mmP3u/CN2y3CutQb+ppalbpqmm7g/X62M2yOt8ofzsxrRaC+MPmYm/tXxpzs9HGrVeCxZwLoP0tuAA==}
+  /qunit@2.22.0:
+    resolution: {integrity: sha512-wPYvAvpjTL3zlUeyCX75T8gfZfdVXZa8y1EVkGe/XZNORIsCH/WI2X8R2KlemT921X9EKSZUL6CLGSPC7Ks08g==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
