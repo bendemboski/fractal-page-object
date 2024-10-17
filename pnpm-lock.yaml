@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@glimmer/validator': 0.84.3
+  '@glimmer/validator': 0.92.3
 
 importers:
 
@@ -2573,7 +2573,7 @@ packages:
       '@glimmer/interfaces': 0.92.3
       '@glimmer/reference': 0.92.3
       '@glimmer/util': 0.92.3
-      '@glimmer/validator': 0.84.3
+      '@glimmer/validator': 0.92.3
       '@glimmer/vm': 0.92.3
     dev: true
 
@@ -2627,7 +2627,7 @@ packages:
       '@glimmer/global-context': 0.84.3
       '@glimmer/interfaces': 0.84.3
       '@glimmer/util': 0.84.3
-      '@glimmer/validator': 0.84.3
+      '@glimmer/validator': 0.92.3
     dev: true
 
   /@glimmer/reference@0.92.3:
@@ -2637,7 +2637,7 @@ packages:
       '@glimmer/global-context': 0.92.3
       '@glimmer/interfaces': 0.92.3
       '@glimmer/util': 0.92.3
-      '@glimmer/validator': 0.84.3
+      '@glimmer/validator': 0.92.3
     dev: true
 
   /@glimmer/runtime@0.92.4:
@@ -2652,7 +2652,7 @@ packages:
       '@glimmer/program': 0.92.4
       '@glimmer/reference': 0.92.3
       '@glimmer/util': 0.92.3
-      '@glimmer/validator': 0.84.3
+      '@glimmer/validator': 0.92.3
       '@glimmer/vm': 0.92.3
       '@glimmer/wire-format': 0.92.3
     dev: true
@@ -2680,7 +2680,7 @@ packages:
     resolution: {integrity: sha512-cyV32zsHh+CnftuRX84ALZpd2rpbDrhLhJnTXn9W//QpqdRZ5rdMsxSY9fOsj0CKEc706tmEU299oNnDc0d7tA==}
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/validator': 0.84.3
+      '@glimmer/validator': 0.92.3
     dev: true
 
   /@glimmer/util@0.44.0:
@@ -2702,11 +2702,13 @@ packages:
       '@glimmer/interfaces': 0.92.3
     dev: true
 
-  /@glimmer/validator@0.84.3:
-    resolution: {integrity: sha512-RTBV4TokUB0vI31UC7ikpV7lOYpWUlyqaKV//pRC4pexYMlmqnVhkFrdiimB/R1XyNdUOQUmnIAcdic39NkbhQ==}
+  /@glimmer/validator@0.92.3:
+    resolution: {integrity: sha512-HKrMYeW0YhiksSeKYqX2chUR/rz82j12DcY7p2dORQlTV3qlAfiE5zRTJH1KRA1X3ZMf7DI2/GOzkXwYp0o+3Q==}
     dependencies:
       '@glimmer/env': 0.1.7
-      '@glimmer/global-context': 0.84.3
+      '@glimmer/global-context': 0.92.3
+      '@glimmer/interfaces': 0.92.3
+      '@glimmer/util': 0.92.3
     dev: true
 
   /@glimmer/vm-babel-plugins@0.92.3(@babel/core@7.25.8):
@@ -7907,7 +7909,7 @@ packages:
       '@glimmer/runtime': 0.92.4
       '@glimmer/syntax': 0.92.3
       '@glimmer/util': 0.92.3
-      '@glimmer/validator': 0.84.3
+      '@glimmer/validator': 0.92.3
       '@glimmer/vm': 0.92.3
       '@glimmer/vm-babel-plugins': 0.92.3(@babel/core@7.25.8)
       '@simple-dom/interface': 1.4.0
@@ -7990,7 +7992,7 @@ packages:
     dependencies:
       '@glimmer/reference': 0.84.3
       '@glimmer/syntax': 0.84.3
-      '@glimmer/validator': 0.84.3
+      '@glimmer/validator': 0.92.3
       async-promise-queue: 1.0.5
       colors: 1.4.0
       commander: 8.3.0
