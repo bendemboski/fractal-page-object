@@ -18,7 +18,7 @@ importers:
         version: 7.26.0
       '@ember/optional-features':
         specifier: ^2.0.0
-        version: 2.1.0
+        version: 2.2.0
       '@ember/string':
         specifier: ^3.1.1
         version: 3.1.1
@@ -2088,8 +2088,8 @@ packages:
     resolution: {integrity: sha512-VmVq/8saCaPdesQmftPqbFtxJWrzxNGSQ+e8x8LLe3Hjm36pJ04Q8LeORGZkAeOhldoUX9seLGmSaHeXkIqoog==}
     dev: true
 
-  /@ember/optional-features@2.1.0:
-    resolution: {integrity: sha512-IXjDpTFhsjPk9h3OXwXjlRfhM/Wjtw2E71Xos/81ZsTTwZMB9H+DWhsxePXOkzYy7Jvw4TIzKbMfcnT8mrtwWQ==}
+  /@ember/optional-features@2.2.0:
+    resolution: {integrity: sha512-a1OQ+w9vDvMXd9BNA9r779yr8MAPguGaMGbIeTMPWACeWBdD6bACBB5iKE3gNyrJAYKMq2wab6BKmRFS3Qw3hw==}
     engines: {node: 10.* || 12.* || >= 14}
     dependencies:
       chalk: 4.1.2
