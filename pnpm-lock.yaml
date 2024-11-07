@@ -138,7 +138,7 @@ importers:
         version: 12.3.1(@babel/core@7.26.0)(@typescript-eslint/parser@8.13.0)(eslint@8.57.1)
       eslint-plugin-n:
         specifier: ^17.0.0
-        version: 17.13.0(eslint@8.57.1)
+        version: 17.13.1(eslint@8.57.1)
       eslint-plugin-prettier:
         specifier: ^5.0.1
         version: 5.2.1(eslint-config-prettier@9.1.0)(eslint@8.57.1)(prettier@3.3.3)
@@ -8279,8 +8279,8 @@ packages:
       eslint-compat-utils: 0.5.1(eslint@8.57.1)
     dev: true
 
-  /eslint-plugin-n@17.13.0(eslint@8.57.1):
-    resolution: {integrity: sha512-7xEJgZPKe2FNtyWA1aWtHzG0Etnd8jzA2NjurITPs7yhNkxFjaruJFHE3n0ac/U5ataZ24rlbVoSAXfN7770XA==}
+  /eslint-plugin-n@17.13.1(eslint@8.57.1):
+    resolution: {integrity: sha512-97qzhk1z3DdSJNCqT45EslwCu5+LB9GDadSyBItgKUfGsXAmN/aa7LRQ0ZxHffUxUzvgbTPJL27/pE9ZQWHy7A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: '>=8.23.0'
