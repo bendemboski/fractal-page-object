@@ -159,7 +159,7 @@ importers:
         version: 2.22.0
       qunit-dom:
         specifier: ^3.2.0
-        version: 3.3.0
+        version: 3.4.0
       stylelint:
         specifier: ^16.0.0
         version: 16.11.0(typescript@5.7.2)
@@ -271,7 +271,7 @@ importers:
         version: 2.22.0
       qunit-dom:
         specifier: ^3.2.0
-        version: 3.3.0
+        version: 3.4.0
       testem:
         specifier: ^3.10.1
         version: 3.15.2
@@ -13263,8 +13263,8 @@ packages:
       underscore.string: 3.3.6
     dev: true
 
-  /qunit-dom@3.3.0:
-    resolution: {integrity: sha512-sGPhNbZ/3gPbH3rp7PxnzqXuh6cyN/AG/vO/X9k0IYlsoBLi83MU6PdtSw/KiWLV8X/32jxD6fbeP9vjNAY4Dw==}
+  /qunit-dom@3.4.0:
+    resolution: {integrity: sha512-N5PYbJ20RD3JZN4whINdl7dDfxScUy7eNuO8IwUtBWC7d6SH+BqtBqVZdRn9evxLQVzuask6OGvMy4gdpiCceg==}
     dependencies:
       dom-element-descriptors: 0.5.1
     dev: true
