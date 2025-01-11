@@ -256,7 +256,7 @@ importers:
     devDependencies:
       '@babel/eslint-parser':
         specifier: ^7.19.1
-        version: 7.25.9(@babel/core@7.26.0)(eslint@8.57.1)
+        version: 7.26.5(@babel/core@7.26.0)(eslint@8.57.1)
       dom-element-descriptors:
         specifier: ^0.5.0
         version: 0.5.1
@@ -380,8 +380,8 @@ packages:
       - supports-color
     dev: true
 
-  /@babel/eslint-parser@7.25.9(@babel/core@7.26.0)(eslint@8.57.1):
-    resolution: {integrity: sha512-5UXfgpK0j0Xr/xIdgdLEhOFxaDZ0bRPWJJchRpqOSur/3rZoPbqqki5mm0p4NE2cs28krBEiSM2MB7//afRSQQ==}
+  /@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@8.57.1):
+    resolution: {integrity: sha512-Kkm8C8uxI842AwQADxl0GbcG1rupELYLShazYEZO/2DYjhyWXJIOUVOE3tBYm6JXzUCNJOZEzqc4rCW/jsEQYQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
     peerDependencies:
       '@babel/core': ^7.11.0
@@ -7630,7 +7630,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.26.0
-      '@babel/eslint-parser': 7.25.9(@babel/core@7.26.0)(eslint@8.57.1)
+      '@babel/eslint-parser': 7.26.5(@babel/core@7.26.0)(eslint@8.57.1)
       '@glimmer/syntax': 0.92.3
       '@typescript-eslint/parser': 8.19.1(eslint@8.57.1)(typescript@5.7.3)
       content-tag: 2.0.3
