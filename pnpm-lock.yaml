@@ -36,7 +36,7 @@ importers:
         version: 1.1.2
       '@glint/environment-ember-loose':
         specifier: ^1.2.1
-        version: 1.5.1(@glimmer/component@1.1.2)(@glint/template@1.5.1)(ember-cli-htmlbars@6.3.0)(ember-modifier@4.2.0)
+        version: 1.5.2(@glimmer/component@1.1.2)(@glint/template@1.5.1)(ember-cli-htmlbars@6.3.0)(ember-modifier@4.2.0)
       '@glint/template':
         specifier: ^1.2.1
         version: 1.5.1
@@ -2614,11 +2614,11 @@ packages:
       '@glimmer/util': 0.92.3
     dev: true
 
-  /@glint/environment-ember-loose@1.5.1(@glimmer/component@1.1.2)(@glint/template@1.5.1)(ember-cli-htmlbars@6.3.0)(ember-modifier@4.2.0):
-    resolution: {integrity: sha512-cWZaRB5UwmgU6X5VYIkdTSjaLZROnsiHRXj1zjJH/q9FOF4+gtLAW8A/RDbp+pU0SgoJxSbC9IjlxMGsB/3lBA==}
+  /@glint/environment-ember-loose@1.5.2(@glimmer/component@1.1.2)(@glint/template@1.5.1)(ember-cli-htmlbars@6.3.0)(ember-modifier@4.2.0):
+    resolution: {integrity: sha512-AuYRwZbQZW13WMW9tmyYqSGHLBXbdXn+HqdRDAG1qHItnjON4uv6sJVQUrnadlMT3G2AVRjL6jtfnwHs3t2Kuw==}
     peerDependencies:
-      '@glimmer/component': ^1.1.2
-      '@glint/template': ^1.5.1
+      '@glimmer/component': '>=1.1.2'
+      '@glint/template': ^1.5.2
       '@types/ember__array': ^4.0.2
       '@types/ember__component': ^4.0.10
       '@types/ember__controller': ^4.0.2
