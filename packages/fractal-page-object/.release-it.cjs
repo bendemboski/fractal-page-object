@@ -1,8 +1,6 @@
-/* eslint-env node */
-
 module.exports = {
   scripts: {
-    "after:bump": "yarn docs"
+    'after:bump': 'yarn docs',
   },
   plugins: {
     '@release-it-plugins/lerna-changelog': {

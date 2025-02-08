@@ -27,7 +27,7 @@ importers:
         version: 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)
       '@ember-data/legacy-compat':
         specifier: ~5.4.0-beta.14
-        version: 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+        version: 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/model':
         specifier: ~5.4.0-beta.14
         version: 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/legacy-compat@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember-data/tracking@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
@@ -132,7 +132,7 @@ importers:
         version: 3.0.0
       ember-data:
         specifier: ~5.3.10
-        version: 5.3.11(@ember/test-helpers@4.0.5)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(ember-source@6.2.0)(qunit@2.24.1)
+        version: 5.3.11(@ember/test-helpers@4.0.5)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(ember-source@6.2.0)(qunit@2.24.1)
       ember-fetch:
         specifier: ^8.1.2
         version: 8.1.2
@@ -233,15 +233,12 @@ importers:
       '@arethetypeswrong/cli':
         specifier: ^0.15.1
         version: 0.15.1
+      '@eslint/js':
+        specifier: ^9.19.0
+        version: 9.20.0
       '@release-it-plugins/lerna-changelog':
         specifier: ^6.0.0
         version: 6.1.0(release-it@17.11.0)
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^8.0.0
-        version: 8.22.0(@typescript-eslint/parser@8.22.0)(eslint@8.57.1)(typescript@5.7.3)
-      '@typescript-eslint/parser':
-        specifier: ^8.0.0
-        version: 8.22.0(eslint@8.57.1)(typescript@5.7.3)
       '@vitest/coverage-v8':
         specifier: ^3.0.0
         version: 3.0.4(vitest@3.0.4)
@@ -261,14 +258,11 @@ importers:
         specifier: ^7.4.1
         version: 7.4.4
       eslint:
-        specifier: ^8.33.0
-        version: 8.57.1
-      eslint-config-prettier:
-        specifier: ^10.0.0
-        version: 10.0.1(eslint@8.57.1)
+        specifier: ^9.20.0
+        version: 9.20.0
       eslint-plugin-prettier:
-        specifier: ^5.1.3
-        version: 5.2.3(eslint-config-prettier@10.0.1)(eslint@8.57.1)(prettier@3.4.2)
+        specifier: ^5.2.3
+        version: 5.2.3(eslint-config-prettier@10.0.1)(eslint@9.20.0)(prettier@3.4.2)
       jsdom:
         specifier: ^24.0.0
         version: 24.1.3
@@ -293,24 +287,39 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.23.0
+        version: 8.23.0(eslint@9.20.0)(typescript@5.7.3)
       vitest:
         specifier: ^3.0.0
         version: 3.0.4(jsdom@24.1.3)
 
   packages/script-tag-app:
     devDependencies:
-      '@babel/eslint-parser':
-        specifier: ^7.19.1
-        version: 7.26.5(@babel/core@7.26.7)(eslint@8.57.1)
+      '@eslint/js':
+        specifier: ^9.19.0
+        version: 9.20.0
       dom-element-descriptors:
         specifier: ^0.5.0
         version: 0.5.1
       eslint:
-        specifier: ^8.33.0
-        version: 8.57.1
+        specifier: ^9.20.0
+        version: 9.20.0
+      eslint-plugin-n:
+        specifier: ^17.15.1
+        version: 17.15.1(eslint@9.20.0)
+      eslint-plugin-prettier:
+        specifier: ^5.2.3
+        version: 5.2.3(eslint-config-prettier@10.0.1)(eslint@9.20.0)(prettier@3.4.2)
       fractal-page-object:
         specifier: workspace:*
         version: link:../fractal-page-object
+      globals:
+        specifier: ^15.14.0
+        version: 15.14.0
+      prettier:
+        specifier: ^3.4.2
+        version: 3.4.2
       qunit:
         specifier: ^2.19.4
         version: 2.24.1
@@ -323,21 +332,15 @@ importers:
 
   packages/ts-library:
     devDependencies:
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^8.0.0
-        version: 8.22.0(@typescript-eslint/parser@8.22.0)(eslint@8.57.1)(typescript@5.7.3)
-      '@typescript-eslint/parser':
-        specifier: ^8.0.0
-        version: 8.22.0(eslint@8.57.1)(typescript@5.7.3)
+      '@eslint/js':
+        specifier: ^9.19.0
+        version: 9.20.0
       eslint:
-        specifier: ^8.33.0
-        version: 8.57.1
-      eslint-config-prettier:
-        specifier: ^10.0.0
-        version: 10.0.1(eslint@8.57.1)
+        specifier: ^9.20.0
+        version: 9.20.0
       eslint-plugin-prettier:
-        specifier: ^5.1.3
-        version: 5.2.3(eslint-config-prettier@10.0.1)(eslint@8.57.1)(prettier@3.4.2)
+        specifier: ^5.2.3
+        version: 5.2.3(eslint-config-prettier@10.0.1)(eslint@9.20.0)(prettier@3.4.2)
       fractal-page-object:
         specifier: workspace:*
         version: link:../fractal-page-object
@@ -347,6 +350,9 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.23.0
+        version: 8.23.0(eslint@9.20.0)(typescript@5.7.3)
 
 packages:
 
@@ -423,20 +429,6 @@ packages:
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@babel/eslint-parser@7.26.5(@babel/core@7.26.7)(eslint@8.57.1):
-    resolution: {integrity: sha512-Kkm8C8uxI842AwQADxl0GbcG1rupELYLShazYEZO/2DYjhyWXJIOUVOE3tBYm6JXzUCNJOZEzqc4rCW/jsEQYQ==}
-    engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
-    peerDependencies:
-      '@babel/core': ^7.11.0
-      eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
-    dependencies:
-      '@babel/core': 7.26.7
-      '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
-      eslint: 8.57.1
-      eslint-visitor-keys: 2.1.0
-      semver: 6.3.1
     dev: true
 
   /@babel/eslint-parser@7.26.5(@babel/core@7.26.7)(eslint@9.20.0):
@@ -1767,7 +1759,7 @@ packages:
       '@warp-drive/core-types': 0.0.1
       ember-source: 3.28.12 || ^4.0.4 || ^5.0.0 || ^6.0.0
     dependencies:
-      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/request-utils': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.3.11(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/tracking@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember/edition-utils': 1.2.0
@@ -1793,7 +1785,7 @@ packages:
       '@warp-drive/core-types': 0.0.0-beta.15
       ember-source: 3.28.12 || ^4.0.4 || ^5.0.0 || ^6.0.0
     dependencies:
-      '@ember-data/legacy-compat': 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+      '@ember-data/legacy-compat': 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/request-utils': 5.4.0-beta.15(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.4.0-beta.15(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/tracking@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember/edition-utils': 1.2.0
@@ -1908,7 +1900,7 @@ packages:
       - supports-color
     dev: true
 
-  /@ember-data/legacy-compat@5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0):
+  /@ember-data/legacy-compat@5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0):
     resolution: {integrity: sha512-19x/0CkGejgFo82QThg1U5TBjRGxa/5aE6x/wCDLVb3TgjrCfOCTqFDvQhGn8JKf1eTr2+9bUqinDGRVhaaR8Q==}
     engines: {node: '>= 18.20.4'}
     peerDependencies:
@@ -1931,7 +1923,7 @@ packages:
       '@ember-data/request': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)
       '@ember-data/request-utils': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.3.11(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/tracking@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
-      '@ember/test-waiters': 3.1.0
+      '@ember/test-waiters': 4.0.0(@glint/template@1.5.2)
       '@embroider/macros': 1.16.10(@glint/template@1.5.2)
       '@warp-drive/build-config': 0.0.1(@glint/template@1.5.2)
       '@warp-drive/core-types': 0.0.1(@glint/template@1.5.2)
@@ -1941,7 +1933,7 @@ packages:
       - supports-color
     dev: true
 
-  /@ember-data/legacy-compat@5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0):
+  /@ember-data/legacy-compat@5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0):
     resolution: {integrity: sha512-riliK4O2NxtCjAJ6Zo6Sk0tPckS9JaC3qe8IztTC418XorPYEMaVkHgLHKLDc5l28xjWhcNnd9RuSNGcyD/wnQ==}
     engines: {node: '>= 18.20.4'}
     peerDependencies:
@@ -1964,7 +1956,7 @@ packages:
       '@ember-data/request': 5.4.0-beta.15(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)
       '@ember-data/request-utils': 5.4.0-beta.15(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.4.0-beta.15(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/tracking@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
-      '@ember/test-waiters': 3.1.0
+      '@ember/test-waiters': 4.0.0(@glint/template@1.5.2)
       '@embroider/macros': 1.16.10(@glint/template@1.5.2)
       '@warp-drive/build-config': 0.0.0-beta.10(@glint/template@1.5.2)
       '@warp-drive/core-types': 0.0.1(@glint/template@1.5.2)
@@ -1994,7 +1986,7 @@ packages:
     dependencies:
       '@ember-data/graph': 5.3.11(@ember-data/store@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/json-api': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/store@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)
-      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/request-utils': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.3.11(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/tracking@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/tracking': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
@@ -2031,7 +2023,7 @@ packages:
     dependencies:
       '@ember-data/graph': 5.4.0-beta.15(@ember-data/store@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/json-api': 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)
-      '@ember-data/legacy-compat': 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+      '@ember-data/legacy-compat': 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/request-utils': 5.4.0-beta.15(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.4.0-beta.15(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/tracking@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/tracking': 5.4.0-beta.15(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
@@ -2138,7 +2130,7 @@ packages:
       '@warp-drive/core-types': 0.0.1
       ember-source: 3.28.12 || ^4.0.4 || ^5.0.0 || ^6.0.0
     dependencies:
-      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/request-utils': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.3.11(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/tracking@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember/edition-utils': 1.2.0
@@ -2164,7 +2156,7 @@ packages:
       '@warp-drive/core-types': 0.0.0-beta.15
       ember-source: 3.28.12 || ^4.0.4 || ^5.0.0 || ^6.0.0
     dependencies:
-      '@ember-data/legacy-compat': 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+      '@ember-data/legacy-compat': 5.4.0-beta.15(@ember-data/graph@5.4.0-beta.15)(@ember-data/json-api@5.4.0-beta.15)(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/store@5.4.0-beta.15)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/request-utils': 5.4.0-beta.15(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/store': 5.4.0-beta.15(@ember-data/request-utils@5.4.0-beta.15)(@ember-data/request@5.4.0-beta.15)(@ember-data/tracking@5.4.0-beta.15)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember/edition-utils': 1.2.0
@@ -2301,6 +2293,16 @@ packages:
       ember-cli-version-checker: 5.1.2
       semver: 7.7.0
     transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@ember/test-waiters@4.0.0(@glint/template@1.5.2):
+    resolution: {integrity: sha512-anqtvTCQvQh8VlHcKPJC0Fxz3aMmc7L+mZLOqvoH7+k86TUikZ/CxhytgMvgLk0x53fqOPEL1uykl2C9Ez65OA==}
+    dependencies:
+      '@embroider/addon-shim': 1.9.0
+      '@embroider/macros': 1.16.10(@glint/template@1.5.2)
+    transitivePeerDependencies:
+      - '@glint/template'
       - supports-color
     dev: true
 
@@ -2624,16 +2626,6 @@ packages:
     dev: true
     optional: true
 
-  /@eslint-community/eslint-utils@4.4.1(eslint@8.57.1):
-    resolution: {integrity: sha512-s3O3waFUrMV8P/XaF/+ZTp1X9XBZW1a4B97ZnjQF2KYWaFD2A8KyFBsrsfSjEmjn3RGWAIuvlneuZm3CUK3jbA==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    peerDependencies:
-      eslint: ^6.0.0 || ^7.0.0 || >=8.0.0
-    dependencies:
-      eslint: 8.57.1
-      eslint-visitor-keys: 3.4.3
-    dev: true
-
   /@eslint-community/eslint-utils@4.4.1(eslint@9.20.0):
     resolution: {integrity: sha512-s3O3waFUrMV8P/XaF/+ZTp1X9XBZW1a4B97ZnjQF2KYWaFD2A8KyFBsrsfSjEmjn3RGWAIuvlneuZm3CUK3jbA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -2674,23 +2666,6 @@ packages:
       '@types/json-schema': 7.0.15
     dev: true
 
-  /@eslint/eslintrc@2.1.4:
-    resolution: {integrity: sha512-269Z39MS6wVJtsoUl10L60WdkhJVdPG24Q4eZTH3nnF6lpvSShEK3wQjDX9JRWAUPvPh7COouPpU9IrqaZFvtQ==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dependencies:
-      ajv: 6.12.6
-      debug: 4.4.0
-      espree: 9.6.1
-      globals: 13.24.0
-      ignore: 5.3.2
-      import-fresh: 3.3.0
-      js-yaml: 4.1.0
-      minimatch: 3.1.2
-      strip-json-comments: 3.1.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@eslint/eslintrc@3.2.0:
     resolution: {integrity: sha512-grOjVNN8P3hjJn/eIETF1wwd12DdnwFDoyceUJLYYdkpbwq3nLi+4fqrTAONx7XDALqlL220wC/RHSC/QTI/0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -2700,17 +2675,12 @@ packages:
       espree: 10.3.0
       globals: 14.0.0
       ignore: 5.3.2
-      import-fresh: 3.3.0
+      import-fresh: 3.3.1
       js-yaml: 4.1.0
       minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@eslint/js@8.57.1:
-    resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
   /@eslint/js@9.20.0:
@@ -3071,26 +3041,9 @@ packages:
       '@humanwhocodes/retry': 0.3.1
     dev: true
 
-  /@humanwhocodes/config-array@0.13.0:
-    resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
-    engines: {node: '>=10.10.0'}
-    deprecated: Use @eslint/config-array instead
-    dependencies:
-      '@humanwhocodes/object-schema': 2.0.3
-      debug: 4.4.0
-      minimatch: 3.1.2
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@humanwhocodes/module-importer@1.0.1:
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
     engines: {node: '>=12.22'}
-    dev: true
-
-  /@humanwhocodes/object-schema@2.0.3:
-    resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
-    deprecated: Use @eslint/object-schema instead
     dev: true
 
   /@humanwhocodes/retry@0.3.1:
@@ -3857,30 +3810,6 @@ packages:
     resolution: {integrity: sha512-IfYcSBWE3hLpBg8+X2SEa8LVkJdJEkT2Ese2aaLs3ptGdVtABxndrMaxuFlQ1qdFf9Q5rDvDpxI3WwgvKFAsQA==}
     dev: true
 
-  /@typescript-eslint/eslint-plugin@8.22.0(@typescript-eslint/parser@8.22.0)(eslint@8.57.1)(typescript@5.7.3):
-    resolution: {integrity: sha512-4Uta6REnz/xEJMvwf72wdUnC3rr4jAQf5jnTkeRQ9b6soxLxhDEbS/pfMPoJLDfFPNVRdryqWUIV/2GZzDJFZw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      '@typescript-eslint/parser': ^8.0.0 || ^8.0.0-alpha.0
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <5.8.0'
-    dependencies:
-      '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.22.0(eslint@8.57.1)(typescript@5.7.3)
-      '@typescript-eslint/scope-manager': 8.22.0
-      '@typescript-eslint/type-utils': 8.22.0(eslint@8.57.1)(typescript@5.7.3)
-      '@typescript-eslint/utils': 8.22.0(eslint@8.57.1)(typescript@5.7.3)
-      '@typescript-eslint/visitor-keys': 8.22.0
-      eslint: 8.57.1
-      graphemer: 1.4.0
-      ignore: 5.3.2
-      natural-compare: 1.4.0
-      ts-api-utils: 2.0.0(typescript@5.7.3)
-      typescript: 5.7.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@typescript-eslint/eslint-plugin@8.23.0(@typescript-eslint/parser@8.23.0)(eslint@9.20.0)(typescript@5.7.3):
     resolution: {integrity: sha512-vBz65tJgRrA1Q5gWlRfvoH+w943dq9K1p1yDBY2pc+a1nbBLZp7fB9+Hk8DaALUbzjqlMfgaqlVPT1REJdkt/w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -3905,24 +3834,6 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/parser@8.22.0(eslint@8.57.1)(typescript@5.7.3):
-    resolution: {integrity: sha512-MqtmbdNEdoNxTPzpWiWnqNac54h8JDAmkWtJExBVVnSrSmi9z+sZUt0LfKqk9rjqmKOIeRhO4fHHJ1nQIjduIQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <5.8.0'
-    dependencies:
-      '@typescript-eslint/scope-manager': 8.22.0
-      '@typescript-eslint/types': 8.22.0
-      '@typescript-eslint/typescript-estree': 8.22.0(typescript@5.7.3)
-      '@typescript-eslint/visitor-keys': 8.22.0
-      debug: 4.4.0
-      eslint: 8.57.1
-      typescript: 5.7.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /@typescript-eslint/parser@8.23.0(eslint@9.20.0)(typescript@5.7.3):
     resolution: {integrity: sha512-h2lUByouOXFAlMec2mILeELUbME5SZRN/7R9Cw2RD2lRQQY08MWMM+PmVVKKJNK1aIwqTo9t/0CvOxwPbRIE2Q==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -3941,37 +3852,12 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/scope-manager@8.22.0:
-    resolution: {integrity: sha512-/lwVV0UYgkj7wPSw0o8URy6YI64QmcOdwHuGuxWIYznO6d45ER0wXUbksr9pYdViAofpUCNJx/tAzNukgvaaiQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    dependencies:
-      '@typescript-eslint/types': 8.22.0
-      '@typescript-eslint/visitor-keys': 8.22.0
-    dev: true
-
   /@typescript-eslint/scope-manager@8.23.0:
     resolution: {integrity: sha512-OGqo7+dXHqI7Hfm+WqkZjKjsiRtFUQHPdGMXzk5mYXhJUedO7e/Y7i8AK3MyLMgZR93TX4bIzYrfyVjLC+0VSw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dependencies:
       '@typescript-eslint/types': 8.23.0
       '@typescript-eslint/visitor-keys': 8.23.0
-    dev: true
-
-  /@typescript-eslint/type-utils@8.22.0(eslint@8.57.1)(typescript@5.7.3):
-    resolution: {integrity: sha512-NzE3aB62fDEaGjaAYZE4LH7I1MUwHooQ98Byq0G0y3kkibPJQIXVUspzlFOmOfHhiDLwKzMlWxaNv+/qcZurJA==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <5.8.0'
-    dependencies:
-      '@typescript-eslint/typescript-estree': 8.22.0(typescript@5.7.3)
-      '@typescript-eslint/utils': 8.22.0(eslint@8.57.1)(typescript@5.7.3)
-      debug: 4.4.0
-      eslint: 8.57.1
-      ts-api-utils: 2.0.0(typescript@5.7.3)
-      typescript: 5.7.3
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /@typescript-eslint/type-utils@8.23.0(eslint@9.20.0)(typescript@5.7.3):
@@ -3991,33 +3877,9 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/types@8.22.0:
-    resolution: {integrity: sha512-0S4M4baNzp612zwpD4YOieP3VowOARgK2EkN/GBn95hpyF8E2fbMT55sRHWBq+Huaqk3b3XK+rxxlM8sPgGM6A==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    dev: true
-
   /@typescript-eslint/types@8.23.0:
     resolution: {integrity: sha512-1sK4ILJbCmZOTt9k4vkoulT6/y5CHJ1qUYxqpF1K/DBAd8+ZUL4LlSCxOssuH5m4rUaaN0uS0HlVPvd45zjduQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    dev: true
-
-  /@typescript-eslint/typescript-estree@8.22.0(typescript@5.7.3):
-    resolution: {integrity: sha512-SJX99NAS2ugGOzpyhMza/tX+zDwjvwAtQFLsBo3GQxiGcvaKlqGBkmZ+Y1IdiSi9h4Q0Lr5ey+Cp9CGWNY/F/w==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <5.8.0'
-    dependencies:
-      '@typescript-eslint/types': 8.22.0
-      '@typescript-eslint/visitor-keys': 8.22.0
-      debug: 4.4.0
-      fast-glob: 3.3.3
-      is-glob: 4.0.3
-      minimatch: 9.0.5
-      semver: 7.7.0
-      ts-api-utils: 2.0.0(typescript@5.7.3)
-      typescript: 5.7.3
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /@typescript-eslint/typescript-estree@8.23.0(typescript@5.7.3):
@@ -4034,23 +3896,6 @@ packages:
       minimatch: 9.0.5
       semver: 7.7.0
       ts-api-utils: 2.0.1(typescript@5.7.3)
-      typescript: 5.7.3
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
-  /@typescript-eslint/utils@8.22.0(eslint@8.57.1)(typescript@5.7.3):
-    resolution: {integrity: sha512-T8oc1MbF8L+Bk2msAvCUzjxVB2Z2f+vXYfcucE2wOmYs7ZUwco5Ep0fYZw8quNwOiw9K8GYVL+Kgc2pETNTLOg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0
-      typescript: '>=4.8.4 <5.8.0'
-    dependencies:
-      '@eslint-community/eslint-utils': 4.4.1(eslint@8.57.1)
-      '@typescript-eslint/scope-manager': 8.22.0
-      '@typescript-eslint/types': 8.22.0
-      '@typescript-eslint/typescript-estree': 8.22.0(typescript@5.7.3)
-      eslint: 8.57.1
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
@@ -4073,24 +3918,12 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/visitor-keys@8.22.0:
-    resolution: {integrity: sha512-AWpYAXnUgvLNabGTy3uBylkgZoosva/miNd1I8Bz3SjotmQPbVqhO4Cczo8AsZ44XVErEBPr/CRSgaj8sG7g0w==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    dependencies:
-      '@typescript-eslint/types': 8.22.0
-      eslint-visitor-keys: 4.2.0
-    dev: true
-
   /@typescript-eslint/visitor-keys@8.23.0:
     resolution: {integrity: sha512-oWWhcWDLwDfu++BGTZcmXWqpwtkwb5o7fxUIGksMQQDSdPW9prsSnfIOZMlsj4vBOSrcnjIUZMiIjODgGosFhQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dependencies:
       '@typescript-eslint/types': 8.23.0
       eslint-visitor-keys: 4.2.0
-    dev: true
-
-  /@ungap/structured-clone@1.2.0:
-    resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: true
 
   /@vitest/coverage-v8@3.0.4(vitest@3.0.4):
@@ -7493,13 +7326,6 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /doctrine@3.0.0:
-    resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      esutils: 2.0.3
-    dev: true
-
   /documentation@14.0.3:
     resolution: {integrity: sha512-B7cAviVKN9Rw7Ofd+9grhVuxiHwly6Ieh+d/ceMw8UdBOv/irkuwnDEJP8tq0wgdLJDUVuIkovV+AX9mTrZFxg==}
     engines: {node: '>=14'}
@@ -8199,7 +8025,7 @@ packages:
       - supports-color
     dev: true
 
-  /ember-data@5.3.11(@ember/test-helpers@4.0.5)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(ember-source@6.2.0)(qunit@2.24.1):
+  /ember-data@5.3.11(@ember/test-helpers@4.0.5)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(ember-source@6.2.0)(qunit@2.24.1):
     resolution: {integrity: sha512-AXoEHbQ6jqScoSk63h+ayghn3f+kxwP4S7SjmnY6/uCvOGnLw7eGqmEYXuAYVNVfLu30OmaTToydsh/vKbxeFA==}
     engines: {node: '>= 18.20.4'}
     peerDependencies:
@@ -8219,7 +8045,7 @@ packages:
       '@ember-data/debug': 5.3.11(@ember-data/model@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/store@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/graph': 5.3.11(@ember-data/store@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/json-api': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/store@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)
-      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@3.1.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
+      '@ember-data/legacy-compat': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/request@5.3.11)(@ember-data/store@5.3.11)(@ember/test-waiters@4.0.0)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/model': 5.3.11(@ember-data/graph@5.3.11)(@ember-data/json-api@5.3.11)(@ember-data/legacy-compat@5.3.11)(@ember-data/request-utils@5.3.11)(@ember-data/store@5.3.11)(@ember-data/tracking@5.3.11)(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember-data/request': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)
       '@ember-data/request-utils': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
@@ -8228,7 +8054,7 @@ packages:
       '@ember-data/tracking': 5.3.11(@glint/template@1.5.2)(@warp-drive/core-types@0.0.1)(ember-source@6.2.0)
       '@ember/edition-utils': 1.2.0
       '@ember/test-helpers': 4.0.5(@babel/core@7.26.7)(@glint/template@1.5.2)(ember-source@6.2.0)
-      '@ember/test-waiters': 3.1.0
+      '@ember/test-waiters': 4.0.0(@glint/template@1.5.2)
       '@embroider/macros': 1.16.10(@glint/template@1.5.2)
       '@warp-drive/build-config': 0.0.1(@glint/template@1.5.2)
       '@warp-drive/core-types': 0.0.1(@glint/template@1.5.2)
@@ -8863,15 +8689,6 @@ packages:
       semver: 7.7.0
     dev: true
 
-  /eslint-config-prettier@10.0.1(eslint@8.57.1):
-    resolution: {integrity: sha512-lZBts941cyJyeaooiKxAtzoPHTN+GbQTJFAIdQbRhA4/8whaAraEh47Whw/ZFfrjNSnlAxqfm9i0XVAEkULjCw==}
-    hasBin: true
-    peerDependencies:
-      eslint: '>=7.0.0'
-    dependencies:
-      eslint: 8.57.1
-    dev: true
-
   /eslint-config-prettier@10.0.1(eslint@9.20.0):
     resolution: {integrity: sha512-lZBts941cyJyeaooiKxAtzoPHTN+GbQTJFAIdQbRhA4/8whaAraEh47Whw/ZFfrjNSnlAxqfm9i0XVAEkULjCw==}
     hasBin: true
@@ -8938,27 +8755,6 @@ packages:
       ignore: 5.3.2
       minimatch: 9.0.5
       semver: 7.7.0
-    dev: true
-
-  /eslint-plugin-prettier@5.2.3(eslint-config-prettier@10.0.1)(eslint@8.57.1)(prettier@3.4.2):
-    resolution: {integrity: sha512-qJ+y0FfCp/mQYQ/vWQ3s7eUlFEL4PyKfAJxsnYTJ4YT73nsJBWqmEpFryxV9OeUiqmsTsYJ5Y+KDNaeP31wrRw==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-    peerDependencies:
-      '@types/eslint': '>=8.0.0'
-      eslint: '>=8.0.0'
-      eslint-config-prettier: '*'
-      prettier: '>=3.0.0'
-    peerDependenciesMeta:
-      '@types/eslint':
-        optional: true
-      eslint-config-prettier:
-        optional: true
-    dependencies:
-      eslint: 8.57.1
-      eslint-config-prettier: 10.0.1(eslint@8.57.1)
-      prettier: 3.4.2
-      prettier-linter-helpers: 1.0.0
-      synckit: 0.9.2
     dev: true
 
   /eslint-plugin-prettier@5.2.3(eslint-config-prettier@10.0.1)(eslint@9.20.0)(prettier@3.4.2):
@@ -9041,54 +8837,6 @@ packages:
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dev: true
 
-  /eslint@8.57.1:
-    resolution: {integrity: sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
-    hasBin: true
-    dependencies:
-      '@eslint-community/eslint-utils': 4.4.1(eslint@8.57.1)
-      '@eslint-community/regexpp': 4.12.1
-      '@eslint/eslintrc': 2.1.4
-      '@eslint/js': 8.57.1
-      '@humanwhocodes/config-array': 0.13.0
-      '@humanwhocodes/module-importer': 1.0.1
-      '@nodelib/fs.walk': 1.2.8
-      '@ungap/structured-clone': 1.2.0
-      ajv: 6.12.6
-      chalk: 4.1.2
-      cross-spawn: 7.0.6
-      debug: 4.4.0
-      doctrine: 3.0.0
-      escape-string-regexp: 4.0.0
-      eslint-scope: 7.2.2
-      eslint-visitor-keys: 3.4.3
-      espree: 9.6.1
-      esquery: 1.6.0
-      esutils: 2.0.3
-      fast-deep-equal: 3.1.3
-      file-entry-cache: 6.0.1
-      find-up: 5.0.0
-      glob-parent: 6.0.2
-      globals: 13.24.0
-      graphemer: 1.4.0
-      ignore: 5.3.2
-      imurmurhash: 0.1.4
-      is-glob: 4.0.3
-      is-path-inside: 3.0.3
-      js-yaml: 4.1.0
-      json-stable-stringify-without-jsonify: 1.0.1
-      levn: 0.4.1
-      lodash.merge: 4.6.2
-      minimatch: 3.1.2
-      natural-compare: 1.4.0
-      optionator: 0.9.4
-      strip-ansi: 6.0.1
-      text-table: 0.2.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /eslint@9.20.0:
     resolution: {integrity: sha512-aL4F8167Hg4IvsW89ejnpTwx+B/UQRzJPGgbIOl+4XqffWsahVVsLEWoZvnrVuwpWmnRd7XeXmQI1zlKcFDteA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -9149,15 +8897,6 @@ packages:
       acorn: 8.14.0
       acorn-jsx: 5.3.2(acorn@8.14.0)
       eslint-visitor-keys: 4.2.0
-    dev: true
-
-  /espree@9.6.1:
-    resolution: {integrity: sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-    dependencies:
-      acorn: 8.14.0
-      acorn-jsx: 5.3.2(acorn@8.14.0)
-      eslint-visitor-keys: 3.4.3
     dev: true
 
   /esprima@3.0.0:
@@ -9585,13 +9324,6 @@ packages:
       flat-cache: 6.1.6
     dev: true
 
-  /file-entry-cache@6.0.1:
-    resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
-    engines: {node: ^10.12.0 || >=12.0.0}
-    dependencies:
-      flat-cache: 3.2.0
-    dev: true
-
   /file-entry-cache@8.0.0:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
     engines: {node: '>=16.0.0'}
@@ -9790,15 +9522,6 @@ packages:
       fs-extra: 8.1.0
       matcher-collection: 2.0.1
       walk-sync: 2.2.0
-    dev: true
-
-  /flat-cache@3.2.0:
-    resolution: {integrity: sha512-CYcENa+FtcUKLmhhqyctpclsq7QF38pKjZHsGNiSQF5r4FtoKDWabFDl3hzaEQMvT1LHEysw5twgLvpYYb4vbw==}
-    engines: {node: ^10.12.0 || >=12.0.0}
-    dependencies:
-      flatted: 3.3.2
-      keyv: 4.5.4
-      rimraf: 3.0.2
     dev: true
 
   /flat-cache@4.0.1:
@@ -10313,13 +10036,6 @@ packages:
   /globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
     engines: {node: '>=4'}
-    dev: true
-
-  /globals@13.24.0:
-    resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
-    engines: {node: '>=8'}
-    dependencies:
-      type-fest: 0.20.2
     dev: true
 
   /globals@14.0.0:
@@ -10890,6 +10606,14 @@ packages:
       resolve-from: 4.0.0
     dev: true
 
+  /import-fresh@3.3.1:
+    resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
+    engines: {node: '>=6'}
+    dependencies:
+      parent-module: 1.0.1
+      resolve-from: 4.0.0
+    dev: true
+
   /imurmurhash@0.1.4:
     resolution: {integrity: sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==}
     engines: {node: '>=0.8.19'}
@@ -11306,11 +11030,6 @@ packages:
 
   /is-obj@2.0.0:
     resolution: {integrity: sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w==}
-    engines: {node: '>=8'}
-    dev: true
-
-  /is-path-inside@3.0.3:
-    resolution: {integrity: sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==}
     engines: {node: '>=8'}
     dev: true
 
@@ -16102,10 +15821,6 @@ packages:
       - whiskers
     dev: true
 
-  /text-table@0.2.0:
-    resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
-    dev: true
-
   /textextensions@2.6.0:
     resolution: {integrity: sha512-49WtAWS+tcsy93dRt6P0P3AMD2m5PvXRhuEA0kaXos5ZLlujtYmpmFsB+QvWUSxE1ZsstmYXfQ7L40+EcQgpAQ==}
     engines: {node: '>=0.8'}
@@ -16338,15 +16053,6 @@ packages:
     resolution: {integrity: sha512-AqTiAOLcj85xS7vQ8QkAV41hPDIJ71XJB4RCUrzo/1GM2CQwhkJGaf9Hgr7BOugMRpgGUrqRg/DrBDl4H40+8g==}
     dev: true
 
-  /ts-api-utils@2.0.0(typescript@5.7.3):
-    resolution: {integrity: sha512-xCt/TOAc+EOHS1XPnijD3/yzpH6qg2xppZO1YDqGoVsNXfQfzHpOdNuXwrwOU8u4ITXJyDCTyt8w5g1sZv9ynQ==}
-    engines: {node: '>=18.12'}
-    peerDependencies:
-      typescript: '>=4.8.4'
-    dependencies:
-      typescript: 5.7.3
-    dev: true
-
   /ts-api-utils@2.0.1(typescript@5.7.3):
     resolution: {integrity: sha512-dnlgjFSVetynI8nzgJ+qF62efpglpWRk8isUEWZGWlJYySCTD6aKvbUDu+zbPeDakk3bg5H4XpitHukgfL1m9w==}
     engines: {node: '>=18.12'}
@@ -16378,11 +16084,6 @@ packages:
   /type-fest@0.11.0:
     resolution: {integrity: sha512-OdjXJxnCN1AvyLSzeKIgXTXxV+99ZuXl3Hpo9XpJAv9MBcHrrJOQ5kV7ypXOuQie+AmWG25hLbiKdwYTifzcfQ==}
     engines: {node: '>=8'}
-    dev: true
-
-  /type-fest@0.20.2:
-    resolution: {integrity: sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==}
-    engines: {node: '>=10'}
     dev: true
 
   /type-fest@0.21.3:
