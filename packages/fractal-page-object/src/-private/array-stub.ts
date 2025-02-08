@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import type { WithElement } from './types';
 

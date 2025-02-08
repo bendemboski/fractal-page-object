@@ -21,10 +21,10 @@ export function validateSelectorArguments<
 
   try {
     document.querySelector(selector);
-  } catch (e) {
+  } catch {
     try {
       document.querySelector(safeSelector(selector));
-    } catch (e) {
+    } catch {
       throw new Error(`Selector is invalid: ${selector}`);
     }
   }

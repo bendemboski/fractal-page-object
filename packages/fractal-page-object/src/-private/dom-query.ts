@@ -9,7 +9,7 @@ import type { ElementLike } from './types';
 function querySelector(root: ElementLike, selector: string): Element | null {
   try {
     return root.querySelector(selector);
-  } catch (e) {
+  } catch {
     return root.querySelector(safeSelector(selector));
   }
 }
@@ -25,7 +25,7 @@ function querySelectorAll(
 ): NodeListOf<Element> {
   try {
     return root.querySelectorAll(selector);
-  } catch (e) {
+  } catch {
     return root.querySelectorAll(safeSelector(selector));
   }
 }
