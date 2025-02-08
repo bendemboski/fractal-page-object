@@ -18,10 +18,10 @@ module('Integration | page object', function (hooks) {
     const Page = class extends PageObject {
       target = selector('[data-target]');
     };
-    let page = new Page();
+    const page = new Page();
     assert.strictEqual(page.element, this.element as Element | null);
 
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     div.setAttribute('data-target', '');
 
     document.body.append(div);
@@ -37,7 +37,7 @@ module('Integration | page object', function (hooks) {
   test('types are exported', async function (assert) {
     await render(hbs`<div id="div1"></div>`);
 
-    let page = new PageObject('div');
+    const page = new PageObject('div');
 
     assert.strictEqual(page.element?.id, 'div1');
     assert.strictEqual(page[0].element?.id, 'div1');
@@ -51,7 +51,7 @@ module('Integration | page object', function (hooks) {
         return this[0].element?.id;
       }
     };
-    let page2 = new Page('div');
+    const page2 = new Page('div');
 
     assert.strictEqual(page2.element?.id, 'div1');
     assert.strictEqual(page2[0].element?.id, 'div1');
@@ -126,7 +126,7 @@ module('Integration | page object', function (hooks) {
         },
       );
     };
-    let page = new Page();
+    const page = new Page();
 
     assert.dom(page.one).hasClass('div-one');
     assert.dom(page.two).hasClass('div-two');
@@ -232,7 +232,7 @@ module('Integration | page object', function (hooks) {
       </div>
     `);
 
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     document.body.append(div);
     try {
       const Page = class extends PageObject {
@@ -253,7 +253,7 @@ module('Integration | page object', function (hooks) {
           },
         );
       };
-      let page = new Page();
+      const page = new Page();
 
       div.innerHTML = `
         <div data-name="one-root" class="div-one-root"/>
@@ -280,12 +280,12 @@ module('Integration | page object', function (hooks) {
   test('it can query the shadow DOM', async function (this: RenderingTestContext, assert) {
     await render(hbs`<div data-target><div data-child></div></div>`);
 
-    let target = this.element.querySelector('[data-target]')!;
-    let span = document.createElement('span');
+    const target = this.element.querySelector('[data-target]')!;
+    const span = document.createElement('span');
     target?.attachShadow({ mode: 'open' }).append(span);
 
-    let child = this.element.querySelector('[data-child]')!;
-    let childSpan = document.createElement('span');
+    const child = this.element.querySelector('[data-child]')!;
+    const childSpan = document.createElement('span');
     child?.attachShadow({ mode: 'open' }).append(childSpan);
 
     const ShadowPage = class extends PageObject {
@@ -306,13 +306,13 @@ module('Integration | page object', function (hooks) {
       }
 
       get childShadowSpan() {
-        let child = this.element?.querySelector('[data-child]')?.shadowRoot;
+        const child = this.element?.querySelector('[data-child]')?.shadowRoot;
         return child
           ? new PageObject('span', child)
           : new PageObject('does_not_exist');
       }
     };
-    let page = new Page('[data-target]');
+    const page = new Page('[data-target]');
 
     assert.strictEqual(page.shadowRoot.span.element, span);
     assert.strictEqual(page.shadowSpan.element, span);
@@ -343,9 +343,8 @@ module('Integration | page object', function (hooks) {
         },
       );
     };
-    let page = new Page();
+    const page = new Page();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     class Context {
       @tracked list: string[] = [];
 

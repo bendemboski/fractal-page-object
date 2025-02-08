@@ -33,7 +33,7 @@ export default class PageObjectFactory<
    * @returns the new page object
    */
   create(parent?: GenericPageObject | ElementLike): PageObject<ElementType> {
-    let Class =
+    const Class =
       this.Class ||
       (PageObject as PageObjectConstructor<
         ElementType,

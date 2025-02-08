@@ -37,13 +37,13 @@ export function setPageObjectState(
  * Get a DOMQuery for a {@link PageObject}, using its state
  */
 export function getDOMQuery(pageObject: GenericPageObject): DOMQuery {
-  let state = pageObjectState.get(pageObject);
+  const state = pageObjectState.get(pageObject);
   if (!state) {
     throw new Error(
       'Page object state not found, this is probably a bug in fractal-page-object',
     );
   }
-  let { parent, selector, index } = state;
+  const { parent, selector, index } = state;
 
   let parentQuery;
   if (isElementLike(parent)) {

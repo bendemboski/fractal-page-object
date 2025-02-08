@@ -23,7 +23,7 @@ export default function createProxy<ElementType extends Element>(
         return getWithFactorySupport(pageObject, prop, receiver);
       }
 
-      let index = convertToInt(prop);
+      const index = convertToInt(prop);
       if (index !== null) {
         // `page.foo[1]` -- clone the page object with an index. We special case
         // this rather than handling it like the rest of the Array API because
@@ -43,12 +43,12 @@ export default function createProxy<ElementType extends Element>(
         // transpiled, causes `pageObject.map(...)` to construct and return a
         // PageObject with its parent set to an integer (instead of a page
         // object parent).
-        let arrayProp = prop as keyof Array<unknown>;
-        let elements = resolveDOMElements(receiver);
-        let children = Array.from(elements).map((_e, i) =>
+        const arrayProp = prop as keyof Array<unknown>;
+        const elements = resolveDOMElements(receiver);
+        const children = Array.from(elements).map((_e, i) =>
           cloneWithIndex(pageObject, i),
         );
-        let value = children[arrayProp];
+        const value = children[arrayProp];
         if (typeof value === 'function') {
           return value.bind(children);
           // return (...args: unknown[]) =>
@@ -79,7 +79,7 @@ function getWithFactorySupport<ElementType extends Element>(
   prop: string,
   receiver: unknown,
 ) {
-  let value = Reflect.get(pageObject, prop, receiver);
+  const value = Reflect.get(pageObject, prop, receiver);
   if (value instanceof PageObjectFactory) {
     // PageObjetFactory, so use it to instantiate a PageObject that is a child
     // of this PageObject
@@ -94,7 +94,7 @@ function getWithFactorySupport<ElementType extends Element>(
 function convertToInt(prop: number | string | symbol): number | null {
   if (typeof prop === 'symbol') return null;
 
-  let num = Number(prop);
+  const num = Number(prop);
 
   if (isNaN(num)) return null;
 

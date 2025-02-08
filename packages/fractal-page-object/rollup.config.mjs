@@ -2,10 +2,7 @@ import typescript from 'rollup-plugin-typescript2';
 import copy from 'rollup-plugin-copy';
 
 const typescriptConfiguration = {
-  exclude: [
-    'node_modules/**',
-    'src/**/__tests__/**',
-  ],
+  exclude: ['node_modules/**', 'src/**/__tests__/**'],
 };
 
 const copyStaticArtifacts = copy({
@@ -18,14 +15,17 @@ const copyStaticArtifacts = copy({
 const iifeBundle = {
   input: 'src/fractal-page-object.ts',
 
-  plugins: [typescript({
-    ...typescriptConfiguration,
-    tsconfigOverride: {
-      compilerOptions: {
-        declaration: false,
-      }
-    }
-  }), copyStaticArtifacts],
+  plugins: [
+    typescript({
+      ...typescriptConfiguration,
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration: false,
+        },
+      },
+    }),
+    copyStaticArtifacts,
+  ],
 
   output: {
     name: 'FractalPageObject',

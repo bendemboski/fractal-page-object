@@ -179,7 +179,7 @@ export default class PageObject<ElementType extends Element = Element>
   ) {
     super();
 
-    let proxy = createProxy(this);
+    const proxy = createProxy(this);
 
     setPageObjectState(this, { selector, parent, index });
     setPageObjectState(proxy, { selector, parent, index });

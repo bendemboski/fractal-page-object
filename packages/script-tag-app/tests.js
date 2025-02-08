@@ -2,17 +2,17 @@
 const { module, test } = QUnit;
 const { PageObject, selector, setRoot } = FractalPageObject;
 
-module('page object', function(hooks) {
+module('page object', function (hooks) {
   let testContainer;
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     testContainer = document.querySelector('#qunit-fixture');
     setRoot(testContainer);
   });
 
-  test('it respects the root', function(assert) {
+  test('it respects the root', function (assert) {
     class Page extends PageObject {
-      target = selector('[data-target]')
+      target = selector('[data-target]');
     }
     let page = new Page();
     assert.equal(page.element, testContainer);
@@ -23,14 +23,14 @@ module('page object', function(hooks) {
     document.body.append(div);
     try {
       testContainer.innerHTML = '<div data-target>Hello world</div>';
-      assert.dom(page.target).exists({ count: 1});
+      assert.dom(page.target).exists({ count: 1 });
       assert.dom(page.target).hasText('Hello world');
     } finally {
       div.remove();
     }
   });
 
-  test('smoke test', async function(assert) {
+  test('smoke test', async function (assert) {
     class ListItem extends PageObject {
       get text() {
         return this.element?.textContent;
@@ -38,15 +38,21 @@ module('page object', function(hooks) {
     }
 
     class Page extends PageObject {
-      header = selector('.header', class extends PageObject {
-        title = selector('.title')
-        showList = selector('button')
-      })
+      header = selector(
+        '.header',
+        class extends PageObject {
+          title = selector('.title');
+          showList = selector('button');
+        },
+      );
 
-      list = selector('.list', class extends PageObject {
-        listItems = selector('li', ListItem)
-        loadMore = selector('.load-more')
-      })
+      list = selector(
+        '.list',
+        class extends PageObject {
+          listItems = selector('li', ListItem);
+          loadMore = selector('.load-more');
+        },
+      );
     }
     let page = new Page();
 
@@ -99,8 +105,8 @@ module('page object', function(hooks) {
     assert.dom(page.list.listItems[1]).exists();
     assert.dom(page.list.listItems[6]).doesNotExist();
     assert.deepEqual(
-      page.list.listItems.map(item => item.text),
-      ['item0', 'item1', 'item2', 'item3', 'item4', 'load more']
+      page.list.listItems.map((item) => item.text),
+      ['item0', 'item1', 'item2', 'item3', 'item4', 'load more'],
     );
     assert.dom(page.list.loadMore).exists();
 
@@ -113,7 +119,7 @@ module('page object', function(hooks) {
     assert.dom(page.list.listItems[7]).exists();
     assert.dom(page.list.listItems[11]).doesNotExist();
     assert.deepEqual(
-      page.list.listItems.map(item => item.text),
+      page.list.listItems.map((item) => item.text),
       [
         'item0',
         'item1',
@@ -125,8 +131,8 @@ module('page object', function(hooks) {
         'item7',
         'item8',
         'item9',
-        'load more'
-      ]
+        'load more',
+      ],
     );
     assert.dom(page.list.loadMore).exists();
   });

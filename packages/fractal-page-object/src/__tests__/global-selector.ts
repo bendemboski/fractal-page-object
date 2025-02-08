@@ -26,8 +26,8 @@ describe('globalSelector()', () => {
       </div>
       <span></span>
     `;
-    let div = document.body.children[0];
-    let p = div.children[1];
+    const div = document.body.children[0];
+    const p = div.children[1];
 
     setRoot(div);
 
@@ -35,7 +35,7 @@ describe('globalSelector()', () => {
       p = selector('p');
       globalP = globalSelector('p');
     }
-    let page = new Page('span');
+    const page = new Page('span');
 
     expect(page.p.element).toEqual(null);
     expect(page.globalP.element).toEqual(p);
@@ -51,8 +51,8 @@ describe('globalSelector()', () => {
         <p></p>
       </section>
     `;
-    let [div, section] = Array.from(document.body.children);
-    let p = section.children[0];
+    const [div, section] = Array.from(document.body.children);
+    const p = section.children[0];
 
     setRoot(div);
 
@@ -60,7 +60,7 @@ describe('globalSelector()', () => {
       p = selector('p');
       globalP = globalSelector('p', section);
     }
-    let page = new Page('span');
+    const page = new Page('span');
 
     expect(page.p.element).toEqual(null);
     expect(page.globalP.element).toEqual(p);
@@ -72,7 +72,7 @@ describe('globalSelector()', () => {
       <span></span>
       <p id="p1"></p>
     `;
-    let p = document.body.children[1];
+    const p = document.body.children[1];
 
     class Page extends PageObject {
       p = globalSelector(
@@ -84,7 +84,7 @@ describe('globalSelector()', () => {
         },
       );
     }
-    let page = new Page('span');
+    const page = new Page('span');
 
     expect(page.p.element).toEqual(p);
     expect(page.p.elementId).toEqual('p1');
@@ -101,8 +101,8 @@ describe('globalSelector()', () => {
         <p id="p1"></p>
       </section>
     `;
-    let [div, section] = Array.from(document.body.children);
-    let p = section.children[0];
+    const [div, section] = Array.from(document.body.children);
+    const p = section.children[0];
 
     setRoot(div);
 
@@ -118,7 +118,7 @@ describe('globalSelector()', () => {
         },
       );
     }
-    let page = new Page('span');
+    const page = new Page('span');
 
     expect(page.p.element).toEqual(null);
     expect(page.globalP.element).toEqual(p);
@@ -135,8 +135,8 @@ describe('globalSelector()', () => {
       </div>
       <span></span>
     `;
-    let div = document.body.children[0];
-    let span = div.children[1];
+    const div = document.body.children[0];
+    const span = div.children[1];
 
     setRoot(div);
 
@@ -144,7 +144,7 @@ describe('globalSelector()', () => {
       span = selector('> span');
       globalSpan = globalSelector('> span');
     }
-    let page = new Page('span');
+    const page = new Page('span');
 
     expect(page.span.element).toEqual(null);
     expect(page.globalSpan.element).toEqual(span);
@@ -159,7 +159,7 @@ describe('globalSelector()', () => {
     class Page extends PageObject {
       input = globalSelector<HTMLInputElement>('input');
     }
-    let page = new Page();
+    const page = new Page();
 
     expect(page.input.element?.value).toEqual('value1');
     expect(page.input.elements[0].value).toEqual('value1');
@@ -180,7 +180,7 @@ describe('globalSelector()', () => {
         },
       );
     }
-    let page = new Page('span');
+    const page = new Page('span');
 
     expect(page.input.element?.value).toEqual('value1');
     expect(page.input.elements[0].value).toEqual('value1');

@@ -70,7 +70,7 @@ describe('DOMQuery', () => {
   });
 
   test('never matches with a null root', () => {
-    let query = new DOMQuery(null);
+    const query = new DOMQuery(null);
     expect(query.query()).toEqual(null);
     expect(query.queryAll()).toEqual([]);
 
@@ -583,15 +583,15 @@ describe('DOMQuery', () => {
   });
 
   test('it works with a shadow root', () => {
-    let shadowSpan1 = document.createElement('span');
+    const shadowSpan1 = document.createElement('span');
     shadowSpan1.id = 'shadowSpan1';
 
-    let shadowSpan2 = document.createElement('span');
+    const shadowSpan2 = document.createElement('span');
     shadowSpan2.id = 'shadowSpan2';
 
     span1.attachShadow({ mode: 'open' }).append(shadowSpan1, shadowSpan2);
 
-    let shadowQuery = new DOMQuery(span1.shadowRoot);
+    const shadowQuery = new DOMQuery(span1.shadowRoot);
     expect(shadowQuery.query()).toEqual(null);
     expect(shadowQuery.queryAll()).toEqual([]);
 

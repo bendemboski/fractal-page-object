@@ -200,7 +200,7 @@ export default function globalSelector<
     | [string, PageObjectConstructor<ElementType, T>?]
     | [string, ElementLike, PageObjectConstructor<ElementType, T>?]
 ): T {
-  let selector = args[0];
+  const selector = args[0];
   let rootElement;
   let Class;
 

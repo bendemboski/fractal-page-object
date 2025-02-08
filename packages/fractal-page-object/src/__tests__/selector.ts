@@ -12,12 +12,12 @@ describe('selector()', () => {
 
   test('it works without a class', () => {
     document.body.innerHTML = '<div></div>';
-    let div = document.body.children[0];
+    const div = document.body.children[0];
 
     class Page extends PageObject {
       div = selector('div');
     }
-    let page = new Page();
+    const page = new Page();
 
     expect(page.div.element).toEqual(div);
     expect(page.div[0].element).toEqual(div);
@@ -25,7 +25,7 @@ describe('selector()', () => {
 
   test('it works with a class', () => {
     document.body.innerHTML = '<div id="div1"></div>';
-    let div = document.body.children[0];
+    const div = document.body.children[0];
 
     class Page extends PageObject {
       div = selector(
@@ -37,7 +37,7 @@ describe('selector()', () => {
         },
       );
     }
-    let page = new Page();
+    const page = new Page();
 
     expect(page.div.element).toEqual(div);
     expect(page.div.elementId).toEqual('div1');
@@ -76,7 +76,7 @@ describe('selector()', () => {
       pane1 = selector('#pane1', Pane1);
       pane2 = selector('#pane2', Pane2);
     }
-    let page = new Page();
+    const page = new Page();
 
     expect(page.pane1.form.input.element?.id).toEqual('input1');
     expect(page.pane2.form.input.element?.id).toEqual('input2');
@@ -84,12 +84,12 @@ describe('selector()', () => {
 
   test('it works with a scoped selector', () => {
     document.body.innerHTML = '<div><div></div></div>';
-    let div = document.body.children[0];
+    const div = document.body.children[0];
 
     class Page extends PageObject {
       div = selector('> div');
     }
-    let page = new Page();
+    const page = new Page();
 
     expect(page.div.length).toEqual(1);
     expect(page.div.element).toEqual(div);
@@ -102,7 +102,7 @@ describe('selector()', () => {
     class Page extends PageObject {
       input = selector<HTMLInputElement>('input');
     }
-    let page = new Page();
+    const page = new Page();
 
     expect(page.input.element?.value).toEqual('value1');
     expect(page.input.elements[0].value).toEqual('value1');
@@ -121,7 +121,7 @@ describe('selector()', () => {
         },
       );
     }
-    let page = new Page();
+    const page = new Page();
 
     expect(page.input.element?.value).toEqual('value1');
     expect(page.input.elements[0].value).toEqual('value1');

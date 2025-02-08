@@ -35,7 +35,7 @@ function querySelectorAll(
  * {@link SelectorFragment}, and return the result
  */
 function query(root: ElementLike, fragment: SelectorFragment): Element | null {
-  let { selector, index } = fragment;
+  const { selector, index } = fragment;
   if (index !== undefined) {
     if (selector) {
       // Selector and index, so query all and index into result set
@@ -65,12 +65,12 @@ function queryAll(root: ElementLike[], fragment: SelectorFragment) {
     return [];
   }
 
-  let { selector, index } = fragment;
+  const { selector, index } = fragment;
 
   if (index !== undefined) {
     if (selector) {
       // Selector and index, so query all and index into the result set
-      let results = querySelectorAll(root[0], selector);
+      const results = querySelectorAll(root[0], selector);
       if (index < results.length) {
         return [results[index]];
       }
@@ -78,7 +78,7 @@ function queryAll(root: ElementLike[], fragment: SelectorFragment) {
       // Only index, so index into the root array
       if (index < root.length) {
         // We never match DocumentFragments
-        let result = root[index];
+        const result = root[index];
         return result instanceof DocumentFragment ? [] : [result];
       }
     }
@@ -111,9 +111,9 @@ class SelectorArray extends Array<SelectorFragment> {
    * @param val the selector or index with which to extend this selector array
    */
   extend(val: string | number) {
-    let extended = new SelectorArray(...this);
+    const extended = new SelectorArray(...this);
 
-    let prevFragment = extended[extended.length - 1];
+    const prevFragment = extended[extended.length - 1];
 
     if (typeof val === 'string') {
       if (prevFragment && prevFragment.index === undefined) {
@@ -144,7 +144,7 @@ class SelectorArray extends Array<SelectorFragment> {
    */
   toString() {
     let str = '';
-    for (let { selector, index } of this) {
+    for (const { selector, index } of this) {
       str = `${str} ${selector}`.trim();
       if (index !== undefined) {
         str = `${str}[${index}]`;
@@ -176,7 +176,7 @@ export default class DOMQuery {
       return null;
     }
 
-    let [first, ...rest] = this.selectorArray;
+    const [first, ...rest] = this.selectorArray;
 
     if (!first) {
       // No selector info, so return the root unless it's a DocumentFragment
@@ -184,7 +184,7 @@ export default class DOMQuery {
     }
 
     let el = query(this.root, this.selectorArray[0]);
-    for (let fragment of rest) {
+    for (const fragment of rest) {
       if (!el) {
         break;
       }
@@ -201,7 +201,7 @@ export default class DOMQuery {
       return [];
     }
 
-    let [first, ...rest] = this.selectorArray;
+    const [first, ...rest] = this.selectorArray;
 
     if (!first) {
       // No selector info, so return the root unless it's a DocumentFragment
@@ -209,7 +209,7 @@ export default class DOMQuery {
     }
 
     let matches = queryAll([this.root], first);
-    for (let fragment of rest) {
+    for (const fragment of rest) {
       if (matches.length === 0) {
         break;
       }

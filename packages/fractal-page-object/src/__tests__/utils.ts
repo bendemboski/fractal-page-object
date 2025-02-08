@@ -15,7 +15,7 @@ describe('utils', () => {
       document.body.innerHTML = '<div>boop</div>';
 
       class Page extends PageObject {}
-      let page = new Page('div');
+      const page = new Page('div');
 
       try {
         assertExists('test', page);
@@ -30,7 +30,7 @@ describe('utils', () => {
       document.body.innerHTML = '';
 
       class Page extends PageObject {}
-      let page = new Page('div');
+      const page = new Page('div');
 
       expect(() => {
         assertExists('test', page);
@@ -43,7 +43,7 @@ describe('utils', () => {
       class Page extends PageObject {
         nested = selector('button');
       }
-      let page = new Page('div');
+      const page = new Page('div');
 
       expect(() => {
         assertExists('test', page.nested);
@@ -61,7 +61,7 @@ describe('utils', () => {
           },
         );
       }
-      let page = new Page();
+      const page = new Page();
 
       expect(getDescription(page.thing)).toEqual('.thing');
       expect(getDescription(page.thing.subthing)).toEqual('.thing .subthing');

@@ -16,7 +16,7 @@ export default function cloneWithIndex<
   ElementType extends Element,
   T extends PageObject<ElementType>,
 >(obj: T, index: number): T {
-  let Class = obj.constructor as PageObjectConstructor<
+  const Class = obj.constructor as PageObjectConstructor<
     ElementType,
     PageObject<ElementType>
   >;

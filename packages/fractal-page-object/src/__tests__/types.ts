@@ -13,7 +13,7 @@ describe('types', () => {
 
     test('type narrows', () => {
       const doThing = (el: ElementLike) => el;
-      let obj: unknown = document.createElement('div');
+      const obj: unknown = document.createElement('div');
 
       doThing(
         // @ts-expect-error should produce error
