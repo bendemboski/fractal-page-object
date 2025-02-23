@@ -111,7 +111,7 @@ importers:
         version: 4.2.0(@babel/core@7.26.9)(ember-source@5.12.0)
       ember-page-title:
         specifier: ^8.1.0
-        version: 8.2.3(ember-source@5.12.0)
+        version: 8.2.4(ember-source@5.12.0)
       ember-qunit:
         specifier: ^8.0.2
         version: 8.1.0(@ember/test-helpers@3.3.1)(@glint/template@1.5.2)(ember-source@5.12.0)(qunit@2.24.1)
@@ -2022,7 +2022,7 @@ packages:
     resolution: {integrity: sha512-fMzayl/licUL8VRAy4qXROKcYvHwUbV8aTh4m97L5/MRuVpxbcAy92DGGTqx5OBKCSQN3gMg+sUKeE6AviefpQ==}
     engines: {node: 12.* || 14.* || >= 16}
     dependencies:
-      '@embroider/shared-internals': 2.8.1
+      '@embroider/shared-internals': 2.9.0
       broccoli-funnel: 3.0.8
       common-ancestor-path: 1.0.1
       semver: 7.7.1
@@ -2054,6 +2054,26 @@ packages:
 
   /@embroider/shared-internals@2.8.1:
     resolution: {integrity: sha512-zi0CENFD1e0DH7c9M/rNKJnFnt2c3+736J3lguBddZdmaIV6Cb8l3HQSkskSW5O4ady+SavemLKO3hCjQQJBIw==}
+    engines: {node: 12.* || 14.* || >= 16}
+    dependencies:
+      babel-import-util: 2.1.1
+      debug: 4.4.0
+      ember-rfc176-data: 0.3.18
+      fs-extra: 9.1.0
+      is-subdir: 1.2.0
+      js-string-escape: 1.0.1
+      lodash: 4.17.21
+      minimatch: 3.1.2
+      pkg-entry-points: 1.1.1
+      resolve-package-path: 4.0.3
+      semver: 7.7.1
+      typescript-memoize: 1.1.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@embroider/shared-internals@2.9.0:
+    resolution: {integrity: sha512-8untWEvGy6av/oYibqZWMz/yB+LHsKxEOoUZiLvcpFwWj2Sipc0DcXeTJQZQZ++otNkLCWyDrDhOLrOkgjOPSg==}
     engines: {node: 12.* || 14.* || >= 16}
     dependencies:
       babel-import-util: 2.1.1
@@ -7069,7 +7089,7 @@ packages:
       '@babel/plugin-transform-class-static-block': 7.26.0(@babel/core@7.26.9)
       '@babel/preset-env': 7.26.0(@babel/core@7.26.9)
       '@embroider/macros': 1.16.9(@glint/template@1.5.2)
-      '@embroider/shared-internals': 2.8.1
+      '@embroider/shared-internals': 2.9.0
       babel-loader: 8.4.1(@babel/core@7.26.9)(webpack@5.97.1)
       babel-plugin-ember-modules-api-polyfill: 3.5.0
       babel-plugin-ember-template-compilation: 2.3.0
@@ -7755,8 +7775,8 @@ packages:
       - supports-color
     dev: true
 
-  /ember-page-title@8.2.3(ember-source@5.12.0):
-    resolution: {integrity: sha512-9XH4EVPCpSCyXRsLPzdDydU4HgQnaVeJJTrRF0WVh5bZERI9DgxuHv1NPmZU28todHRH91KcBc5nx8kIVJmqUw==}
+  /ember-page-title@8.2.4(ember-source@5.12.0):
+    resolution: {integrity: sha512-ZZ912IRItIEfD5+35w65DT9TmqppK+suXJeaJenD5OSuvujUnYl6KxBpyAbfjw4mYtURwJO/TmSe+4GGJbsJ0w==}
     engines: {node: 16.* || >= 18}
     peerDependencies:
       ember-source: '>= 3.28.0'
