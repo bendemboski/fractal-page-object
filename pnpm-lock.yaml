@@ -42,7 +42,7 @@ importers:
         version: 1.5.2
       '@tsconfig/ember':
         specifier: ^3.0.2
-        version: 3.0.9
+        version: 3.0.10
       '@types/qunit':
         specifier: ^2.19.9
         version: 2.19.10
@@ -3204,8 +3204,8 @@ packages:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
     dev: true
 
-  /@tsconfig/ember@3.0.9:
-    resolution: {integrity: sha512-0B44GyEafxJLAZSixH9VBnm9kDFCpaLXu86httaJSDEm1nfl3WWI/XfY4diPsOyOg+pc9N1/YfqH7uKM2dF0lA==}
+  /@tsconfig/ember@3.0.10:
+    resolution: {integrity: sha512-qFIlJIMsn25frlp2WOtX/OxNxfsYeqM7OdSXB88vgvRqU9ElV3KpQc2EhmchoKpHoKB3oiLPIJNRuf5xcxjamw==}
     dev: true
 
   /@types/acorn@4.0.6:
