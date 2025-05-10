@@ -42,7 +42,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.15.1",
+    "@arethetypeswrong/cli": "^0.18.0",
     "@release-it-plugins/lerna-changelog": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
