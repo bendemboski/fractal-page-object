@@ -141,7 +141,7 @@ importers:
         version: 17.15.1(eslint@8.57.1)
       eslint-plugin-prettier:
         specifier: ^5.0.1
-        version: 5.2.3(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2)
+        version: 5.2.6(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2)
       eslint-plugin-qunit:
         specifier: ^8.0.1
         version: 8.1.2(eslint@8.57.1)
@@ -223,7 +223,7 @@ importers:
         version: 10.0.3(eslint@8.57.1)
       eslint-plugin-prettier:
         specifier: ^5.1.3
-        version: 5.2.3(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2)
+        version: 5.2.6(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2)
       jsdom:
         specifier: ^24.0.0
         version: 24.1.3
@@ -292,7 +292,7 @@ importers:
         version: 10.0.3(eslint@8.57.1)
       eslint-plugin-prettier:
         specifier: ^5.1.3
-        version: 5.2.3(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2)
+        version: 5.2.6(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2)
       fractal-page-object:
         specifier: workspace:*
         version: link:../fractal-page-object
@@ -2965,8 +2965,8 @@ packages:
     dev: true
     optional: true
 
-  /@pkgr/core@0.1.1:
-    resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
+  /@pkgr/core@0.2.7:
+    resolution: {integrity: sha512-YLT9Zo3oNPJoBjBc4q8G2mjU4tqIbf5CEOORbUUr48dCD9q3umJ3IPlVqOqDakPfd2HuwccBaqlGhN4Gmr5OWg==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     dev: true
 
@@ -8447,13 +8447,13 @@ packages:
       semver: 7.7.2
     dev: true
 
-  /eslint-plugin-prettier@5.2.3(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2):
-    resolution: {integrity: sha512-qJ+y0FfCp/mQYQ/vWQ3s7eUlFEL4PyKfAJxsnYTJ4YT73nsJBWqmEpFryxV9OeUiqmsTsYJ5Y+KDNaeP31wrRw==}
+  /eslint-plugin-prettier@5.2.6(eslint-config-prettier@10.0.3)(eslint@8.57.1)(prettier@3.4.2):
+    resolution: {integrity: sha512-mUcf7QG2Tjk7H055Jk0lGBjbgDnfrvqjhXh9t2xLMSCjZVcw9Rb1V6sVNXO0th3jgeO7zllWPTNRil3JW94TnQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       '@types/eslint': '>=8.0.0'
       eslint: '>=8.0.0'
-      eslint-config-prettier: '*'
+      eslint-config-prettier: '>= 7.0.0 <10.0.0 || >=10.1.0'
       prettier: '>=3.0.0'
     peerDependenciesMeta:
       '@types/eslint':
@@ -8465,7 +8465,7 @@ packages:
       eslint-config-prettier: 10.0.3(eslint@8.57.1)
       prettier: 3.4.2
       prettier-linter-helpers: 1.0.0
-      synckit: 0.9.2
+      synckit: 0.11.8
     dev: true
 
   /eslint-plugin-qunit@8.1.2(eslint@8.57.1):
@@ -15282,12 +15282,11 @@ packages:
       - supports-color
     dev: true
 
-  /synckit@0.9.2:
-    resolution: {integrity: sha512-vrozgXDQwYO72vHjUb/HnFbQx1exDjoKzqx23aXEg2a9VIg2TSFZ8FmeZpTjUCFMYw7mpX4BE2SFu8wI7asYsw==}
+  /synckit@0.11.8:
+    resolution: {integrity: sha512-+XZ+r1XGIJGeQk3VvXhT6xx/VpbHsRzsTkGgF6E5RX9TTXD0118l87puaEBZ566FhqblC6U0d4XnubznJDm30A==}
     engines: {node: ^14.18.0 || >=16.0.0}
     dependencies:
-      '@pkgr/core': 0.1.1
-      tslib: 2.8.1
+      '@pkgr/core': 0.2.7
     dev: true
 
   /table@6.9.0:
