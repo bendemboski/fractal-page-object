@@ -45,7 +45,7 @@ importers:
         version: 3.0.10
       '@types/qunit':
         specifier: ^2.19.9
-        version: 2.19.10
+        version: 2.19.12
       '@types/rsvp':
         specifier: ^4.0.8
         version: 4.0.9
@@ -3425,8 +3425,8 @@ packages:
     resolution: {integrity: sha512-oGk0gmhnEJK4Yyk+oI7EfXsLayXatCWPHary1MtcmbAifkobT9cM9yutG/hZKIseOU0MqbIwQ/u2nn/Gb+ltuQ==}
     dev: true
 
-  /@types/qunit@2.19.10:
-    resolution: {integrity: sha512-gVB+rxvxmbyPFWa6yjjKgcumWal3hyqoTXI0Oil161uWfo1OCzWZ/rnEumsx+6uVgrwPrCrhpQbLkzfildkSbg==}
+  /@types/qunit@2.19.12:
+    resolution: {integrity: sha512-II+C1wgzUia0g+tGAH+PBb4XiTm8/C/i6sN23r21NNskBYOYrv+qnW0tFQ/IxZzKVwrK4CTglf8YO3poJUclQA==}
     dev: true
 
   /@types/range-parser@1.2.7:
