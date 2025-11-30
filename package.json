@@ -22,7 +22,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@glimmer/validator": "0.84.3"
+      "@glimmer/validator": "0.95.0"
     }
   }
 }
